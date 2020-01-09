@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { SocialIcon } from 'react-social-icons';
 import { useForm } from 'react-hook-form';
 
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import { AuthContext } from '../context/auth';
+import { AuthContext } from '../../context/auth';
 
-export default function Formin() {
-    const { handleSubmit, register, errors } = useForm();
+export default function Formin(props) {
+    const context = useContext(AuthContext);
+    const { handleSubmit, register, errors } = useForm(loginUserCallback, {
+        username: '',
+        password: ''
+    });
     const [rememberMe, setrememberMe] = useState(false);
 
     const onSubmit = values => {
@@ -19,9 +23,27 @@ export default function Formin() {
     };
     // console.log(rememberMe);
 
+    const [loginUser, { loading }] = useMutation(LOGIN_USER, {
+        update(_, { data: { login: userData } }) {
+            context.login(userData);
+            props.history.push('/');
+        },
+        variables: register
+    });
+
+    function loginUserCallback() {
+        loginUser();
+        // console.log(loginUser);
+        // console.log(loginUserCallback);
+    }
+
     return (
         <Main>
-            <Form onSubmit={e => e.preventDefault()}>
+            <Form
+                onSubmit={e => e.preventDefault()}
+                noValidate
+                className={loading ? 'loading' : ''}
+            >
                 <h1>Sign In</h1>
                 {/* <label>Email or phone number</label> */}
                 <Input
@@ -82,6 +104,18 @@ export default function Formin() {
         </Main>
     );
 }
+
+const LOGIN_USER = gql`
+    mutation login($username: String!, $password: String!) {
+        login(username: $username, password: $password) {
+            id
+            email
+            username
+            createdAt
+            token
+        }
+    }
+`;
 
 const Main = styled.main`
     box-sizing: border-box;

@@ -28,6 +28,8 @@ function Login(props) {
 
     function loginUserCallback() {
         loginUser();
+        // console.log(loginUser);
+        // console.log(loginUserCallback);
     }
 
     return (
