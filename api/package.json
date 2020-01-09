@@ -1,28 +1,24 @@
 {
-  "name": "merng",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start-dev": "./node_modules/.bin/nodemon babel-node src/index.js",
-    "start": "node src/index"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "apollo-server": "^2.5.0",
-    "apollo-server-express": "^2.9.15",
-    "bcryptjs": "^2.4.3",
-    "graphql": "^14.3.1",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.5.11"
-  },
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-loader": "^8.0.6",
-    "babel-preset-env": "^1.7.0",
-    "nodemon": "^1.19.4"
-  }
+    "name": "merng",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "nodemon -r esm src/index.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "apollo-server": "^2.5.0",
+        "apollo-server-express": "^2.9.15",
+        "bcryptjs": "^2.4.3",
+        "esm": "^3.2.25",
+        "graphql": "^14.3.1",
+        "jsonwebtoken": "^8.5.1",
+        "mongoose": "^5.5.11"
+    },
+    "devDependencies": {
+        "nodemon": "^1.19.4"
+    }
 }

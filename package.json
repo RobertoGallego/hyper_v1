@@ -1,17 +1,17 @@
 {
-  "name": "hyper",
-  "version": "1.0.0",
-  "description": "merng",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "cd api && npm run start-dev",
-    "client": "cd ui && npm start",
-    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
-  },
-  "author": "team dame",
-  "license": "ISC",
-  "devDependencies": {
-    "concurrently": "^5.0.2"
-  }
+    "name": "hyper",
+    "version": "1.0.0",
+    "description": "merng",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "server": "cd api && npm run start",
+        "client": "cd ui && npm start",
+        "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+    },
+    "author": "team dame",
+    "license": "ISC",
+    "devDependencies": {
+        "concurrently": "^5.0.2"
+    }
 }
