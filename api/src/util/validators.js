@@ -31,10 +31,10 @@ module.exports.validateRegisterInput = (
 module.exports.validateLoginInput = (username, password) => {
   const errors = {};
   if (username.trim() === '') {
-    errors.username = 'Username must not be empty';
+    errors.username = 'Please enter a valid username';
   }
   if (password.trim() === '') {
-    errors.password = 'Password must not be empty';
+    errors.password = 'Password must have at least 6 characters';
   }
 
   return {

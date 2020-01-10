@@ -43,13 +43,13 @@ module.exports = {
             const user = await User.findOne({ username });
 
             if (!user) {
-                errors.general = 'User not found';
+                errors.username = "Sorry, we can't find an account with this email address. Please try again.";
                 throw new UserInputError('User not found', { errors });
             }
 
             const match = await bcrypt.compare(password, user.password);
             if (!match) {
-                errors.general = 'Wrong crendetials';
+                errors.password = 'Wrong password';
                 throw new UserInputError('Wrong crendetials', { errors });
             }
 

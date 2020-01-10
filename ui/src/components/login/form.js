@@ -49,6 +49,7 @@ export default function Formin(props) {
                     onChange={onChange}
                     error={errors.username ? true : false}
                 />
+                {Object.keys(errors).length > 0 && (<Alert>{errors.username}</Alert>)}
                 <Input
                     name='password'
                     type='password'
@@ -57,6 +58,7 @@ export default function Formin(props) {
                     onChange={onChange}
                     error={errors.password ? true : false}
                 />
+                {Object.keys(errors).length > 0 && (<Alert>{errors.password}</Alert>)}
                 <Info>
                     <label>
                         <Check
@@ -72,15 +74,14 @@ export default function Formin(props) {
                     Sign In
                 </Button>
             </Form>
-            {/* {Object.keys(errors).length > 0 && (
-                <div className='ui error message'>
-                    <ul className='list'>
-                        {Object.values(errors).map(value => (
-                            <li key={value}>{value}</li>
-                        ))}
-                    </ul>
-                </div>
-            )} */}
+            {Object.keys(errors).length > 0 && (
+                <div className="ui error message">
+                <ul className="list">
+                    {Object.values(errors).map((value) => (
+                    <li key={value}>{value}</li>
+                    ))}
+                </ul>
+                </div>)}
             <Social>
                 <div>
                     <SocialIcon url='http://facebook.com/rvgallego' />
@@ -221,8 +222,8 @@ const Signup = styled.div`
     }
 `;
 
-// const Alert = styled.p`
-//     font-size: 0.8rem;
-//     color: #e87c03;
-//     margin: -1.3rem 0 1rem;
-// `;
+const Alert = styled.p`
+    font-size: 0.9rem;
+    color: #e87c03;
+    margin: -1.3rem 0 1rem;
+`;
