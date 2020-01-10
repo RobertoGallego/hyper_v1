@@ -14,6 +14,7 @@ import Home from './pages/Home';
 // import Register from './pages/Register';
 import Register from './components/register';
 import Login from './components/login';
+import Profile from './components/profile/Profile';
 // import SinglePost from './pages/SinglePost';
 
 function App() {
@@ -24,8 +25,9 @@ function App() {
                     <Route exact path='/' component={Home} />
                     <AuthRoute exact path='/login' component={Login} />
                     <AuthRoute exact path='/register' component={Register} />
+                    <AuthRoute exact path='/profile' component={Profile} />
                 </Container>
-            </Router>
+            </Router>    
         </AuthProvider>
     );
 }
