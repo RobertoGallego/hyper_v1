@@ -1,23 +1,50 @@
-import React, { useRef } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { SocialIcon } from 'react-social-icons';
-import { useForm } from 'react-hook-form';
+// import { useForm } from 'react-hook-form';
 
-export default function Formin() {
-    const { handleSubmit, register, errors, watch } = useForm();
-    const password = useRef({});
-    password.current = watch('password', '');
-    const onSubmit = values => {
-        console.log(values);
-    };
+import { useMutation } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import { AuthContext } from '../../context/auth';
+import { useForForm } from '../../util/hooks';
 
+export default function Formin(props) {
+    const context = useContext(AuthContext);
+    const [errors, setErrors] = useState({});
+    
+    const { onChange, onSubmit, values } = useForForm(registerUser, {
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+      });
+
+    const [addUser, { loading }] = useMutation(REGISTER_USER, {
+    update(
+        _,
+        {
+        data: { register: userData }
+        }
+    ) {
+        context.login(userData);
+        props.history.push('/');
+    },
+    onError(err) {
+        setErrors(err.graphQLErrors[0].extensions.exception.errors);
+    },
+    variables: values
+    });
+
+    function registerUser() {
+    addUser();
+    }
     // const onSubmit = async data => {
     // alert(JSON.stringify(data));
     // };
 
     return (
         <Main>
-            <Form onSubmit={e => e.preventDefault()}>
+            <Form onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>
                 <h1>Sign Up</h1>
                 {/* <label>Email or phone number</label> */}
                 <Input
@@ -25,63 +52,83 @@ export default function Formin() {
                     type='text'
                     placeholder='Username'
                     maxLength='25'
-                    ref={register({
-                        required: '* Required',
-                        pattern: {
-                            value: /^[a-zA-Z0-9]([._](?![._])|[a-zA-Z0-9]){2,15}[a-zA-Z0-9]/,
-                            message: 'Please enter a valid username.',
-                            required: true
-                        }
-                    })}
+                    value={values.username}
+                    error={errors.username ? true : false}
+                    onChange={onChange}
+                    // ref={register({
+                    //     required: '* Required',
+                    //     pattern: {
+                    //         value: /^[a-zA-Z0-9]([._](?![._])|[a-zA-Z0-9]){2,15}[a-zA-Z0-9]/,
+                    //         message: 'Please enter a valid username.',
+                    //         required: true
+                    //     }
+                    // })}
                 />
-                {errors.username && <Alert>{errors.username.message}</Alert>}
+                {/* {errors.username && <Alert>{errors.username.message}</Alert>} */}
                 <Input
                     name='email'
                     type='text'
                     placeholder='Email'
-                    ref={register({
-                        required: '* Required',
-                        pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                            message: 'Please enter a valid email.',
-                            required: true,
-                            maxLength: 50
-                        }
-                    })}
+                    value={values.email}
+                    error={errors.email ? true : false}
+                    onChange={onChange}
+                    // ref={register({
+                    //     required: '* Required',
+                    //     pattern: {
+                    //         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                    //         message: 'Please enter a valid email.',
+                    //         required: true,
+                    //         maxLength: 50
+                    //     }
+                    // })}
                 />
-                {errors.email && <Alert>{errors.email.message}</Alert>}
+                {/* {errors.email && <Alert>{errors.email.message}</Alert>} */}
 
                 <Input
                     name='password'
                     type='password'
                     placeholder='Password'
-                    ref={register({
-                        required: 'You must specify a password',
-                        minLength: {
-                            value: 6,
-                            message: 'Password must have at least 6 characters',
-                            required: true,
-                            maxLength: 25
-                        }
-                    })}
+                    value={values.password}
+                    error={errors.password ? true : false}
+                    onChange={onChange}
+                    // ref={register({
+                    //     required: 'You must specify a password',
+                    //     minLength: {
+                    //         value: 6,
+                    //         message: 'Password must have at least 6 characters',
+                    //         required: true,
+                    //         maxLength: 25
+                    //     }
+                    // })}
                 />
-                {errors.password && <Alert>{errors.password.message}</Alert>}
+                {/* {errors.password && <Alert>{errors.password.message}</Alert>} */}
                 <Input
-                    name='repassword'
+                    name="confirmPassword"
                     type='password'
-                    placeholder='Repeat Password'
-                    ref={register({
-                        validate: value =>
-                            value === password.current ||
-                            'The passwords do not match'
-                    })}
+                    placeholder="Confirm Password"
+                    value={values.confirmPassword}
+                    error={errors.confirmPassword ? true : false}
+                    onChange={onChange}
+                    // ref={register({
+                    //     validate: value =>
+                    //         value === password.current ||
+                    //         'The passwords do not match'
+                    // })}
                 />
-                {errors.repassword && (
+                {/* {errors.repassword && (
                     <Alert>{errors.repassword.message}</Alert>
-                )}
-                <Button type='submit' onClick={handleSubmit(onSubmit)}>
+                )} */}
+                <Button type='submit' primary>
                     Sign Up
                 </Button>
+                {/* {Object.keys(errors).length > 0 && (
+                <div className="ui error message">
+                <ul className="list">
+                    {Object.values(errors).map((value) => (
+                    <li key={value}>{value}</li>
+                    ))}
+                </ul>
+                </div>)} */}
                 <Social>
                     <div>
                         <SocialIcon url='http://facebook.com/rvgallego' />
@@ -92,6 +139,30 @@ export default function Formin() {
         </Main>
     );
 }
+
+const REGISTER_USER = gql`
+  mutation register(
+    $username: String!
+    $email: String!
+    $password: String!
+    $confirmPassword: String!
+  ) {
+    register(
+      registerInput: {
+        username: $username
+        email: $email
+        password: $password
+        confirmPassword: $confirmPassword
+      }
+    ) {
+      id
+      email
+      username
+      createdAt
+      token
+    }
+  }
+`;
 
 const Main = styled.main`
     box-sizing: border-box;
@@ -157,8 +228,8 @@ const Social = styled.div`
     }
 `;
 
-const Alert = styled.p`
-    font-size: 0.8rem;
-    color: #e87c03;
-    margin: -1.3rem 0 1rem;
-`;
+// const Alert = styled.p`
+//     font-size: 0.8rem;
+//     color: #e87c03;
+//     margin: -1.3rem 0 1rem;
+// `;

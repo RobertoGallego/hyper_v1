@@ -39,6 +39,7 @@ function MenuBar() {
           as={Link}
           to="/login"
         />
+        <p> --- </p>
         <Menu.Item
           name="register"
           active={activeItem === 'register'}

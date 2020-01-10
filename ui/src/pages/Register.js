@@ -4,13 +4,13 @@ import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 import { AuthContext } from '../context/auth';
-import { useForm } from '../util/hooks';
+import { useForForm } from '../util/hooks';
 
 function Register(props) {
   const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
 
-  const { onChange, onSubmit, values } = useForm(registerUser, {
+  const { onChange, onSubmit, values } = useForForm(registerUser, {
     username: '',
     email: '',
     password: '',

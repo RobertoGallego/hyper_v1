@@ -18,11 +18,11 @@ const Signin = styled.div`
     flex-direction: column;
 `
 
-export default function signin() {
+export default function signin(props) {
     return (
         <Signin>
             <Header/>
-            <Formin/>
+            <Formin history= {props.history}/>
             <Footer/>
         </Signin>
     );

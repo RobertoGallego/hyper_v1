@@ -1,96 +1,86 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { SocialIcon } from 'react-social-icons';
-import { useForm } from 'react-hook-form';
 
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { AuthContext } from '../../context/auth';
+import { useForForm } from '../../util/hooks';
 
 export default function Formin(props) {
     const context = useContext(AuthContext);
-    const { handleSubmit, register, errors } = useForm(loginUserCallback, {
+    const [errors, setErrors] = useState({});
+
+    const { onSubmit, onChange, values } = useForForm(loginUserCallback, {
         username: '',
         password: ''
     });
     const [rememberMe, setrememberMe] = useState(false);
-
-    const onSubmit = values => {
-        // values.preventDefault();
-        // console.log(values.email);
-        console.log(values.email);
-        console.log(values.password);
-    };
-    // console.log(rememberMe);
 
     const [loginUser, { loading }] = useMutation(LOGIN_USER, {
         update(_, { data: { login: userData } }) {
             context.login(userData);
             props.history.push('/');
         },
-        variables: register
+        onError(err) {
+            setErrors(err.graphQLErrors[0].extensions.exception.errors);
+        },
+        variables: values
     });
 
     function loginUserCallback() {
         loginUser();
-        // console.log(loginUser);
-        // console.log(loginUserCallback);
     }
 
     return (
         <Main>
             <Form
-                onSubmit={e => e.preventDefault()}
+                onSubmit={onSubmit}
                 noValidate
                 className={loading ? 'loading' : ''}
             >
                 <h1>Sign In</h1>
                 {/* <label>Email or phone number</label> */}
                 <Input
-                    name='email'
+                    name='username'
                     type='text'
-                    placeholder='Email'
-                    ref={register({
-                        required: '* Required',
-                        pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                            message: 'Please enter a valid email.',
-                            required: true,
-                            maxLength: 50
-                        }
-                    })}
+                    placeholder='username'
+                    value={values.username}
+                    onChange={onChange}
+                    error={errors.username ? true : false}
                 />
-                {errors.email && <Alert>{errors.email.message}</Alert>}
                 <Input
                     name='password'
                     type='password'
                     placeholder='Password'
-                    ref={register({
-                        required: 'You must specify a password',
-                        minLength: {
-                            value: 6,
-                            message: 'Password must have at least 6 characters',
-                            required: true
-                        }
-                    })}
+                    value={values.password}
+                    onChange={onChange}
+                    error={errors.password ? true : false}
                 />
-                {errors.password && <Alert>{errors.password.message}</Alert>}
                 <Info>
                     <label>
                         <Check
                             type='checkbox'
                             name='remember me'
-                            // isChecked={rememberMe}
                             onChange={() => setrememberMe(!rememberMe)}
                         />
                         <Title>Remember me</Title>
                     </label>
                     <Link href='/#'>Need help?</Link>
                 </Info>
-                <Button type='submit' onClick={handleSubmit(onSubmit)}>
+                <Button type='submit' primary>
                     Sign In
                 </Button>
             </Form>
+            {/* {Object.keys(errors).length > 0 && (
+                <div className='ui error message'>
+                    <ul className='list'>
+                        {Object.values(errors).map(value => (
+                            <li key={value}>{value}</li>
+                        ))}
+                    </ul>
+                </div>
+            )} */}
             <Social>
                 <div>
                     <SocialIcon url='http://facebook.com/rvgallego' />
@@ -231,8 +221,8 @@ const Signup = styled.div`
     }
 `;
 
-const Alert = styled.p`
-    font-size: 0.8rem;
-    color: #e87c03;
-    margin: -1.3rem 0 1rem;
-`;
+// const Alert = styled.p`
+//     font-size: 0.8rem;
+//     color: #e87c03;
+//     margin: -1.3rem 0 1rem;
+// `;

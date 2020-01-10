@@ -1,11 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+import MenuBar from '../components/MenuBar';
 
 function Home() {
     return (
         <div>
             <h2>Home</h2>
-            <nav>
+            <MenuBar />
+            {/* <nav>
                 <ul>
                     <li>
                         <Link to='/'>Home</Link>
@@ -23,7 +25,7 @@ function Home() {
                         <Link to='/signup'>Register</Link>
                     </li>
                 </ul>
-            </nav>
+            </nav> */}
         </div>
     );
 }

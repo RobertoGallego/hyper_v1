@@ -4,13 +4,13 @@ import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 import { AuthContext } from '../context/auth';
-import { useForm } from '../util/hooks';
+import { useForForm } from '../util/hooks';
 
 function Login(props) {
     const context = useContext(AuthContext);
     const [errors, setErrors] = useState({});
 
-    const { onChange, onSubmit, values } = useForm(loginUserCallback, {
+    const { onChange, onSubmit, values } = useForForm(loginUserCallback, {
         username: '',
         password: ''
     });
