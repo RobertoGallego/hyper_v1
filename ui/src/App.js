@@ -13,6 +13,7 @@ import Register from './components/register';
 import Login from './components/login';
 import Profile from './components/profile/Profile';
 import Edit from './components/profile/Edit';
+import Movie from './components/viewer/Movie';
 // import SinglePost from './pages/SinglePost';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
                     <AuthRoute exact path='/register' component={Register} />
                     <AuthRoute exact path='/profile' component={Profile} />
                     <AuthRoute exact path='/edit' component={Edit} />
+                    <AuthRoute exact path='/movie' component={Movie} />
                 </Container>
             </Router>    
         </AuthProvider>
