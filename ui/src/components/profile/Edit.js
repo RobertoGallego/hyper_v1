@@ -137,6 +137,8 @@ const Input = styled.input`
     background: #666666;
     border: none;
     padding: 1em;
+    color: white;
+    font-size: 1.5em;
     ::placeholder,
     ::-webkit-input-placeholder {
     color: white;
