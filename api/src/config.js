@@ -1,6 +1,6 @@
 module.exports = {
   MONGODB:
-    'mongodb+srv://Rgallego:123@@cluster0-thazq.mongodb.net/merng?retryWrites=true&w=majority',
+    'mongodb+srv://Hypertube:123qwe@cluster0-jhgjp.mongodb.net/HypertubeDB?retryWrites=true&w=majority',
   SECRET_KEY: 'some very secret key'
 };
 
