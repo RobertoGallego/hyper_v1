@@ -55,16 +55,8 @@ export default function Formin(props) {
                     value={values.username}
                     error={errors.username ? true : false}
                     onChange={onChange}
-                    // ref={register({
-                    //     required: '* Required',
-                    //     pattern: {
-                    //         value: /^[a-zA-Z0-9]([._](?![._])|[a-zA-Z0-9]){2,15}[a-zA-Z0-9]/,
-                    //         message: 'Please enter a valid username.',
-                    //         required: true
-                    //     }
-                    // })}
                 />
-                {/* {errors.username && <Alert>{errors.username.message}</Alert>} */}
+                {Object.keys(errors).length > 0 && (<Alert>{errors.username}</Alert>)}
                 <Input
                     name='email'
                     type='text'
@@ -72,18 +64,8 @@ export default function Formin(props) {
                     value={values.email}
                     error={errors.email ? true : false}
                     onChange={onChange}
-                    // ref={register({
-                    //     required: '* Required',
-                    //     pattern: {
-                    //         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                    //         message: 'Please enter a valid email.',
-                    //         required: true,
-                    //         maxLength: 50
-                    //     }
-                    // })}
                 />
-                {/* {errors.email && <Alert>{errors.email.message}</Alert>} */}
-
+                {Object.keys(errors).length > 0 && (<Alert>{errors.email}</Alert>)}
                 <Input
                     name='password'
                     type='password'
@@ -91,17 +73,8 @@ export default function Formin(props) {
                     value={values.password}
                     error={errors.password ? true : false}
                     onChange={onChange}
-                    // ref={register({
-                    //     required: 'You must specify a password',
-                    //     minLength: {
-                    //         value: 6,
-                    //         message: 'Password must have at least 6 characters',
-                    //         required: true,
-                    //         maxLength: 25
-                    //     }
-                    // })}
                 />
-                {/* {errors.password && <Alert>{errors.password.message}</Alert>} */}
+                {Object.keys(errors).length > 0 && (<Alert>{errors.password}</Alert>)}
                 <Input
                     name="confirmPassword"
                     type='password'
@@ -109,15 +82,8 @@ export default function Formin(props) {
                     value={values.confirmPassword}
                     error={errors.confirmPassword ? true : false}
                     onChange={onChange}
-                    // ref={register({
-                    //     validate: value =>
-                    //         value === password.current ||
-                    //         'The passwords do not match'
-                    // })}
                 />
-                {/* {errors.repassword && (
-                    <Alert>{errors.repassword.message}</Alert>
-                )} */}
+                {Object.keys(errors).length > 0 && (<Alert>{errors.password}</Alert>)}
                 <Button type='submit' primary>
                     Sign Up
                 </Button>
@@ -228,8 +194,8 @@ const Social = styled.div`
     }
 `;
 
-// const Alert = styled.p`
-//     font-size: 0.8rem;
-//     color: #e87c03;
-//     margin: -1.3rem 0 1rem;
-// `;
+const Alert = styled.p`
+    font-size: 0.8rem;
+    color: #e87c03;
+    margin: -1.3rem 0 1rem;
+`;
