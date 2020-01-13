@@ -10,7 +10,7 @@ export default function Movie() {
             <Header/>
                 <Content>
                     <Title>Movie Title</Title>
-                    <hr/>
+                    <HR/>
                     <Split>
                         <Left>
                             <Video controls>
@@ -46,6 +46,10 @@ const MoviePage = styled.div`
     min-height: 100vh;
     flex-direction: column;
     color: white;
+`
+
+const HR = styled.hr`
+    border: 1px solid white;
 `
 
 const Content = styled.div`

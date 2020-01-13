@@ -9,7 +9,7 @@ export default function Edit() {
             <Header/>
                 <Content>
                     <Title>Edit profile</Title>
-                    <hr/>
+                    <HR/>
                     <form>
                         <Top>
                             <Left>
@@ -89,6 +89,10 @@ const Top = styled.div`
     display: flex;
 `
 
+const HR = styled.hr`
+    border: 1px solid white;
+`
+
 const Left = styled.div`
     margin: 1em auto;
 `
@@ -138,11 +142,11 @@ const Input = styled.input`
     border: none;
     padding: 1em;
     color: white;
-    font-size: 1.5em;
+    font-size: 1em;
     ::placeholder,
     ::-webkit-input-placeholder {
     color: white;
-    font-size: 1.5em;
+    font-size: 1em;
   }
 `
 

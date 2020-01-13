@@ -4,6 +4,7 @@ import './App.css';
 
 import { AuthProvider } from './context/auth';
 import AuthRoute from './util/AuthRoute';
+import SecureRoute from './util/SecureRoute';
 
 // import MenuBar from './components/MenuBar';
 import Home from './pages/Home';
@@ -20,14 +21,12 @@ function App() {
     return (
         <AuthProvider>
             <Router>
-                <Container>
                     <Route exact path='/' component={Home} />
                     <AuthRoute exact path='/login' component={Login} />
                     <AuthRoute exact path='/register' component={Register} />
-                    <AuthRoute exact path='/profile' component={Profile} />
-                    <AuthRoute exact path='/edit' component={Edit} />
-                    <AuthRoute exact path='/movie' component={Movie} />
-                </Container>
+                    <SecureRoute exact path='/profile' component={Profile} />
+                    <SecureRoute exact path='/edit' component={Edit} />
+                    <SecureRoute exact path='/movie' component={Movie} />
             </Router>    
         </AuthProvider>
     );
