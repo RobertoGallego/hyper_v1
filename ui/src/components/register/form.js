@@ -49,9 +49,10 @@ export default function Formin(props) {
                 {/* <label>Email or phone number</label> */}
                 <Input
                     name='username'
+                    required = "required"
                     type='text'
                     placeholder='Username'
-                    maxLength='25'
+                    maxLength='30'
                     value={values.username}
                     error={errors.username ? true : false}
                     onChange={onChange}
@@ -59,8 +60,10 @@ export default function Formin(props) {
                 {Object.keys(errors).length > 0 && (<Alert>{errors.username}</Alert>)}
                 <Input
                     name='email'
+                    required = "required"
                     type='text'
                     placeholder='Email'
+                    maxLength='30'
                     value={values.email}
                     error={errors.email ? true : false}
                     onChange={onChange}
@@ -68,6 +71,8 @@ export default function Formin(props) {
                 {Object.keys(errors).length > 0 && (<Alert>{errors.email}</Alert>)}
                 <Input
                     name='password'
+                    required = "required"
+                    maxLength='30'
                     type='password'
                     placeholder='Password'
                     value={values.password}
@@ -77,6 +82,8 @@ export default function Formin(props) {
                 {Object.keys(errors).length > 0 && (<Alert>{errors.password}</Alert>)}
                 <Input
                     name="confirmPassword"
+                    required = "required"
+                    maxLength='30'
                     type='password'
                     placeholder="Confirm Password"
                     value={values.confirmPassword}
