@@ -3,7 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 
 import { AuthContext } from '../context/auth';
 
-function AuthRoute({ component: Component, ...rest }) {
+function SecureRoute({ component: Component, ...rest }) {
   const { user } = useContext(AuthContext);
 
   return (
@@ -16,4 +16,4 @@ function AuthRoute({ component: Component, ...rest }) {
   );
 }
 
-export default AuthRoute;
+export default SecureRoute;
