@@ -1,10 +1,10 @@
 import React from 'react';
-import MenuBar from '../components/MenuBar';
+// import styled from 'styled-components';
+import MenuBar from '../components/general/MenuBar';
 
 function Home() {
     return (
-        <div>
-            <h2>Home</h2>
+        <div >
             <MenuBar />
         </div>
     );

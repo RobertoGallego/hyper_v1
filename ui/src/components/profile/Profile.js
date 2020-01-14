@@ -9,7 +9,7 @@ export default function Profile() {
             <Header/>
                 <Content>
                     <Title>Profile</Title>
-                    <hr/>
+                    <HR/>
                     <Text>
                         Username: 
                     </Text>
@@ -38,6 +38,10 @@ const Profil = styled.div`
     min-height: 100vh;
     flex-direction: column;
     color: white;
+`
+
+const HR = styled.hr`
+    border: 1px solid white;
 `
 
 const Content = styled.div`
