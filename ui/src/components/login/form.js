@@ -94,7 +94,7 @@ export default function Formin(props) {
             </Social>
             <Signup>
                 <p>New to Hypertube?</p>
-                <a href='/#'>Sign up now.</a>
+                <a href='/register'>Sign up now.</a>
             </Signup>
         </Main>
     );

@@ -63,11 +63,13 @@ module.exports = {
         },
         async register(
             _,
-            { registerInput: { username, email, password, confirmPassword } }
+            { registerInput: { username, prenom, nom, email, password, confirmPassword } }
         ) {
             // Validate user data
             const { valid, errors } = validateRegisterInput(
                 username,
+                prenom,
+                nom,
                 email,
                 password,
                 confirmPassword
@@ -91,6 +93,8 @@ module.exports = {
             const newUser = new User({
                 email,
                 username,
+                prenom,
+                nom,
                 password,
                 createdAt: new Date().toISOString()
             });
