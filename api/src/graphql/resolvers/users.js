@@ -53,6 +53,12 @@ module.exports = {
                 throw new UserInputError('Wrong crendetials', { errors });
             }
 
+            // const isVerified = await user.isVerified;
+            // if (isVerified === true) {
+            //     errors.password = 'Your account has not been verified.';
+            //     throw new UserInputError('Not been verified', { errors });
+            // }
+
             const token = generateToken(user);
 
             return {
