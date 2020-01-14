@@ -20,7 +20,7 @@ export default function Formin(props) {
     const [loginUser, { loading }] = useMutation(LOGIN_USER, {
         update(_, { data: { login: userData } }) {
             context.login(userData);
-            props.history.push('/');
+            props.history.push('/hommie');
         },
         onError(err) {
             setErrors(err.graphQLErrors[0].extensions.exception.errors);
@@ -78,14 +78,14 @@ export default function Formin(props) {
                     Sign In
                 </Button>
             </Form>
-            {Object.keys(errors).length > 0 && (
+            {/* {Object.keys(errors).length > 0 && (
                 <div className="ui error message">
                 <ul className="list">
                     {Object.values(errors).map((value) => (
                     <li key={value}>{value}</li>
                     ))}
                 </ul>
-                </div>)}
+                </div>)} */}
             <Social>
                 <div>
                     <SocialIcon url='http://facebook.com/rvgallego' />
@@ -94,7 +94,7 @@ export default function Formin(props) {
             </Social>
             <Signup>
                 <p>New to Hypertube?</p>
-                <a href='/#'>Sign up now.</a>
+                <a href='/register'>Sign up now.</a>
             </Signup>
         </Main>
     );

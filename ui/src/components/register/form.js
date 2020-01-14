@@ -14,9 +14,11 @@ export default function Formin(props) {
     
     const { onChange, onSubmit, values } = useForForm(registerUser, {
         username: '',
+        prenom: '',
+        nom: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
       });
 
     const [addUser, { loading }] = useMutation(REGISTER_USER, {
@@ -36,12 +38,14 @@ export default function Formin(props) {
     });
 
     function registerUser() {
-    addUser();
+        addUser();
     }
     // const onSubmit = async data => {
     // alert(JSON.stringify(data));
     // };
-
+    console.log(values.username);
+    console.log(values.prenom);
+    console.log(values.nom);
     return (
         <Main>
             <Form onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>
@@ -58,6 +62,28 @@ export default function Formin(props) {
                     onChange={onChange}
                 />
                 {Object.keys(errors).length > 0 && (<Alert>{errors.username}</Alert>)}
+                <Input
+                    name='prenom'
+                    required = "required"
+                    type='text'
+                    placeholder='Given name'
+                    maxLength='30'
+                    value={values.prenom}
+                    error={errors.prenom ? true : false}
+                    onChange={onChange}
+                />
+                {Object.keys(errors).length > 0 && (<Alert>{errors.prenom}</Alert>)}
+                <Input
+                    name='nom'
+                    required = "required"
+                    type='text'
+                    placeholder='Family name'
+                    maxLength='30'
+                    value={values.nom}
+                    error={errors.nom ? true : false}
+                    onChange={onChange}
+                />
+                {Object.keys(errors).length > 0 && (<Alert>{errors.nom}</Alert>)}
                 <Input
                     name='email'
                     required = "required"
@@ -116,6 +142,8 @@ export default function Formin(props) {
 const REGISTER_USER = gql`
   mutation register(
     $username: String!
+    $prenom: String!
+    $nom: String!
     $email: String!
     $password: String!
     $confirmPassword: String!
@@ -123,16 +151,20 @@ const REGISTER_USER = gql`
     register(
       registerInput: {
         username: $username
+        prenom: $prenom
+        nom: $nom
         email: $email
         password: $password
         confirmPassword: $confirmPassword
       }
     ) {
-      id
-      email
-      username
-      createdAt
-      token
+        id
+        email
+        username
+        prenom
+        nom
+        createdAt
+        token
     }
   }
 `;

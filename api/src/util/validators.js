@@ -1,10 +1,24 @@
 module.exports.validateRegisterInput = (
 	username,
+	prenom,
+	nom,
 	email,
 	password,
-	confirmPassword
+	confirmPassword,
 	) => {
 	const errors = {};
+	// console.log(nom);
+	// console.log(prenom);
+	if (prenom === '') {
+		errors.prenom = 'Prenom must not empty';
+	} else if (prenom.length < 2) {
+		errors.prenom = 'Given name must have at least 3 characters';
+	}
+	if (nom === '') {
+		errors.nom = 'Nom must not empty';
+	} else if (nom.length < 2) {
+		errors.nom = 'Family name must have at least 3 characters';
+	}
 	if (username.trim() === '') {
 		errors.username = 'Username must not be empty'; 
 	} 

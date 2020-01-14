@@ -25,12 +25,16 @@ module.exports = gql`
     type User {
         id: ID!
         email: String!
+        prenom: String!
+        nom: String!
         token: String!
         username: String!
         createdAt: String!
     }
     input RegisterInput {
         username: String!
+        prenom: String!
+        nom: String!
         password: String!
         confirmPassword: String!
         email: String!

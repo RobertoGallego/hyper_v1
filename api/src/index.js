@@ -43,6 +43,9 @@ server.applyMiddleware({
         })
 });
 
+// app.post('/confirmation', userController.confirmationPost);
+// app.post('/resend', userController.resendTokenPost);
+
 app.listen({ port, path }, () => {
     console.log(`Server listening on port http://localhost:${port}${path}`);
     // console.log(`🚀  Health checks available at ${process.env.HEALTH_ENDPOINT}`);
