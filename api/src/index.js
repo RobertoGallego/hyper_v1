@@ -3,11 +3,8 @@ const mongoose = require('mongoose');
 const typeDefs = require('./graphql/typeDefs');
 const resolvers = require('./graphql/resolvers');
 const { MONGODB } = require('./config.js');
-
 import express from 'express';
-
 const pubsub = new PubSub();
-
 const port = process.env.port || 5000;
 const path = '/graphql';
 

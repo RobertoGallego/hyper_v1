@@ -8,6 +8,7 @@ const {
 } = require('../../util/validators');
 const { SECRET_KEY } = require('../../config');
 const User = require('../../models/User');
+const nodemailer = require("nodemailer");
 
 function generateToken(user) {
     return jwt.sign(
@@ -53,11 +54,11 @@ module.exports = {
                 throw new UserInputError('Wrong crendetials', { errors });
             }
 
-            // const isVerified = await user.isVerified;
-            // if (isVerified === true) {
-            //     errors.password = 'Your account has not been verified.';
-            //     throw new UserInputError('Not been verified', { errors });
-            // }
+            const isVerified = await user.isVerified;
+            if (isVerified === true) {
+                errors.password = 'Your account has not been verified.';
+                throw new UserInputError('Not been verified', { errors });
+            }
 
             const token = generateToken(user);
 
@@ -108,6 +109,48 @@ module.exports = {
             const res = await newUser.save();
 
             const token = generateToken(res);
+
+            // const newtoken = new Token({
+            //     id: user.id,
+            // email: user.email,
+            // username: user.username
+            //     _userId: user._id,
+            //     token: crypto.randomBytes(16).toString('hex') 
+            // });
+
+            // console.log("new token:", newtoken);
+
+            // const tokenMail = await token.save()
+
+            // console.log("token mail:", user.email);
+            console.log("mail:", newUser.email);
+            // console.log("token mail:", valid.email);
+            // console.log("token mail:", email);
+            console.log("token:", token);
+            
+            const link = `<a href="http://localhost:3000/confirmation/${token}">Activate</a>`;
+            // Send the email
+
+            var transporter = nodemailer.createTransport({ 
+                service: 'gmail', 
+                auth: {
+                    user: 'willfln34@gmail.com',
+                    pass: 'matcha1234'
+                }
+            });
+
+            var mailOptions = { 
+                from: '"Hypertube" <no-reply@hypertube.com>',
+                to: newUser.email,
+                subject: 'Account Verification', 
+                text: `Hello!,\n . ${link} `};
+            
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                        return console.log(error);
+                    }
+                    console.log('Message sent: %s', info.messageId);
+                });
 
             return {
                 ...res._doc,
