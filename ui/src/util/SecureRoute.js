@@ -10,7 +10,7 @@ function SecureRoute({ component: Component, ...rest }) {
     <Route
       {...rest}
       render={(props) =>
-        user ? <Component {...props} /> : <Redirect to="/" />
+        user ? <Component {...props} /> : <Redirect to="/login" />
       }
     />
   );
