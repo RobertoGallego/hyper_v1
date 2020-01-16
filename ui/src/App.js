@@ -1,6 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import './App.css';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import { AuthProvider } from './context/auth';
 import AuthRoute from './util/AuthRoute';
@@ -21,7 +20,7 @@ function App() {
     return (
         <AuthProvider>
             <Router>
-                <Route exact path='/' component={Home} />
+                <SecureRoute exact path='/' component={Home} />
                 <AuthRoute exact path='/login' component={Login} />
                 <AuthRoute exact path='/register' component={Register} />
                 <SecureRoute exact path='/profile' component={Profile} />
