@@ -46,6 +46,7 @@ export default function Formin(props) {
     // console.log(values.username);
     // console.log(values.prenom);
     // console.log(values.nom);
+    
     return (
         <Main>
             <Form onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>

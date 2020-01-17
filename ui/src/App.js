@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router} from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 
 import { AuthProvider } from './context/auth';
@@ -15,6 +15,8 @@ import Login from './components/login';
 import Profile from './components/profile/Profile';
 import Edit from './components/profile/Edit';
 import Movie from './components/viewer/Movie';
+import Resetpassword from './components/resetpassword';
+
 // import SinglePost from './pages/SinglePost';
 
 function App() {
@@ -22,6 +24,7 @@ function App() {
         <AuthProvider>
             <Router>
                 <SecureRoute exact path='/' component={Home} />
+                <Route exact path='/resetpassword' component={Resetpassword} />
                 <AuthRoute exact path='/login' component={Login} />
                 <AuthRoute exact path='/register' component={Register} />
                 <SecureRoute exact path='/profile' component={Profile} />

@@ -42,9 +42,9 @@ module.exports = {
             }
 
             const user = await User.findOne({ username });
-
+            console.log("caca", user);
             if (!user) {
-                errors.username = "Sorry, we can't find an account with this email address. Please try again.";
+                errors.username = "Sorry, we can't find an account with this username. Please try again.";
                 throw new UserInputError('User not found', { errors });
             }
 
