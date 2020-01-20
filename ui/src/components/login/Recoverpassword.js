@@ -4,7 +4,6 @@ import styled from "styled-components"
 import { Button, GhostInput } from "./styledComponents"
 import RecoverPasswordStyles from "./RecoverPassword.styles"
 import axios from "axios"
-import SERVER_URI = "localhost:3000"
 
 class RecoverPassword extends Component {
   state = {
@@ -17,7 +16,7 @@ class RecoverPassword extends Component {
   sendPasswordResetEmail = e => {
     e.preventDefault()
     const { email } = this.state
-    axios.post(`${SERVER_URI}/reset_password/user/${email}`)
+    axios.post(`http://localhost:3000/reset_password/user/${email}`)
     this.setState({ email: "", submitted: true })
   }
   render() {

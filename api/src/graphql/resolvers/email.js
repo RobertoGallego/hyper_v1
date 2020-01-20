@@ -1,40 +1,38 @@
 import jwt from "jsonwebtoken"
 const nodemailer = require("nodemailer");
 const { SECRET_KEY } = require('../../config');
+
 // import validateResetPassword from '../../util/validators';
 const { validateEmailyInput } = require('../../util/validators');
 const User = require('../../models/User');
-const { UserInputError } = require('apollo-server');
+const { UserInputError } = require('apollo-server-express');
 // const { ApolloServer, PubSub } = require('apollo-server-express');
 
 // `secret` is passwordHash concatenated with user's createdAt,
 // so if someones gets a user token they still need a timestamp to intercept.
-// export const usePasswordHashToMakeToken = ({
-//   password: passwordHash,
-//   _id: userId,
-//   createdAt
-// }) => {
-//   const secret = passwordHash + "-" + createdAt
-//   const token = jwt.sign(
-//       { userId }
-//       , secret, {
-//     expiresIn: 3600 // 1 hour
-//   })
-//   return token
-// }
-console.log("caca");
-function generateToken(user) {
+
+function generateToken(userEmail) {
+    const secret = userEmail.password + "-" + userEmail.createdAt;
+    console.log("token secret", secret);
     return jwt.sign(
-        {
-            id: user.id,
-            email: user.email,
-            password: user.password,
-            create: user.createdAt
-        },
-        SECRET_KEY,
+        { id: userEmail.id },
+        // SECRET_KEY,
+        secret,
         { expiresIn: 3600 }
     );
 }
+
+// function generateToken(userEmail) {
+//     return jwt.sign(
+//         {
+//             id: userEmail.id,
+//             email: userEmail.email,
+//             username: userEmail.username
+//         },
+//         SECRET_KEY,
+//         { expiresIn: '3h' }
+//     );
+// }
 
 module.exports = {
     Query: {
@@ -49,8 +47,7 @@ module.exports = {
     },
     Mutation: {
         async emaily(_, { email }) {
-            console.log("caca3", email);
-            console.log("caca3.5", email);
+            console.log("email", email);
             const { errors, valid } = validateEmailyInput(email);
             if (!valid) {
                 throw new UserInputError('Errors', { errors });
@@ -58,8 +55,10 @@ module.exports = {
             const userEmail = await User.findOne({ email });
 
             // console.log("caca3", user1);
-            console.log("caca32");
-
+            console.log("check ok findOne");
+            console.log("userEmail pw: ", userEmail.password);
+            console.log("userEmail cr: ", userEmail.createdAt);
+            console.log("userEmail id: ", userEmail.id);
             // console.log("caca3", user.email);
             // console.log("asd", User.email)
             // console.log("caca4", user);
@@ -69,10 +68,10 @@ module.exports = {
                 throw new UserInputError('User not found', { errors });
             }
 
-            console.log("caca4", email);
-            const token = generateToken(user);
-            const link = `http://localhost:3000/password/reset/${user._id}/${token}`;
-            
+            console.log("!userEmail ok");
+            const token = generateToken(userEmail);
+            console.log("token", token);
+            const link = `<a href="http://localhost:3000/password/reset/${userEmail.id}/${token}">Reset Password</a>`;
             var transporter = nodemailer.createTransport({ 
                 service: 'gmail', 
                 auth: {
@@ -83,24 +82,57 @@ module.exports = {
 
             var mailOptions = { 
                 from: '"Hypertube" <no-reply@hypertube.com>',
-                to: User.email,
-                subject: 'Account Verification', 
-                text: `Hello!,\n . <a href="${link}">${link}</a> `};
+                to: userEmail.email,
+                subject: 'Request reset Password from Hypertube', 
+                text: `Hello ${userEmail.prenom}!. ${link}
+                <a href="http://www.facebook.com">link title</a>`
+            };
             
                 transporter.sendMail(mailOptions, (error, info) => {
                     if (error) {
                         return console.log(error);
                     }
-                    console.log('Message sent: %s', info.messageId);
+                    console.log(`** Email sent **`);
                 });
-
+            console.log('\n\n\n');
+            console.log("return final", userEmail._doc);
+            console.log("id final", userEmail._id);
+            console.log("token final ", token);
             return {
                 ...userEmail._doc,
                 id: userEmail._id,
-                // email: user1._email,
                 token
             };
-        }
+        },
+        // async register(
+        //     _,
+        //     { registerInput: { password, confirmPassword } }
+        // ) {
+        //     const { valid, errors } = validateResetInput(
+        //         password,
+        //         confirmPassword
+        //     );
+        //     if (!valid) {
+        //         throw new UserInputError('Errors', { errors });
+        //     }
+
+        //     // hash password and create an auth token
+        //     password = await bcrypt.hash(password, 12);
+
+        //     const newPassword = new User({
+        //         password,
+        //         createdAt: new Date().toISOString()
+        //     });
+
+        //     const res = await newUser.save();
+
+        //     const token = generateToken(res);
+        //     return {
+        //         ...res._doc,
+        //         id: res._id,
+        //         token
+        //     };
+        // }
     }
 };
 /*** Calling this function with a registered user's email sends an email IRL ***/

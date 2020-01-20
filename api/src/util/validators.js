@@ -67,7 +67,6 @@ module.exports.validateLoginInput = (username, password) => {
 };
 
 module.exports.validateEmailyInput = (email) => {
-	console.log("validator:", email);
 	const errors = {};
 	if (email.trim() === '') {
 		errors.email = 'Email must not be empty';
@@ -77,9 +76,23 @@ module.exports.validateEmailyInput = (email) => {
 		errors.email = 'Email must be a valid email address';
 		}
 	}
-
+	console.log("validator ok:", email);
 	return {
 		errors,
 		valid: Object.keys(errors).length < 1
 	};
 };
+
+module.exports.validateResetInput = (password, confirmPassword) => {
+	if (password === '') {
+		errors.password = 'Password must not empty';
+	} else if (password.length < 6) {
+		errors.password = 'Password must have at least 6 characters';
+	} else if (password !== confirmPassword) {
+		errors.confirmPassword = 'Passwords must match';
+	}
+	return {
+		errors,
+		valid: Object.keys(errors).length < 1
+	};
+}
