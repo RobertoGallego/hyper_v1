@@ -27,8 +27,6 @@ function MenuBar() {
     }
   `;
   
-  const id = user.id;
-
   const menuBar = user ? (
     // <Menu pointing secondary size="massive" color="teal">
     //   <Menu.Item name={user.username} active as={Link} to="/" />
