@@ -26,6 +26,8 @@ function MenuBar() {
       background-color: #DB202C;
     }
   `;
+  
+  const id = user.id;
 
   const menuBar = user ? (
     // <Menu pointing secondary size="massive" color="teal">
