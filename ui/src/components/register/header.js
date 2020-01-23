@@ -9,7 +9,7 @@ const Img = styled.img`
 export default function Header() {
     return (
         <div>
-            <Img src={logoTop} alt='Netflix' />
+            <a href="/login"><Img src={logoTop} alt='Netflix' /></a>
         </div>
     );
 }

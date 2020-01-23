@@ -49,7 +49,7 @@ function MenuBar() {
               <Link className="nav-link" to="/profile">Profile</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">Preferences</a>
+              <a className="nav-link" href="/preference">Preferences</a>
             </li>
             <li className="nav-item">
               <Link className="nav-link" onClick={logout} to="/login">Logout</Link>
