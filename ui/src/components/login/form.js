@@ -32,6 +32,8 @@ export default function Formin(props) {
         loginUser();
     }
 
+    // console.log (loginUser.username);
+
     return (
         <Main>
             <Form

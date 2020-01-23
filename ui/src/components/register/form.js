@@ -43,9 +43,10 @@ export default function Formin(props) {
     // const onSubmit = async data => {
     // alert(JSON.stringify(data));
     // };
-    console.log(values.username);
-    console.log(values.prenom);
-    console.log(values.nom);
+    // console.log(values.username);
+    // console.log(values.prenom);
+    // console.log(values.nom);
+    
     return (
         <Main>
             <Form onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>
