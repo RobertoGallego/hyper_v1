@@ -16,6 +16,7 @@ export default function Resetpassword(props) {
     const [emailUser, { loading }] = useMutation(EMAIL_USER, {
         update(_, { data: { email: userData }}) {
             context.login(userData, setsubmitted(!submitted));
+            setsubmitted(!submitted);
             props.history.push('/');
         },
         onError(err) {
@@ -79,8 +80,6 @@ const EMAIL_USER = gql`
         emaily(email: $email) {
             id
             email
-            username
-            createdAt
             token
         }
     }

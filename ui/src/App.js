@@ -16,7 +16,8 @@ import Profile from './components/profile/Profile';
 import Edit from './components/profile/Edit';
 import Movie from './components/viewer/Movie';
 import Resetpassword from './components/resetpassword';
-import UpdatePassword from './components/resetpassword/updatePassword.js';
+// import ChangePassword from './components/resetpassword/ChangePassword';
+// import UpdatePassword from './components/resetpassword/updatePassword.js';
 
 // import SinglePost from './pages/SinglePost';
 
@@ -26,11 +27,12 @@ function App() {
             <Router>
                 <SecureRoute exact path='/' component={Home} />
                 <Route exact path='/resetpassword' component={Resetpassword} />
-                <Route exact path='/updatepassword' 
+                {/* <Route exact path='/password/reset/:userId/:tokenMail' component={ChangePassword} /> */}
+                {/* <Route exact path='/password/reset/'
                     render={({ match }) => (
                         <UpdatePassword userId={match.params.userId} token={match.params.token} />
                     )}
-                />
+                /> */}
                 <AuthRoute exact path='/login' component={Login} />
                 <AuthRoute exact path='/register' component={Register} />
                 <SecureRoute exact path='/profile' component={Profile} />

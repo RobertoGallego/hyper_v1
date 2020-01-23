@@ -26,6 +26,8 @@ connection
         console.log(err);
     });
 
+mongoose.set('useFindAndModify', false);
+
 server.applyMiddleware({
     app,
     path: '/',
