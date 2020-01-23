@@ -66,15 +66,15 @@ export default function Formin(props) {
                 />
                 {Object.keys(errors).length > 0 && (<Alert>{errors.password}</Alert>)}
                 <Info>
-                    <label>
+                    <Label>
                         <Check
                             type='checkbox'
                             name='remember me'
                             onChange={() => setrememberMe(!rememberMe)}
                         />
                         <Title>Remember me</Title>
-                    </label>
-                    <Link href='/#'>Need help?</Link>
+                    </Label>
+                    <Link href='/resetpassword'>Forgot Password?</Link>
                 </Info>
                 <Button type='submit' primary>
                     Sign In
@@ -90,7 +90,7 @@ export default function Formin(props) {
                 </div>)} */}
             <Social>
                 <div>
-                    <SocialIcon url='http://facebook.com/rvgallego' />
+                    <SocialIcon url='http://facebook.com/rvgallego' style={{ height: 35, width: 35 }}/>
                 </div>
                 <p>Login with Facebook</p>
             </Social>
@@ -117,13 +117,19 @@ const LOGIN_USER = gql`
 const Main = styled.main`
     box-sizing: border-box;
     width: 28rem;
-    margin: 2rem auto 10rem;
+    margin: 2rem auto 5rem;
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
     padding: 3rem 4.5rem 2rem;
     border-radius: 3px;
 
     flex: 1;
 `;
+
+const Label = styled.label`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`
 
 const Form = styled.form`
     & h1 {
@@ -166,7 +172,7 @@ const Button = styled.button`
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 1rem 0 8rem;
+    margin: 1rem 0 7rem;
     cursor: pointer;
     outline: 0;
 `;
@@ -181,6 +187,7 @@ const Info = styled.div`
 
 const Check = styled.input`
     position: absolute;
+    margin: 0.2rem 0;
     border: 0;
     height: 20px;
     width: 20px;
@@ -197,12 +204,13 @@ const Link = styled.a`
     text-decoration: none;
     &:hover {
         text-decoration: underline;
+        color: #fff;
     }
 `;
 
 const Social = styled.div`
     display: flex;
-    align-content: center;
+    align-items: center;
     justify-content: space-between;
     & p {
         margin: 0.5rem 0;
@@ -212,14 +220,14 @@ const Social = styled.div`
 
 const Signup = styled.div`
     display: flex;
-    align-content: center;
-    justify-content: flex-start;
+    align-items: center;
+    justify-content: space-between;
     & p {
         margin: 1rem 0;
         color: rgb(112, 112, 112);
     }
     & a {
-        margin: 1rem 1.5rem;
+        margin: 1rem 0;
         color: #fff;
         text-decoration: none;
     }

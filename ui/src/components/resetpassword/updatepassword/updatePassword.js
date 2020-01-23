@@ -2,8 +2,8 @@ import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import { AuthContext } from '../../context/auth';
-import { useForForm } from '../../util/hooks';
+import { AuthContext } from '../../../context/auth';
+import { useForForm } from '../../../util/hooks';
 import PropTypes from "prop-types"
 
 // const SERVER_URI = "localhost:3000"
@@ -36,7 +36,7 @@ export default function UpdatePassword(props) {
     // console.log(submitted);
     const UpdatePassword = submitted ? (
         <Main>
-            <h1>Update your Password</h1>
+            <h1>Update Profile</h1>
             <Info>
                 Your new password has been saved !.
             </Info>
@@ -51,7 +51,7 @@ export default function UpdatePassword(props) {
                 noValidate
                 className={loading ? 'loading' : ''}
             >
-                <h1>Update your Password</h1>
+                <h1>Update Profile</h1>
                 <Input
                     name='password'
                     required = "required"
@@ -110,18 +110,6 @@ const UPDATE_PASSWORD = gql`
     }
   }
 `;
-
-// const EMAIL_USER = gql`
-//     mutation emaily($email: String!) {
-//         emaily(email: $email) {
-//             id
-//             email
-//             username
-//             createdAt
-//             token
-//         }
-//     }
-// `;
 
 const Info = styled.p`
     color: #fff;
@@ -186,14 +174,14 @@ const Button = styled.button`
 
 const Signup = styled.div`
     display: flex;
-    align-content: center;
-    justify-content: flex-start;
+    align-items: center;
+    justify-content: space-between;
     & p {
         margin: 1rem 0;
         color: rgb(112, 112, 112);
     }
     & a {
-        margin: 1rem 1.5rem;
+        margin: 1rem 0rem;
         color: #fff;
         text-decoration: none;
     }

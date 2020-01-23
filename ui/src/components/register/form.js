@@ -131,12 +131,12 @@ export default function Formin(props) {
                 </div>)} */}
                 <Social>
                     <div>
-                        <SocialIcon url='http://facebook.com/rvgallego' />
+                        <SocialIcon url='http://facebook.com/rvgallego' style={{ height: 35, width: 35 }}/>
                     </div>
                     <p>Sign up with Facebook</p>
                 </Social>
                 <Login>
-                    <p>Already signed up to Hypertube?</p>
+                    <p>Sign up to Hypertube</p>
                     <a href='/login'>Login now.</a>
                 </Login>
             </Form>
@@ -240,14 +240,14 @@ const Social = styled.div`
 
 const Login = styled.div`
     display: flex;
-    align-content: center;
-    justify-content: flex-start;
+    align-items: center;
+    justify-content: space-between;
     & p {
         margin: 1rem 0;
         color: rgb(112, 112, 112);
     }
     & a {
-        margin: 1rem 1.5rem;
+        margin: 1rem 0rem;
         color: #fff;
         text-decoration: none;
     }

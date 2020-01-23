@@ -43,7 +43,7 @@ export default function Resetpassword(props) {
             </Signup>
         </Main>
     ) : (
-            <Main>
+        <Main>
             <Form
                 onSubmit={onSubmit}
                 noValidate
@@ -55,7 +55,7 @@ export default function Resetpassword(props) {
                     name='email'
                     required = "required"
                     type='text'
-                    placeholder='email'
+                    placeholder='Email'
                     maxLength='30'
                     value={values.email}
                     onChange={onChange}
@@ -90,9 +90,9 @@ const Info = styled.p`
 `;
 
 const Main = styled.main`
-    box-sizing: border-box;
-    width: 28rem;
-    margin: 2rem auto 10rem;
+    /* box-sizing: border-box; */
+    /* width: 28rem; */
+    margin: 5rem auto 20rem;
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
     padding: 3rem 4.5rem 2rem;
     border-radius: 3px;
@@ -141,21 +141,21 @@ const Button = styled.button`
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 1rem 0 8rem;
+    margin: 1rem 0 3rem;
     cursor: pointer;
     outline: 0;
 `;
 
 const Signup = styled.div`
     display: flex;
-    align-content: center;
-    justify-content: flex-start;
+    align-items: center;
+    justify-content: space-between;
     & p {
         margin: 1rem 0;
         color: rgb(112, 112, 112);
     }
     & a {
-        margin: 1rem 1.5rem;
+        margin: 1rem 0rem;
         color: #fff;
         text-decoration: none;
     }
