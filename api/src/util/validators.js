@@ -4,7 +4,7 @@ module.exports.validateRegisterInput = (
 	nom,
 	email,
 	password,
-	confirmPassword,
+	confirmPassword
 	) => {
 	const errors = {};
 	// console.log(nom);

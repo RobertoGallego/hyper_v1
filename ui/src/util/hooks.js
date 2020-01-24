@@ -7,6 +7,12 @@ export const useForForm = (callback, initialState = {}) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
 
+  const onPick = (event) => {
+    setValues({ ...values });
+    console.log(event);
+    // console.log(setValues);
+  };
+
   const onSubmit = (event) => {
     event.preventDefault();
     callback();
@@ -15,6 +21,7 @@ export const useForForm = (callback, initialState = {}) => {
   return {
     onChange,
     onSubmit,
+    onPick,
     values
   };
 };
