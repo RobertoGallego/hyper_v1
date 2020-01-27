@@ -31,6 +31,12 @@ module.exports = gql`
         username: String!
         createdAt: String!
     }
+    type Movie{
+        id: ID!
+        title: String!
+        poster_path: String
+        vote_average: Float!
+    }
     input RegisterInput {
         username: String!
         prenom: String!
@@ -43,6 +49,10 @@ module.exports = gql`
         getPosts: [Post]
         getPost(postId: ID!): Post
         getUsers: [User]
+        getUser(userId: ID!): User
+        getMovies(search: String!): [Movie]
+        # getTopMovies: [Movie]
+        # getSearchMovies(search: String!): [Movie]
     }
     type Mutation {
         register(registerInput: RegisterInput): User!

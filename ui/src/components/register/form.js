@@ -66,7 +66,7 @@ export default function Formin(props) {
                     name='prenom'
                     required = "required"
                     type='text'
-                    placeholder='Given name'
+                    placeholder='First name'
                     maxLength='30'
                     value={values.prenom}
                     error={errors.prenom ? true : false}
@@ -77,7 +77,7 @@ export default function Formin(props) {
                     name='nom'
                     required = "required"
                     type='text'
-                    placeholder='Family name'
+                    placeholder='Last name'
                     maxLength='30'
                     value={values.nom}
                     error={errors.nom ? true : false}
@@ -132,8 +132,12 @@ export default function Formin(props) {
                     <div>
                         <SocialIcon url='http://facebook.com/rvgallego' />
                     </div>
-                    <p>Login with Facebook</p>
+                    <p>Sign up with Facebook</p>
                 </Social>
+                <Login>
+                    <p>Already signed up to Hypertube?</p>
+                    <a href='/login'>Login now.</a>
+                </Login>
             </Form>
         </Main>
     );
@@ -230,6 +234,24 @@ const Social = styled.div`
     & p {
         margin: 0.5rem 0;
         color: rgb(112, 112, 112);
+    }
+`;
+
+const Login = styled.div`
+    display: flex;
+    align-content: center;
+    justify-content: flex-start;
+    & p {
+        margin: 1rem 0;
+        color: rgb(112, 112, 112);
+    }
+    & a {
+        margin: 1rem 1.5rem;
+        color: #fff;
+        text-decoration: none;
+    }
+    & a:hover {
+        text-decoration: underline;
     }
 `;
 

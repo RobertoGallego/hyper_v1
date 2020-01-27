@@ -20,7 +20,7 @@ export default function Formin(props) {
     const [loginUser, { loading }] = useMutation(LOGIN_USER, {
         update(_, { data: { login: userData } }) {
             context.login(userData);
-            props.history.push('/hommie');
+            props.history.push('/');
         },
         onError(err) {
             setErrors(err.graphQLErrors[0].extensions.exception.errors);
@@ -45,7 +45,7 @@ export default function Formin(props) {
                     name='username'
                     required = "required"
                     type='text'
-                    placeholder='username'
+                    placeholder='Username'
                     maxLength = "30"
                     value={values.username}
                     onChange={onChange}
