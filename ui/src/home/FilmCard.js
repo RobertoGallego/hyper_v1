@@ -1,17 +1,27 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import noImage from "../assets/images/noImage.png";
 
-export default function FilmCard() {
+
+export default function FilmCard({id, title, poster_path, vote_average}) {
+    var image;
+    if (!poster_path)
+        image = noImage
+    else
+        image = `https://image.tmdb.org/t/p/original${poster_path}`
     return (
-        <Card>
-            <Picture src='https://images-na.ssl-images-amazon.com/images/I/41g1na32tAL._SX322_BO1,204,203,200_.jpg' alt='filmImage'/>
-            <Text>
-                7.5/10
-            </Text>
-            <Text>
-                Film Name
-            </Text>
-        </Card>
+        <Link to={`/movie/${id}`}>
+            <Card>
+                <Picture src={image} alt={`${title}Image`}/>
+                <Text>
+                    {vote_average}
+                </Text>
+                <Text>
+                    {title}
+                </Text>
+            </Card>
+        </Link>
     );
 }
 
