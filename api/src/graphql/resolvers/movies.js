@@ -13,6 +13,14 @@ module.exports = {
             } else {
                 throw new Error('No Movie finded ...');
             }
+        },
+        async getOneMovie(_, {id}) {
+            const res = await axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=3cbc26720809cfa6649145e5d10a0b7c&language=en-US`);          
+            if (res) {
+                return res.data;
+            } else {
+                throw new Error('No Movie finded ...');
+            }
         }
     }
 }
