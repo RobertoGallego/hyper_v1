@@ -1,89 +1,90 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState} from 'react';
 import { Link } from 'react-router-dom';
-import { Menu } from 'semantic-ui-react';
+import { useLocation} from "react-router";
 import { AuthContext } from '../../context/auth';
 import logoTop from '../../assets/images/logo-top.png';
 import styled from 'styled-components';
 
-function MenuBar() {
-  const { user, logout } = useContext(AuthContext);
-  const pathname = window.location.pathname;
+const Nav = styled.nav`
+display: flex;
+background-color: #101010;
+`;
 
-  const path = pathname === '/' ? 'home' : pathname.substr(1);
-  const [activeItem, setActiveItem] = useState(path);
+const StyledLink = styled(Link)`
+color: #666;
+font-size: 20px;
+margin: 25px 15px;
 
-  const handleItemClick = (e, { name }) => setActiveItem(name);
+&:hover {
+  color: white;
+  text-decoration: none;
+}
+`;
 
-  const Nav = styled.nav`
-    background-color: #101010;
-  `;
+const Pict = styled.img`
+height: 75px;
+width: 130px;
+margin: 0 20px;
+`;
 
-  const Button = styled.button`
-    border-color: #DB202C;
-    color: #DB202C;
+const Bar = styled.div`
 
-    &:hover {
-      background-color: #DB202C;
-    }
-  `;
+`;
+
+const Input = styled.input`
+background-color: #101010;
+border:none;
+border-bottom: 1px solid white;
+margin: 25px 15px;
+color: white;
+outline: none;
+`;
+
+const Search = styled.button`
+border-color: #DB202C;
+background-color: #DB202C;
+color: white;
+border-radius: 5px;
+padding: 10px 15px;
+transition-duration: 0.3s;
+
+&:hover {
   
-  const menuBar = user ? (
-    // <Menu pointing secondary size="massive" color="teal">
-    //   <Menu.Item name={user.username} active as={Link} to="/" />
+  color: black;
+}
+`;
 
-    //   <Menu.Menu position="right">
-    //     <Menu.Item name="logout" as={Link} onClick={logout} />
-    //   </Menu.Menu>
-    // </Menu>
-    <Nav className="navbar navbar-expand-lg navbar-dark bg-black">
-      <a className="navbar-brand" href="/"><img src={logoTop} alt="Hypertube" height="75" width="130"/></a>
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse text-center" id="navbarSupportedContent">
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item">
-              <a className="nav-link" href="/">Home</a>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/profile">Profile</Link>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Preferences</a>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" onClick={logout} to="/login">Logout</Link>
-            </li>
-          </ul>
-          <form className="form-inline my-2 my-lg-0">
-            <input className="form-control mr-sm-2 pr-sm-5" type="search" placeholder="Search" aria-label="Search" />
-            <Button className="btn btn-outline-danger my-2 my-sm-0" type="submit">Search</Button>
-          </form>
-        </div>
-    </Nav>
-  ) : (
-    <Menu pointing secondary size="massive" color="teal">
-      <Menu.Menu position="right">
-        <Menu.Item
-          name="login"
-          active={activeItem === 'login'}
-          onClick={handleItemClick}
-          as={Link}
-          to="/login"
-        />
+function MenuBar({fetchMovies}) {
+  const { user, logout } = useContext(AuthContext);
+  const [textState, setTextState] = useState("");
 
-        <Menu.Item
-          name="register"
-          active={activeItem === 'register'}
-          onClick={handleItemClick}
-          as={Link}
-          to="/register"
-        />
-      </Menu.Menu>
-    </Menu>
-  );
+  const searchChange = (e) => {
+    setTextState(e.target.value);
+  }
 
-  return menuBar;
+  const sendSearch = () => {
+    fetchMovies(textState);
+  }
+
+  const loc = useLocation();
+  const isHome = loc.pathname === '/';
+  
+  if (user) {
+    return (<Nav>
+      <Link to="/"><Pict src={logoTop} alt="Hypertube" /></Link>
+      <StyledLink to="/">Home</StyledLink>
+      <StyledLink to="/profile">Profile</StyledLink>
+      <StyledLink onClick={logout} to="/login">Logout</StyledLink>
+      {isHome && (
+      <Bar>
+        <Input onChange={searchChange} value={textState} name="search" placeholder="Search"/>
+        <Search onClick={sendSearch}>Search</Search>
+      </Bar>
+      )}
+    </Nav>)
+  }
+  return <Link to="/">Please Click Here to log</Link>
+
 }
 
 export default MenuBar;

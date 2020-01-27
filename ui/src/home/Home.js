@@ -1,38 +1,36 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import MenuBar from '../components/general/MenuBar';
 import Footer from '../components/general/Footer';
 import Film from './FilmCard';
+import gql from "graphql-tag";
+import { useQuery } from "@apollo/react-hooks";
 
 function Home() {
+
+    const [searchText, setSearchText] = useState("");
+
+    const FETCH_MOVIES = gql`
+        query($search: String!){
+        getMovies(search: $search){
+            id
+            title
+            poster_path
+            vote_average
+        }
+    }`;
+    
+    const res = useQuery(FETCH_MOVIES, {variables : {search : searchText}});
+    const movies = res.data.getMovies;
+
+    if (!movies) {
+        return <h3>Loading ...</h3>;
+    }
     return (
         <div>
-            <MenuBar />
+            <MenuBar fetchMovies={setSearchText}/>
             <List>
-                <Film />
-                <Film />
-                <Film />
-                <Film />
-                <Film />
-                <Film />
-                <Film />
-                <Film />
-                <Film />
-                <Film />
-                <Film />
-                <Film />
-                <Film />
-                <Film />
-                <Film />
-                <Film />
-                <Film />
-                <Film />
-                <Film />
-                <Film />
-                <Film />
-                <Film />
-                <Film />
-                <Film />
+                {movies.map((movie,i) => <Film key={i} {...movie}/>)}
             </List>
             <Footer/>
         </div>

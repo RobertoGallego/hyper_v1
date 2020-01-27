@@ -24,7 +24,7 @@ function App() {
         <AuthRoute exact path="/register" component={Register} />
         <SecureRoute exact path="/profile" component={Profile} />
         <SecureRoute exact path="/edit" component={Edit} />
-        <SecureRoute exact path="/movie" component={Movie} />
+        <SecureRoute exact path="/movie/:id" component={Movie} />
       </Router>
     </AuthProvider>
   );
