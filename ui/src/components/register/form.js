@@ -19,17 +19,16 @@ export default function Formin(props) {
     const [errors, setErrors] = useState({});
     
     const { onChange, onSubmit, values, onPick } = useForForm(registerUser, {
-        image: null,
-        username: '',
-        prenom: '',
-        nom: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
+        username: 'roro',
+        prenom: 'Roberto',
+        nom: 'Gallego',
+        email: 'gh3d.alhait@hankwards.info',
+        password: '123123',
+        confirmPassword: '123123',
+        image: ''
       });
 
     const imageList = [profilePic1, profilePic2, profilePic3, profilePic4]
-    // const [onPick, setonPick] = useState(picker);
 
     const [addUser, { loading }] = useMutation(REGISTER_USER, {
     update(
@@ -51,18 +50,25 @@ export default function Formin(props) {
         addUser();
     }
 
+    
     return (
         <Main>
             <Form onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>
                 <h2>SIGN UP</h2>
                 <div>
                     <ImagePicker 
-                        // name='image'
+                        name='image'
+                        required = "required"
+                        error={errors.image ? true : false}
                         images={imageList.map((image, i) => ({src: image, value: i}))}
-                        onPick={onPick}
-                        // error={errors.image ? true : false}
+                        // onPick={() => {setonPick(image)}}
+                        value={values.image}
+                        onPick = {onPick}
+                        
+                        // onChange={onChange}
+                        
                     />
-                    {/* {Object.keys(errors).length > 0 && (<Alert>{errors.image}</Alert>)} */}
+                    {Object.keys(errors).length > 0 && (<Alert>{errors.image}</Alert>)}
                 </div>  
                 <Input
                     name='username'
@@ -150,33 +156,33 @@ export default function Formin(props) {
 
 const REGISTER_USER = gql`
   mutation register(
-    $image: String!
     $username: String!
     $prenom: String!
     $nom: String!
     $email: String!
     $password: String!
     $confirmPassword: String!
+    $image: String!
   ) {
     register(
       registerInput: {
-        image: $image
         username: $username
         prenom: $prenom
         nom: $nom
         email: $email
         password: $password
         confirmPassword: $confirmPassword
+        image: $image
       }
     ) {
         id
-        image
         email
         username
         prenom
         nom
         createdAt
         token
+        image
     }
   }
 `;
@@ -219,6 +225,10 @@ const Input = styled.input`
     ::placeholder {
         text-align: center;
         text-indent: -0.1rem;
+    }
+    @media (max-width: 768px) {
+    flex-direction: row;
+    width: 100%;
     }
 `;
 

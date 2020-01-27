@@ -7,6 +7,7 @@ const userSchema = new Schema({
   password: String,
   email: String,
   createdAt: String,
+  image: String,
   isVerified: { type: Boolean, default: false },
 });
 

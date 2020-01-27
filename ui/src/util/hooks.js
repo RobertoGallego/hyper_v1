@@ -5,12 +5,12 @@ export const useForForm = (callback, initialState = {}) => {
 
   const onChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
+    console.log(values);
   };
 
   const onPick = (event) => {
-    setValues({ ...values });
-    console.log(event);
-    // console.log(setValues);
+    setValues({ ...values, image: event.src});
+    console.log(values);
   };
 
   const onSubmit = (event) => {

@@ -29,9 +29,9 @@ module.exports = gql`
         nom: String!
         token: String!
         username: String!
+        image: String!
         createdAt: String!
         tokenMail: String!
-        image: String!
     }
     input RegisterInput {
         username: String!

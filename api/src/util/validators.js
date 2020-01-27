@@ -4,17 +4,21 @@ module.exports.validateRegisterInput = (
 	nom,
 	email,
 	password,
-	confirmPassword
+	confirmPassword,
+	image
 	) => {
 	const errors = {};
 	// console.log(nom);
-	// console.log(prenom);
-	if (prenom === '') {
+	console.log(image);
+	if (image.trim() === '') {
+		errors.image = 'Choose one perfil icon';
+	}
+	if (prenom.trim() === '') {
 		errors.prenom = 'Prenom must not empty';
 	} else if (prenom.length < 2) {
 		errors.prenom = 'Given name must have at least 3 characters';
 	}
-	if (nom === '') {
+	if (nom.trim() === '') {
 		errors.nom = 'Nom must not empty';
 	} else if (nom.length < 2) {
 		errors.nom = 'Family name must have at least 3 characters';

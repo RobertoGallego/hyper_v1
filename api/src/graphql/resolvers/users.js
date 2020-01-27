@@ -85,18 +85,24 @@ module.exports = {
             { registerInput: { username, prenom, nom, email, password, confirmPassword, image } }
         ) {
             // Validate user data
+            console.log("Holaaaa");
+            console.log({username});
+
+            console.log({image});
+            
             const { valid, errors } = validateRegisterInput(
                 username,
                 prenom,
                 nom,
-                image,
                 email,
                 password,
-                confirmPassword
+                confirmPassword,
+                image
             );
             if (!valid) {
                 throw new UserInputError('Errors', { errors });
             }
+
             // TODO: Make sure user doesnt already exist
             const user = await User.findOne({ username, email });
             if (user) {
@@ -116,8 +122,8 @@ module.exports = {
                 prenom,
                 nom,
                 password,
-                image,
-                createdAt: new Date().toISOString()
+                createdAt: new Date().toISOString(),
+                image
             });
 
             const res = await newUser.save();
@@ -132,7 +138,7 @@ module.exports = {
             //     token: crypto.randomBytes(16).toString('hex') 
             // });
 
-            // console.log("new token:", newtoken);
+            console.log("IMAGEN:", image);
 
             // const tokenMail = await token.save()
 
