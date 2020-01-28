@@ -65,3 +65,67 @@ module.exports.validateLoginInput = (username, password) => {
 		valid: Object.keys(errors).length < 1
 	};
 };
+
+module.exports.validateEditInput = (
+	username,
+	prenom,
+	nom,
+	email,
+	) => {
+	const errors = {};
+
+	if (prenom === '') {
+		errors.prenom = 'The first name must not be empty';
+	} else if (prenom.length <= 1) {
+		errors.prenom = 'The first name must have at least 1 character';
+	}
+	if (nom === '') {
+		errors.nom = 'Your last name must not be empty';
+	} else if (nom.length <= 1) {
+		errors.nom = 'Your last name must have at least 1 character';
+	}
+	if (username.trim() === '') {
+		errors.username = 'Username must not be empty'; 
+	} 
+	else if (username.length < 6) {
+		errors.username = 'Username must have at least 6 characters';
+	} else {
+		const regExUser = /^[a-zA-Z0-9]([._](?![._])|[a-zA-Z0-9]){2,15}[a-zA-Z0-9]/;
+		if (!username.match(regExUser)) {
+		error.username = 'Please enter a valid username';
+		}
+	}
+	if (email.trim() === '') {
+		errors.email = 'Your new email must not be empty';
+	} else {
+		const regEx = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
+		if (!email.match(regEx)) {
+		errors.email = 'Your new email must be a valid email address';
+		}
+	}
+	return {
+		errors,
+		valid: Object.keys(errors).length < 1
+	};
+};
+
+module.exports.validatePasswordsInput = (
+	oldPassword,
+	newPassword,
+	confirmPassword
+	) => {
+	const errors = {};
+
+	if (newPassword === oldPassword) {
+		errors.newPassword = 'The new password has to be different from the old one';
+	} else if (newPassword.length < 6) {
+		errors.newPassword = 'The new password must have at least 6 characters';
+	} else if (newPassword !== confirmPassword) {
+		errors.newPassword = 'The new passwords must match';
+	}
+
+	return {
+		errors,
+		valid: Object.keys(errors).length < 1
+	};
+};

@@ -25,7 +25,7 @@ export default function Movie() {
                             <Text>Production Year: </Text>
                             <Text>Duration: </Text>
                             <Picture src='https://images-na.ssl-images-amazon.com/images/I/41g1na32tAL._SX322_BO1,204,203,200_.jpg' alt='MoviePageImage'/>
-                            <Text>Grade: ⭐⭐⭐⭐⭐</Text>
+                            {/* <Text>Grade: ⭐⭐⭐⭐⭐</Text> */}
                         </Right>
                     </Split>
                 </Content>

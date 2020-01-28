@@ -12,6 +12,7 @@ import Register from "./components/register";
 import Login from "./components/login";
 import Profile from "./components/profile/Profile";
 import Edit from "./components/profile/Edit";
+import ModifyPassword from "./components/profile/ModifyPassword";
 import Movie from "./components/viewer/Movie";
 // import SinglePost from './pages/SinglePost';
 
@@ -24,6 +25,7 @@ function App() {
         <AuthRoute exact path="/register" component={Register} />
         <SecureRoute exact path="/profile" component={Profile} />
         <SecureRoute exact path="/edit" component={Edit} />
+        <SecureRoute exact path="/modifyPassword" component={ModifyPassword} />
         <SecureRoute exact path="/movie" component={Movie} />
       </Router>
     </AuthProvider>
