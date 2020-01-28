@@ -12,6 +12,7 @@ import Edit from './components/profile/Edit';
 import Movie from './components/viewer/Movie';
 import Resetpassword from './components/resetpassword';
 import UpdatePassword from './components/resetpassword/updatepassword';
+import ModifyPassword from "./components/profile/ModifyPassword";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <SecureRoute exact path="/profile" component={Profile} />
         <SecureRoute exact path="/edit" component={Edit} />
         <SecureRoute exact path="/movie/:id" component={Movie} />
+        <SecureRoute exact path="/modifyPassword" component={ModifyPassword} />
       </Router>
     </AuthProvider>
   );

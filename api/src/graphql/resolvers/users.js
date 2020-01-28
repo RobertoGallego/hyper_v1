@@ -4,7 +4,9 @@ const { UserInputError } = require('apollo-server');
 
 const {
     validateRegisterInput,
-    validateLoginInput
+    validateLoginInput,
+    validateEditInput,
+    validatePasswordsInput
 } = require('../../util/validators');
 const { SECRET_KEY } = require('../../config');
 const User = require('../../models/User');
@@ -169,6 +171,72 @@ module.exports = {
                 id: res._id,
                 token
             };
-        }
+        },
+        async modifyPassword ( _, { userId, oldPassword, newPassword, confirmPassword }) {
+            const { valid, errors } = validatePasswordsInput(
+                oldPassword,
+                newPassword,
+                confirmPassword,
+            )
+            if (!valid) {
+                throw new UserInputError('Errors', { errors });
+            }
+            const user = await User.findById(userId);
+            const match = await bcrypt.compare(oldPassword, user.password);
+            if (!match) {
+                errors.oldPassword = 'Wrong password';
+                throw new UserInputError('Wrong crendetials', { errors });
+            } else {
+                newPassword = await bcrypt.hash(newPassword, 12);
+                const res = await User.findByIdAndUpdate({ _id: user.id }, { password: newPassword }, {new: true})
+                const token = generateToken(user);
+
+                return {
+                    ...res._doc,
+                    id: res._id,
+                    token,
+                }
+            }
+        },
+        // async editProfile(
+        //     _,
+        //     id,
+        //     { editInput: { username, prenom, nom, email, } }
+        // ) {
+        //     const { valid, errors } = validateEditInput(
+        //         username,
+        //         prenom,
+        //         nom,
+        //         email,
+        //         oldPassword,
+        //         newPassword,
+        //         confirmPassword
+        //     );
+        //     if (!valid) {
+        //         throw new UserInputError('Errors', { errors });
+        //     }
+
+        //     const user = await User.findById(id);
+        //     if (user) {
+        //         const userVerify = await User.findOne({ username, email });
+        //         if (userVerify) {
+        //             throw new UserInputError('Username is taken', {
+        //                 errors: {
+        //                     username: 'This username is taken',
+        //                     email: "This email is taken"
+        //                 }
+        //             });
+        //         } else {
+        //             newPassword = await bcrypt.hash(newPassword, 12);
+
+        //             const res = await User.findIdAndUpdate({ _id: user.id }, { username: username }, {new: true})
+
+        //             return {
+        //                 ...res._doc,
+        //                 id: res._id
+        //             }
+        //         } 
+        //     } else throw new UserInputError('There was an error while looking for your profile');
+        // }
     }
 };

@@ -16,8 +16,6 @@ const Container = styled.div`
 const FETCH_USER_QUERY = gql`
   query($userId: ID!) {
     getUser(userId: $userId) {
-      id
-      email
       prenom
       nom
       username
@@ -34,20 +32,18 @@ export default function Profile() {
     data: { getUser }
   } = useQuery(FETCH_USER_QUERY, {
     variables: {
-      userId
+      userId: userId
     }
   });
 
   if (!getUser) {
     return <h3>Loading ...</h3>;
   } else {
-    const { id, email, prenom, nom, username, createdAt } = getUser;
+    const { prenom, nom, username, createdAt } = getUser;
     return (
       <Container>
         <Header />
         <ProfileCard
-          id={id}
-          email={email}
           prenom={prenom}
           nom={nom}
           username={username}

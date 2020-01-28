@@ -76,12 +76,7 @@ module.exports.validateEmailyInput = (email) => {
 		errors.email = 'Email must be a valid email address';
 		}
 	}
-	console.log("validator ok:", email);
-	return {
-		errors,
-		valid: Object.keys(errors).length < 1
-	};
-};
+}
 
 module.exports.validateResetInput = (password, confirmPassword) => {
 	if (password === '') {
@@ -91,6 +86,23 @@ module.exports.validateResetInput = (password, confirmPassword) => {
 	} else if (password !== confirmPassword) {
 		errors.confirmPassword = 'Passwords must match';
 	}
+}
+
+module.exports.validatePasswordsInput = (
+	oldPassword,
+	newPassword,
+	confirmPassword
+	) => {
+	const errors = {};
+
+	if (newPassword === oldPassword) {
+		errors.newPassword = 'The new password has to be different from the old one';
+	} else if (newPassword.length < 6) {
+		errors.newPassword = 'The new password must have at least 6 characters';
+	} else if (newPassword !== confirmPassword) {
+		errors.newPassword = 'The new passwords must match';
+	}
+
 	return {
 		errors,
 		valid: Object.keys(errors).length < 1
