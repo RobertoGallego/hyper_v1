@@ -19,12 +19,12 @@ export default function Formin(props) {
     const [errors, setErrors] = useState({});
     
     const { onChange, onSubmit, values, onPick } = useForForm(registerUser, {
-        username: 'roro',
-        prenom: 'Roberto',
-        nom: 'Gallego',
-        email: 'gh3d.alhait@hankwards.info',
-        password: '123123',
-        confirmPassword: '123123',
+        username: '',
+        prenom: '',
+        nom: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
         image: ''
       });
 
@@ -50,11 +50,13 @@ export default function Formin(props) {
         addUser();
     }
 
-    
+    // image: '/static/media/profilePic1.62db51f5.png'
+
     return (
         <Main>
             <Form onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>
                 <h2>SIGN UP</h2>
+                {Object.keys(errors).length > 0 && (<AlertD>{errors.image}</AlertD>)}
                 <div>
                     <ImagePicker 
                         name='image'
@@ -68,8 +70,9 @@ export default function Formin(props) {
                         // onChange={onChange}
                         
                     />
-                    {Object.keys(errors).length > 0 && (<Alert>{errors.image}</Alert>)}
                 </div>  
+                {Object.keys(errors).length > 0 && (<Alert>{errors.username}</Alert>)}
+                {Object.keys(errors).length > 0 && (<AlertA>{errors.email}</AlertA>)}
                 <Input
                     name='username'
                     required = "required"
@@ -80,7 +83,7 @@ export default function Formin(props) {
                     error={errors.username ? true : false}
                     onChange={onChange}
                 />
-                {Object.keys(errors).length > 0 && (<Alert>{errors.username}</Alert>)}
+                {Object.keys(errors).length > 0 && (<AlertB>{errors.email}</AlertB>)}
                 <Input
                     name='email'
                     required = "required"
@@ -91,7 +94,8 @@ export default function Formin(props) {
                     error={errors.email ? true : false}
                     onChange={onChange}
                 />
-                {Object.keys(errors).length > 0 && (<Alert>{errors.email}</Alert>)}
+                {Object.keys(errors).length > 0 && (<Alert>{errors.prenom}</Alert>)}
+                {Object.keys(errors).length > 0 && (<AlertA>{errors.nom}</AlertA>)}
                 <Input
                     name='prenom'
                     required = "required"
@@ -102,7 +106,7 @@ export default function Formin(props) {
                     error={errors.prenom ? true : false}
                     onChange={onChange}
                 />
-                {Object.keys(errors).length > 0 && (<Alert>{errors.prenom}</Alert>)}
+                {Object.keys(errors).length > 0 && (<AlertB>{errors.nom}</AlertB>)}
                 <Input
                     name='nom'
                     required = "required"
@@ -113,7 +117,8 @@ export default function Formin(props) {
                     error={errors.nom ? true : false}
                     onChange={onChange}
                 />
-                {Object.keys(errors).length > 0 && (<Alert>{errors.nom}</Alert>)}
+                {Object.keys(errors).length > 0 && (<Alert>{errors.password}</Alert>)}
+                {Object.keys(errors).length > 0 && (<AlertA>{errors.password}</AlertA>)}
                 <Input
                     name='password'
                     required = "required"
@@ -124,7 +129,7 @@ export default function Formin(props) {
                     error={errors.password ? true : false}
                     onChange={onChange}
                 />
-                {Object.keys(errors).length > 0 && (<Alert>{errors.password}</Alert>)}
+                {Object.keys(errors).length > 0 && (<AlertB>{errors.password}</AlertB>)}
                 <Input
                     name="confirmPassword"
                     required = "required"
@@ -135,7 +140,6 @@ export default function Formin(props) {
                     error={errors.confirmPassword ? true : false}
                     onChange={onChange}
                 />
-                {Object.keys(errors).length > 0 && (<Alert>{errors.password}</Alert>)}
                 <Button type='submit' primary>
                     Sign Up
                 </Button>
@@ -277,7 +281,51 @@ const Login = styled.div`
 `;
 
 const Alert = styled.p`
+    display: inline-block;
     font-size: 0.8rem;
     color: #e87c03;
-    margin: -1.3rem 0 1rem;
+    padding-top: 0rem; 
+    width: 50%;
+    text-align: center;
+    @media (max-width: 768px) {
+        width: 100%;
+    }
+`;
+
+const AlertA = styled.p`
+    display: inline-block;
+    font-size: 0.8rem;
+    color: #e87c03;
+    padding-top: 0rem; 
+    width: 50%;
+    text-align: center;
+    @media (max-width: 768px) {
+        display: none;
+    }
+`;
+
+const AlertB = styled.p`
+    display: none;
+    @media (max-width: 768px) {
+        display: inline-block;
+        font-size: 0.8rem;
+        color: #e87c03;
+        padding-top: 0rem; 
+        width: 100%;
+        text-align: center;
+    }
+`;
+
+const AlertD = styled.p`
+/* margin: 0 0 0 -10rem; */
+    /* position: ; */
+    display: block;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #e87c03;
+    margin: 0rem 0rem -0.5rem 0rem;
+    padding-top: 0rem; 
+    width: 100%;    /* padding: 0.9rem 0; */
+    /* text-indent: 1rem; */
+    /* display: absolute; */
 `;
