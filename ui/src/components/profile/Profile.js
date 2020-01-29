@@ -20,6 +20,7 @@ const FETCH_USER_QUERY = gql`
       nom
       username
       createdAt
+      email
     }
   }
 `;
@@ -39,7 +40,7 @@ export default function Profile() {
   if (!getUser) {
     return <h3>Loading ...</h3>;
   } else {
-    const { prenom, nom, username, createdAt } = getUser;
+    const { prenom, nom, username, createdAt, email } = getUser;
     return (
       <Container>
         <Header />
@@ -48,6 +49,7 @@ export default function Profile() {
           nom={nom}
           username={username}
           createdAt={createdAt}
+          email={email}
         />
         <Footer />
       </Container>

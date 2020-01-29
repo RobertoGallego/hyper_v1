@@ -1,92 +1,76 @@
 import React from "react";
-import styled from "styled-components";
-import profilePic from "../../assets/images/profilePic1.png";
+import {
+  Container,
+  Hr,
+  Img,
+  Button,
+  Select,
+  HyperLink
+} from "./StyledComponentsProfile";
+import profilePic from "../../assets/images/profilePic2.png";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
 
-const Container = styled.div`
-  flex-grow: 1;
-  background-color: #ffffff;
-`;
-
-const CardBox = styled.div`
-  margin-top: 10vh;
-  margin-bottom: 10vh;
-`;
-
-const CardBot = styled.div`
-  background-color: #101010;
-  border-radius: 7px;
-`;
-
-const Img = styled.img`
-  border-radius: 50%;
-  height: 215px;
-  width: 215px;
-  margin: auto;
-  box-shadow: 10px 5px 10px #000000;
-`;
-
-const Title = styled.h2`
-  color: #ffffff;
-`;
-
-const Username = styled.h3`
-  color: #ffffff;
-  margin-bottom: 22px;
-`;
-
-const Button = styled.button`
-  background-color: #db202c;
-
-  &:hover {
-    background-color: #bc1e28;
-  }
-`;
-
-const HyperLink = styled.a`
-  color: #a5a5a5;
-
-  &:hover {
-    color: #cdcdcd;
-    text-decoration: none;
-  }
-`;
-
 export default function ProfileCard(props) {
-  const { prenom, nom, username, createdAt } = props;
+  const { username, prenom, nom, email, createdAt } = props;
+
   return (
-    <Container className="row p-0 m-0 justify-content-center">
-      <CardBox className="col-10 col-sm-7 col-md-5 col-lg-4 col-xl-2 p-0">
-        <CardBot className="card">
-          <div className="text-center mt-3 mb-4">
-            <Title>Profile</Title>
-          </div>
+    <Container className="container-fluid">
+      <div className="row mt-5 justify-content-center">
+        <div className="col-xl-4">
+          <h2>Profile</h2>
+          <Hr />
+        </div>
+      </div>
+      <div className="row mt-4 justify-content-center">
+        <div className="col-xl-2 text-center">
           <Img src={profilePic} className="card-img-top" alt="Profile pic" />
-          <div className="card-body mt-3">
-            <Username className="card-title">{username}</Username>
-            <h5 className="card-subtitle mt-2 mb-2">
-              {prenom} {nom}
-            </h5>
-            <p className="card-text">
-              Joined in <Moment format="MMM YYYY">{createdAt}</Moment>
-            </p>
-            <div className="text-center mt-5 mb-4">
-              <Button
-                type="button"
-                className="btn btn-danger"
-                as={Link}
-                to={"/edit"}
-              >
-                Edit profile
-              </Button>
-            </div>
-            <div className="text-center mb-2">
-              <HyperLink href="/modifyPassword">Modify your password</HyperLink>
-            </div>
-          </div>
-        </CardBot>
-      </CardBox>
+        </div>
+        <div className="col-xl-2">
+          <h6>Username: {username}</h6>
+          <h6 className="mt-4">First name: {prenom}</h6>
+          <h6 className="mt-4">Last name: {nom}</h6>
+          <h6 className="mt-4">Email: {email}</h6>
+          <h6 className="mt-4">
+            Joined in <Moment format="MMM YYYY">{createdAt}</Moment>
+          </h6>
+        </div>
+      </div>
+      <div className="row justify-content-center mt-5">
+        <div className="col-xl-4 text-center">
+          <Button
+            type="button"
+            className="btn btn-danger"
+            as={Link}
+            to={"/edit"}
+          >
+            Edit profile
+          </Button>
+        </div>
+      </div>
+      <div className="row mt-4 justify-content-center">
+        <div className="col-xl-4 text-center">
+          <HyperLink href="/modifypassword">Modify your password</HyperLink>
+        </div>
+      </div>
+      <div className="row mt-4 justify-content-center">
+        <div className="col-xl-4">
+          <h2>Preferences</h2>
+          <Hr />
+        </div>
+      </div>
+      <div className="row mt-4 justify-content-center">
+        <div className="col-xl-2 text-center">
+          <h6>Change language:</h6>
+        </div>
+        <div className="col-xl-2 text-center">
+          <Select>
+            <option value="0">English</option>
+            <option value="1">French</option>
+            <option value="2">Spanish</option>
+          </Select>
+        </div>
+      </div>
     </Container>
   );
 }

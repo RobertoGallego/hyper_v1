@@ -55,12 +55,6 @@ module.exports = gql`
         confirmPassword: String!
         email: String!
     }
-    input EditInput {
-        username: String!
-        prenom: String!
-        nom: String!
-        email: String!
-    }
     type Query {
         getPosts: [Post]
         getPost(postId: ID!): Post
@@ -78,7 +72,7 @@ module.exports = gql`
         createComment(postId: String!, body: String!): Post!
         deleteComment(postId: ID!, commentId: ID!): Post!
         likePost(postId: ID!): Post!
-        editProfile(userId: ID!): User!
+        editProfile(userId: ID!, username: String!, prenom: String!, nom: String!, email: String!): User!
         modifyPassword(userId: ID!, oldPassword: String!, newPassword: String!, confirmPassword: String!): User!
     }
     type Subscription {

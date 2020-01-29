@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   flex-grow: 1;
-  background-color: #ffffff;
 `;
 
 export const CardBox = styled.div`
@@ -24,10 +23,10 @@ export const Button = styled.button`
 `;
 
 export const HyperLink = styled.a`
-  color: #a5a5a5;
+  color: #666;
 
   &:hover {
-    color: #cdcdcd;
+    color: #a4a4a4;
     text-decoration: none;
   }
 `;
@@ -60,4 +59,35 @@ export const Alert = styled.p`
   font-size: 0.8rem;
   color: #e87c03;
   margin: -1.3rem 0 1rem;
+`;
+
+export const Img = styled.img`
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+  margin: auto;
+  -webkit-box-shadow: 0px 0px 96px -26px rgba(255, 255, 255, 1);
+  -moz-box-shadow: 0px 0px 96px -26px rgba(255, 255, 255, 1);
+  box-shadow: 0px 0px 96px -26px rgba(255, 255, 255, 1);
+`;
+
+export const Username = styled.h4`
+  margin-bottom: 22px;
+`;
+
+export const Hr = styled.hr`
+  padding: 1px;
+  background-color: #ffffff;
+`;
+
+export const Select = styled.select`
+  background-color: #000;
+  color: white;
+  padding: 0.7rem;
+  width: 100px;
+  border: #454545 solid 1px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+  -webkit-appearance: button;
+  appearance: button;
+  outline: none;
 `;

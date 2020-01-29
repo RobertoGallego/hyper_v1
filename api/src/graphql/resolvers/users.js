@@ -198,45 +198,44 @@ module.exports = {
                 }
             }
         },
-        // async editProfile(
-        //     _,
-        //     id,
-        //     { editInput: { username, prenom, nom, email, } }
-        // ) {
-        //     const { valid, errors } = validateEditInput(
-        //         username,
-        //         prenom,
-        //         nom,
-        //         email,
-        //         oldPassword,
-        //         newPassword,
-        //         confirmPassword
-        //     );
-        //     if (!valid) {
-        //         throw new UserInputError('Errors', { errors });
-        //     }
-
-        //     const user = await User.findById(id);
-        //     if (user) {
-        //         const userVerify = await User.findOne({ username, email });
-        //         if (userVerify) {
-        //             throw new UserInputError('Username is taken', {
-        //                 errors: {
-        //                     username: 'This username is taken',
-        //                     email: "This email is taken"
-        //                 }
-        //             });
-        //         } else {
-        //             newPassword = await bcrypt.hash(newPassword, 12);
-
-        //             const res = await User.findIdAndUpdate({ _id: user.id }, { username: username }, {new: true})
-
-        //             return {
-        //                 ...res._doc,
-        //                 id: res._id
-        //             }
-        //         } 
-        //     } else throw new UserInputError('There was an error while looking for your profile');
-        // }
+        async editProfile( _, { userId, username, prenom, nom, email }) {
+            const { valid, errors } = validateEditInput(
+                username,
+                prenom,
+                nom,
+                email,
+            )
+            if (!valid) {
+                throw new UserInputError('Errors', { errors });
+            }
+            const user = await User.findById(userId);
+            if (user.email !== email) {
+                const verifyEmail = await User.findOne({ email });
+                if (verifyEmail) {
+                    throw new UserInputError('Email is taken', {
+                        errors: {
+                            email: "This email is taken"
+                        }
+                    });
+                }
+            }
+            if (user.username !== username) {
+                const verifyUsername = await User.findOne({ username });
+                if (verifyUsername) {
+                    throw new UserInputError('Username is taken', {
+                        errors: {
+                            email: "This username is taken"
+                        }
+                    });
+                }
+            }
+            const res = await User.findByIdAndUpdate({ _id: userId }, { email: email, username: username, prenom: prenom, nom: nom }, {new: true})
+            const token = generateToken(user);
+            return {
+                ...res._doc,
+                id: res._id,
+                token,
+            }
+        }
     }
 };

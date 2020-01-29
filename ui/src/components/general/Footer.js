@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
-    background-color: #101010;
+    background-color: #191919;
     width: 100%;
     text-align: center
 `;
