@@ -46,15 +46,16 @@ module.exports = {
         }
     },
     Mutation: {
-        async login(_, { username, password }) {
+        async login(_, { username, password }, context) {
             const { errors, valid } = validateLoginInput(username, password);
 
             if (!valid) {
                 throw new UserInputError('Errors', { errors });
             }
+            console.log(username);
+            console.log(password);
 
             const user = await User.findOne({ username });
-            console.log("caca", user);
             if (!user) {
                 errors.username = "Sorry, we can't find an account with this username. Please try again.";
                 throw new UserInputError('User not found', { errors });
@@ -77,7 +78,7 @@ module.exports = {
             return {
                 ...user._doc,
                 id: user._id,
-                token
+                token,
             };
         },
         async register(
