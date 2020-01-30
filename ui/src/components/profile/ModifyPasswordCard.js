@@ -45,13 +45,13 @@ export default function ModifyPasswordCard() {
   const Render = success ? (
     <Container className="container-fluid">
       <div className="row mt-5 justify-content-center">
-        <div className="col-xl-4">
+        <div className="col-sm-8 col-xl-4">
           <h2>Modify password</h2>
           <Hr />
         </div>
       </div>
       <div className="row mt-4 justify-content-center">
-        <div className="col-xl-4 text-center">
+        <div className="col-sm-8 col-xl-4 text-center">
           <h6>Your password has been successfully modified!</h6>
         </div>
       </div>
@@ -62,13 +62,13 @@ export default function ModifyPasswordCard() {
   ) : (
     <Container className="container-fluid">
       <div className="row mt-5 justify-content-center">
-        <div className="col-xl-4">
+        <div className="col-sm-8 col-xl-4">
           <h2>Modify password</h2>
           <Hr />
         </div>
       </div>
       <div className="row mt-4 justify-content-center">
-        <div className="col-xl-2">
+        <div className="col-sm-6 col-xl-2">
           <form onSubmit={onSubmit}>
             <label for="oldPassword">Old password</label>
             <Input
@@ -129,13 +129,13 @@ export default function ModifyPasswordCard() {
     return (
       <Container className="container-fluid">
         <div className="row mt-5 justify-content-center">
-          <div className="col-xl-4">
+          <div className="col-sm-8 col-xl-4">
             <h2>Modify password</h2>
             <Hr />
           </div>
         </div>
         <div className="row mt-4 justify-content-center">
-          <div className="col-xl-4 text-center">
+          <div className="col-sm-8 col-xl-4 text-center">
             <h6>Loading ...</h6>
           </div>
         </div>

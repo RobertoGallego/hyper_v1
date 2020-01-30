@@ -48,13 +48,13 @@ export default function EditCard(props) {
   const Render = success ? (
     <Container className="container-fluid">
       <div className="row mt-5 justify-content-center">
-        <div className="col-xl-4">
+        <div className="col-sm-8 col-xl-4">
           <h2>Modify password</h2>
           <Hr />
         </div>
       </div>
       <div className="row mt-4 justify-content-center">
-        <div className="col-xl-4 text-center">
+        <div className="col-sm-8 col-xl-4 text-center">
           <h6>Your profile has been successfully edited!</h6>
         </div>
       </div>
@@ -65,15 +65,15 @@ export default function EditCard(props) {
   ) : (
     <Container className="container-fluid">
       <div className="row mt-5 justify-content-center">
-        <div className="col-xl-4">
+        <div className="col-sm-8 col-xl-4">
           <h2>Edit profile</h2>
           <Hr />
         </div>
       </div>
       <div className="row mt-4 justify-content-center">
-        <div className="col-xl-2">
+        <div className="col-sm-6 col-xl-2">
           <form onSubmit={onSubmit}>
-            <label for="username">Username</label>
+            <label htmlFor="username">Username</label>
             <Input
               name="username"
               required="required"
@@ -84,7 +84,7 @@ export default function EditCard(props) {
               onChange={onChange}
             />
             {Object.keys(errors).length > 0 && <Alert>{errors.username}</Alert>}
-            <label for="prenom">First name</label>
+            <label htmlFor="prenom">First name</label>
             <Input
               name="prenom"
               required="required"
@@ -94,7 +94,7 @@ export default function EditCard(props) {
               error={errors.prenom ? true : false}
               onChange={onChange}
             />
-            <label for="nom">Last name</label>
+            <label htmlFor="nom">Last name</label>
             <Input
               name="nom"
               required="required"
@@ -106,7 +106,7 @@ export default function EditCard(props) {
             />
             {Object.keys(errors).length > 0 && <Alert>{errors.prenom}</Alert>}
             {Object.keys(errors).length > 0 && <Alert>{errors.nom}</Alert>}
-            <label for="email">Email address</label>
+            <label htmlFor="email">Email address</label>
             <Input
               name="email"
               required="required"
@@ -123,7 +123,7 @@ export default function EditCard(props) {
               </Button>
             </div>
           </form>
-          <div className="text-center mt-4">
+          <div className="text-center mt-4 mb-4">
             <HyperLink href="/profile">Return to profile</HyperLink>
           </div>
         </div>
@@ -137,13 +137,13 @@ export default function EditCard(props) {
     return (
       <Container className="container-fluid">
         <div className="row mt-5 justify-content-center">
-          <div className="col-xl-4">
+          <div className="col-sm-8 col-xl-4">
             <h2>Edit profile</h2>
             <Hr />
           </div>
         </div>
         <div className="row mt-4 justify-content-center">
-          <div className="col-xl-4 text-center">
+          <div className="col-sm-8 col-xl-4 text-center">
             <h6>Loading ...</h6>
           </div>
         </div>

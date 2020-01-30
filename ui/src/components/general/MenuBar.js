@@ -31,7 +31,7 @@ const Pict = styled.img`
 const Bar = styled.div``;
 
 const Input = styled.input`
-  background-color: #101010;
+  background-color: #191919;
   border: none;
   border-bottom: 1px solid white;
   margin: 25px 15px;

@@ -17,16 +17,20 @@ export default function ProfileCard(props) {
   return (
     <Container className="container-fluid">
       <div className="row mt-5 justify-content-center">
-        <div className="col-xl-4">
+        <div className="col-11 col-xl-4">
           <h2>Profile</h2>
           <Hr />
         </div>
       </div>
       <div className="row mt-4 justify-content-center">
-        <div className="col-xl-2 text-center">
-          <Img src={profilePic} className="card-img-top" alt="Profile pic" />
+        <div className="col-11 col-md-4 col-xl-2 text-center">
+          <Img
+            src={profilePic}
+            className="card-img-top mb-4"
+            alt="Profile pic"
+          />
         </div>
-        <div className="col-xl-2">
+        <div className="col-11 col-md-4 col-xl-2">
           <h6>Username: {username}</h6>
           <h6 className="mt-4">First name: {prenom}</h6>
           <h6 className="mt-4">Last name: {nom}</h6>
@@ -37,7 +41,7 @@ export default function ProfileCard(props) {
         </div>
       </div>
       <div className="row justify-content-center mt-5">
-        <div className="col-xl-4 text-center">
+        <div className="col-11 col-xl-4 text-center">
           <Button
             type="button"
             className="btn btn-danger"
@@ -49,25 +53,28 @@ export default function ProfileCard(props) {
         </div>
       </div>
       <div className="row mt-4 justify-content-center">
-        <div className="col-xl-4 text-center">
+        <div className="col-11 col-xl-4 text-center">
           <HyperLink href="/modifypassword">Modify your password</HyperLink>
         </div>
       </div>
       <div className="row mt-4 justify-content-center">
-        <div className="col-xl-4">
+        <div className="col-11 col-xl-4">
           <h2>Preferences</h2>
           <Hr />
         </div>
       </div>
-      <div className="row mt-4 justify-content-center">
-        <div className="col-xl-2 text-center">
+      <div className="row mt-4 mb-4 justify-content-center">
+        <div className="col-11 col-xl-2 text-center">
           <h6>Change language:</h6>
         </div>
-        <div className="col-xl-2 text-center">
+        <div className="col-11 col-xl-2 text-center">
           <Select>
-            <option value="0">English</option>
-            <option value="1">French</option>
-            <option value="2">Spanish</option>
+            <option value="0">
+              English
+            </option>
+            <option value="1">
+              French
+            </option>
           </Select>
         </div>
       </div>
