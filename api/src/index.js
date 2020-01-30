@@ -2,20 +2,16 @@ const { ApolloServer, PubSub } = require('apollo-server-express');
 const mongoose = require('mongoose');
 const typeDefs = require('./graphql/typeDefs');
 const resolvers = require('./graphql/resolvers');
-const { MONGODB } = require('./config.js');
+const { MONGODB, keys } = require('./config.js');
 import express from 'express';
 const pubsub = new PubSub();
 const port = process.env.port || 5000;
 const path = '/graphql';
-
 import FacebookStrategy from 'passport-facebook';
 import passport from 'passport';
-import session from 'express-session';
 import uuid from 'uuid/v4';
-const SESSION_SECRECT = 'bad secret';
 import User from './models/Users';
-// import User from './graphql/resolvers/index';
-
+const cookieSession = require('cookie-session');
 
 const facebookOptions = {
     clientID: '473679669966044',
@@ -25,27 +21,25 @@ const facebookOptions = {
 };
 
 const facebookCallback = (accessToken, refreshToken, profile, done) => {
-    const users = User.getUsers();
-    console.log(users);
-    const matchingUser = users.find(user => user.facebookId === profile.id);
-    console.log(profile.id);
-    // console.log(user.facebookId);
-
-    if (matchingUser) {
-        done(null, matchingUser);
-        console.log("ok");
-        return;
-    }
-    console.log("ok1");
-    const newUser = {
-      id: uuid(),
-      facebookId: profile.id,
-      firstName: profile.name.givenName,
-      lastName: profile.name.familyName,
-      email: profile.emails && profile.emails[0] && profile.emails[0].value,
-    };
-    users.push(newUser);
-    done(null, newUser);
+    User.findOne({facebookId: profile.id}).then((currentUser) => {
+        console.log(profile.id);
+        if(currentUser) {
+            console.log('user is:'+ currentUser);
+            done(null, currentUser);
+            console.log("ok");
+        } else {
+            new User({
+                id: uuid(),
+                facebookId: profile.id,
+                firstName: profile.name.givenName,
+                lastName: profile.name.familyName,
+                email: profile.emails && profile.emails[0] && profile.emails[0].value,
+            }).save().then((newUser) => {
+                console.log('new user created' + newUser);
+                done(null, newUser);
+            });
+        }
+    });
   };
 
 passport.use(new FacebookStrategy(
@@ -58,9 +52,9 @@ passport.serializeUser((user, done) => {
   });
 
 passport.deserializeUser((id, done) => {
-const users = User.getUsers();
-const matchingUser = users.find(user => user.id === id);
-done(null, matchingUser);
+    User.findById(id).then((user) => {
+        done(null, user);
+    });
 });
 
 const server = new ApolloServer({
@@ -69,8 +63,6 @@ const server = new ApolloServer({
     context: ({ req }) => ({
         req, 
         pubsub,
-        getUser: () => req.user,
-        logout: () => req.logout(),
     }),
     playground: {
         settings: {
@@ -81,20 +73,18 @@ const server = new ApolloServer({
 
 const app = express();
 
-app.use(session({
-    genid: (req) => uuid(),
-    secret: SESSION_SECRECT,
-    resave: false,
-    saveUninitialized: false,
-  }));
+app.use(cookieSession({
+    maxAge: 24 * 60 * 60,
+    keys: [keys] 
+}));
   
 app.use(passport.initialize());
 app.use(passport.session());
   
 app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
 app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-  successRedirect: 'http://localhost:5000/graphql/hola',
-  failureRedirect: 'http://localhost:5000/graphql/chao',
+  successRedirect: 'http://localhost:5000/profile',
+  failureRedirect: 'http://localhost:3000/login',
 }));
 
 const connection = mongoose.connect(MONGODB, { useNewUrlParser: true });
