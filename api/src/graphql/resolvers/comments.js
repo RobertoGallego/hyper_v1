@@ -1,11 +1,27 @@
 const { AuthenticationError, UserInputError } = require('apollo-server');
 
 const checkAuth = require('../../util/check-auth');
-const Post = require('../../models/Post');
+const Comment = require('../../models/Comments');
 
 module.exports = {
+    Query: {
+        async getComments(_, {movieId}) {
+            console.log("Je fetch mes comments");
+            console.log(movieId);
+            try {
+                const comments = await Comment.find(movieId).sort({ createdAt: -1 });
+                return comments;
+            } catch (err) {
+                throw new Error(err);
+            }
+        }
+    },
     Mutation: {
-        createComment: async (_, { postId, body }, context) => {
+        async addComment(_, { movieId, body }, context) {
+            console.log(movieId);
+            console.log(body); 
+            console.log("BON J'appelle ma mutatiomnn");
+            
             const { username } = checkAuth(context);
             if (body.trim() === '') {
                 throw new UserInputError('Empty comment', {
@@ -15,38 +31,20 @@ module.exports = {
                 });
             }
 
-            const post = await Post.findById(postId);
+            const newComment = new Comment({
+                body,
+                username,
+                createdAt: new Date().toISOString(),
+                movieId
+            });
 
-            if (post) {
-                post.comments.unshift({
-                    body,
-                    username,
-                    createdAt: new Date().toISOString()
-                });
-                await post.save();
-                return post;
-            } else throw new UserInputError('Post not found');
-        },
-        async deleteComment(_, { postId, commentId }, context) {
-            const { username } = checkAuth(context);
+            const comment = await newComment.save();
 
-            const post = await Post.findById(postId);
+            context.pubsub.publish('NEW_COMMENT', {
+                newComment: comment
+            });
 
-            if (post) {
-                const commentIndex = post.comments.findIndex(
-                    c => c.id === commentId
-                );
-
-                if (post.comments[commentIndex].username === username) {
-                    post.comments.splice(commentIndex, 1);
-                    await post.save();
-                    return post;
-                } else {
-                    throw new AuthenticationError('Action not allowed');
-                }
-            } else {
-                throw new UserInputError('Post not found');
-            }
+            return comment;
         }
     }
 };

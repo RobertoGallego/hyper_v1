@@ -24,7 +24,6 @@ export default function Movie() {
     }`;
 
     const movieID = useParams().id;
-    
     const res = useQuery(FETCH_ONE_MOVIE, {variables : {id : movieID}});
     const movie = res.data.getOneMovie;
     
@@ -49,7 +48,7 @@ export default function Movie() {
                             <Text>Torrents: </Text>
                             <span>Link for Torrent</span>
                             <Text>Comments: </Text>
-                            <Com/>
+                            <Com movie={movieID}/>
                         </Left>
                         <Right>
                             <Text>Grade: {movie.vote_average}</Text>

@@ -20,7 +20,8 @@
         "graphql": "^14.3.1",
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^5.5.11",
-        "nodemailer": "^6.4.2"
+        "nodemailer": "^6.4.2",
+        "torrent-stream": "^1.2.0"
     },
     "devDependencies": {
         "nodemon": "^1.19.4"
