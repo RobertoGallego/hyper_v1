@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { AuthProvider } from "./context/auth";
 import AuthRoute from "./util/AuthRoute";
@@ -16,19 +16,25 @@ import ModifyPassword from "./components/profile/ModifyPassword";
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <SecureRoute exact path="/" component={Home} />
-        <AuthRoute exact path="/login" component={Login} />
-        <AuthRoute exact path="/register" component={Register} />
-        <Route exact path="/resetpassword" component={Resetpassword} />
-        <AuthRoute exact path="/updatepassword" component={UpdatePassword} />
-        <SecureRoute exact path="/profile" component={Profile} />
-        <SecureRoute exact path="/edit" component={Edit} />
-        <SecureRoute exact path="/movie/:id" component={Movie} />
-        <SecureRoute exact path="/modifyPassword" component={ModifyPassword} />
-      </Router>
-    </AuthProvider>
+    <Suspense fallback="loading">
+      <AuthProvider>
+        <Router>
+          <SecureRoute exact path="/" component={Home} />
+          <AuthRoute exact path="/login" component={Login} />
+          <AuthRoute exact path="/register" component={Register} />
+          <Route exact path="/resetpassword" component={Resetpassword} />
+          <AuthRoute exact path="/updatepassword" component={UpdatePassword} />
+          <SecureRoute exact path="/profile" component={Profile} />
+          <SecureRoute exact path="/edit" component={Edit} />
+          <SecureRoute exact path="/movie/:id" component={Movie} />
+          <SecureRoute
+            exact
+            path="/modifyPassword"
+            component={ModifyPassword}
+          />
+        </Router>
+      </AuthProvider>
+    </Suspense>
   );
 }
 

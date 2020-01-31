@@ -5,8 +5,10 @@ import Footer from '../components/general/Footer';
 import Film from './FilmCard';
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
+import { useTranslation } from "react-i18next";
 
 function Home() {
+    const { t } = useTranslation();
 
     const [searchText, setSearchText] = useState("");
 
@@ -24,7 +26,7 @@ function Home() {
     const movies = res.data.getMovies;
 
     if (!movies) {
-        return <h3>Loading ...</h3>;
+        return <h3>{t('loading')}</h3>;
     }
     return (
         <div>

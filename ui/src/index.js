@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import * as serviceWorker from "./serviceWorker";
 import "./index.css";
 import ApolloProviderRender from "./ApolloProvider";
+import './i18n';
 
 ReactDOM.render(<ApolloProviderRender />, document.getElementById("root"));
 

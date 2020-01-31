@@ -7,8 +7,10 @@ import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { AuthContext } from '../../context/auth';
 import { useForForm } from '../../util/hooks';
+import { useTranslation } from "react-i18next";
 
 export default function Formin(props) {
+    const { t } = useTranslation();
     const context = useContext(AuthContext);
     const [errors, setErrors] = useState({});
     
@@ -46,13 +48,13 @@ export default function Formin(props) {
     return (
         <Main>
             <Form onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>
-                <h1>Sign Up</h1>
+                <h1>{t('signUp.title')}</h1>
                 {/* <label>Email or phone number</label> */}
                 <Input
                     name='username'
                     required = "required"
                     type='text'
-                    placeholder='Username'
+                    placeholder={t('username')}
                     maxLength='30'
                     value={values.username}
                     error={errors.username ? true : false}
@@ -63,7 +65,7 @@ export default function Formin(props) {
                     name='prenom'
                     required = "required"
                     type='text'
-                    placeholder='First name'
+                    placeholder={t('firstName')}
                     maxLength='30'
                     value={values.prenom}
                     error={errors.prenom ? true : false}
@@ -74,7 +76,7 @@ export default function Formin(props) {
                     name='nom'
                     required = "required"
                     type='text'
-                    placeholder='Last name'
+                    placeholder={t('lastName')}
                     maxLength='30'
                     value={values.nom}
                     error={errors.nom ? true : false}
@@ -85,7 +87,7 @@ export default function Formin(props) {
                     name='email'
                     required = "required"
                     type='text'
-                    placeholder='Email'
+                    placeholder={t('email')}
                     maxLength='30'
                     value={values.email}
                     error={errors.email ? true : false}
@@ -97,7 +99,7 @@ export default function Formin(props) {
                     required = "required"
                     maxLength='30'
                     type='password'
-                    placeholder='Password'
+                    placeholder={t('password')}
                     value={values.password}
                     error={errors.password ? true : false}
                     onChange={onChange}
@@ -108,14 +110,14 @@ export default function Formin(props) {
                     required = "required"
                     maxLength='30'
                     type='password'
-                    placeholder="Confirm Password"
+                    placeholder={t('confirmPassword')}
                     value={values.confirmPassword}
                     error={errors.confirmPassword ? true : false}
                     onChange={onChange}
                 />
                 {Object.keys(errors).length > 0 && (<Alert>{errors.password}</Alert>)}
                 <Button type='submit' primary>
-                    Sign Up
+                    {t('signUp.title')}
                 </Button>
                 {/* {Object.keys(errors).length > 0 && (
                 <div className="ui error message">
@@ -129,11 +131,11 @@ export default function Formin(props) {
                     <div>
                         <SocialIcon url='http://facebook.com/rvgallego' style={{ height: 35, width: 35 }}/>
                     </div>
-                    <p>Sign up with Facebook</p>
+                    <p>{t('signUp.facebook')}</p>
                 </Social>
                 <Login>
-                    <p>Sign up to Hypertube</p>
-                    <a href='/login'>Login now.</a>
+                    <p>{t('signUp.hypertube')}</p>
+                    <a href='/login'>{t('signUp.login')}</a>
                 </Login>
             </Form>
         </Main>

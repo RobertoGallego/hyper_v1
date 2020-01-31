@@ -4,6 +4,7 @@ import { useLocation } from "react-router";
 import { AuthContext } from "../../context/auth";
 import logoTop from "../../assets/images/logo-top.png";
 import styled from "styled-components";
+import { useTranslation } from 'react-i18next';
 
 const Nav = styled.nav`
   display: flex;
@@ -53,6 +54,7 @@ const Search = styled.button`
 `;
 
 function MenuBar({ fetchMovies }) {
+  const { t } = useTranslation();
   const { user, logout } = useContext(AuthContext);
   const [textState, setTextState] = useState("");
 
@@ -73,10 +75,10 @@ function MenuBar({ fetchMovies }) {
         <Link to="/">
           <Pict src={logoTop} alt="Hypertube" />
         </Link>
-        <StyledLink to="/">Home</StyledLink>
-        <StyledLink to="/profile">Profile</StyledLink>
+        <StyledLink to="/">{t('header.home')}</StyledLink>
+        <StyledLink to="/profile">{t('header.profile')}</StyledLink>
         <StyledLink onClick={logout} to="/login">
-          Logout
+          {t('header.logout')}
         </StyledLink>
         {isHome && (
           <Bar>
@@ -84,9 +86,9 @@ function MenuBar({ fetchMovies }) {
               onChange={searchChange}
               value={textState}
               name="search"
-              placeholder="Search"
+              placeholder={t('header.search')}
             />
-            <Search onClick={sendSearch}>Search</Search>
+            <Search onClick={sendSearch}>{t('header.search')}</Search>
           </Bar>
         )}
       </Nav>

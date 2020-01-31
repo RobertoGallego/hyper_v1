@@ -11,8 +11,10 @@ import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
 import { AuthContext } from "../../context/auth";
 import { useForForm } from "../../util/hooks";
+import { useTranslation } from "react-i18next";
 
 export default function ModifyPasswordCard() {
+  const { t } = useTranslation();
   const context = useContext(AuthContext);
   const userId = context.user.id;
   const [errors, setErrors] = useState({});
@@ -46,36 +48,36 @@ export default function ModifyPasswordCard() {
     <Container className="container-fluid">
       <div className="row mt-5 justify-content-center">
         <div className="col-sm-8 col-xl-4">
-          <h2>Modify password</h2>
+          <h2>{t('profile.mPW.title')}</h2>
           <Hr />
         </div>
       </div>
       <div className="row mt-4 justify-content-center">
         <div className="col-sm-8 col-xl-4 text-center">
-          <h6>Your password has been successfully modified!</h6>
+          <h6>{t('profile.mPW.msg')}</h6>
         </div>
       </div>
       <div className="text-center mt-4">
-        <HyperLink href="/profile">Return to profile</HyperLink>
+        <HyperLink to="/profile">{t('profile.return')}</HyperLink>
       </div>
     </Container>
   ) : (
     <Container className="container-fluid">
       <div className="row mt-5 justify-content-center">
         <div className="col-sm-8 col-xl-4">
-          <h2>Modify password</h2>
+          <h2>{t('profile.mPW.title')}</h2>
           <Hr />
         </div>
       </div>
       <div className="row mt-4 justify-content-center">
         <div className="col-sm-6 col-xl-2">
           <form onSubmit={onSubmit}>
-            <label for="oldPassword">Old password</label>
+            <label for="oldPassword">{t('oldPassword')}</label>
             <Input
               name="oldPassword"
               required="required"
               type="password"
-              placeholder="Old password"
+              placeholder={t('oldPassword')}
               value={values.oldPassword}
               error={errors.oldPassword ? true : false}
               onChange={onChange}
@@ -83,12 +85,12 @@ export default function ModifyPasswordCard() {
             {Object.keys(errors).length > 0 && (
               <Alert>{errors.oldPassword}</Alert>
             )}
-            <label for="newPassword">New password</label>
+            <label for="newPassword">{t('newPassword')}</label>
             <Input
               name="newPassword"
               required="required"
               type="password"
-              placeholder="New password"
+              placeholder={t('newPassword')}
               value={values.newPassword}
               error={errors.newPassword ? true : false}
               onChange={onChange}
@@ -96,12 +98,12 @@ export default function ModifyPasswordCard() {
             {Object.keys(errors).length > 0 && (
               <Alert>{errors.newPassword}</Alert>
             )}
-            <label for="confirmPassword">Confirm new password</label>
+            <label for="confirmPassword">{t('confirmPassword')}</label>
             <Input
               name="confirmPassword"
               required="required"
               type="password"
-              placeholder="Confirm new password"
+              placeholder={t('confirmPassword')}
               value={values.confirmPassword}
               error={errors.confirmPassword ? true : false}
               onChange={onChange}
@@ -111,12 +113,12 @@ export default function ModifyPasswordCard() {
             )}
             <div className="text-center mt-4">
               <Button type="submit" className="btn btn-danger">
-                Save new password
+                {t('save')}
               </Button>
             </div>
           </form>
           <div className="text-center mt-4">
-            <HyperLink href="/profile">Return to profile</HyperLink>
+            <HyperLink to="/profile">{t('profile.return')}</HyperLink>
           </div>
         </div>
       </div>
@@ -130,13 +132,13 @@ export default function ModifyPasswordCard() {
       <Container className="container-fluid">
         <div className="row mt-5 justify-content-center">
           <div className="col-sm-8 col-xl-4">
-            <h2>Modify password</h2>
+            <h2>{t('profile.mPW.title')}</h2>
             <Hr />
           </div>
         </div>
         <div className="row mt-4 justify-content-center">
           <div className="col-sm-8 col-xl-4 text-center">
-            <h6>Loading ...</h6>
+            <h6>{t('loading')}</h6>
           </div>
         </div>
       </Container>

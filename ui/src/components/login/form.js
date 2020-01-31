@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { SocialIcon } from 'react-social-icons';
+import { useTranslation } from 'react-i18next';
 
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
@@ -8,6 +9,7 @@ import { AuthContext } from '../../context/auth';
 import { useForForm } from '../../util/hooks';
 
 export default function Formin(props) {
+    const { t } = useTranslation();
     const context = useContext(AuthContext);
     const [errors, setErrors] = useState({});
 
@@ -41,13 +43,13 @@ export default function Formin(props) {
                 noValidate
                 className={loading ? 'loading' : ''}
             >
-                <h1>Sign In</h1>
+                <h1>{t('login.title')}</h1>
                 {/* <label>Email or phone number</label> */}
                 <Input
                     name='username'
                     required = "required"
                     type='text'
-                    placeholder='Username'
+                    placeholder={t('username')}
                     maxLength = "30"
                     value={values.username}
                     onChange={onChange}
@@ -58,7 +60,7 @@ export default function Formin(props) {
                     name='password'
                     required = "required"
                     type='password'
-                    placeholder='Password'
+                    placeholder={t('password')}
                     maxLength = "30"
                     value={values.password}
                     onChange={onChange}
@@ -72,12 +74,12 @@ export default function Formin(props) {
                             name='remember me'
                             onChange={() => setrememberMe(!rememberMe)}
                         />
-                        <Title>Remember me</Title>
+                        <Title>{t('login.rememberMe')}</Title>
                     </Label>
-                    <Link href='/resetpassword'>Forgot Password?</Link>
+                    <Link href='/resetpassword'>{t('login.forgotPassword')}</Link>
                 </Info>
                 <Button type='submit' primary>
-                    Sign In
+                    {t('login.title')}
                 </Button>
             </Form>
             {/* {Object.keys(errors).length > 0 && (
@@ -92,11 +94,11 @@ export default function Formin(props) {
                 <div>
                     <SocialIcon url='http://facebook.com/rvgallego' style={{ height: 35, width: 35 }}/>
                 </div>
-                <p>Login with Facebook</p>
+                <p>{t('login.facebook')}</p>
             </Social>
             <Signup>
-                <p>New to Hypertube?</p>
-                <a href='/register'>Sign up now.</a>
+                <p>{t('login.hypertube')}</p>
+                <a href='/register'>{t('login.signUp')}</a>
             </Signup>
         </Main>
     );

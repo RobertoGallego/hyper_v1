@@ -4,8 +4,10 @@ import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { AuthContext } from '../../context/auth';
 import { useForForm } from '../../util/hooks';
+import { useTranslation } from "react-i18next";
 
 export default function Resetpassword(props) {
+    const { t } = useTranslation();
     const context = useContext(AuthContext);
     const [errors, setErrors] = useState({});
     const { onSubmit, onChange, values } = useForForm(emailUserCallback, {
@@ -33,13 +35,12 @@ export default function Resetpassword(props) {
     // console.log(submitted);
     const Resetpassword = submitted ? (
         <Main>
-            <h1>Reset Password</h1>
+            <h1>{t('rPW.title')}</h1>
             <Info>
-              If that account is in our system, we emailed you a link to reset
-              your password.
+                {t('rPW.p1')}
             </Info>
             <Signup>
-                <a href='/login'>Return to login</a>
+                <a href='/login'>{t('rPW.return')}</a>
             </Signup>
         </Main>
     ) : (
@@ -49,13 +50,13 @@ export default function Resetpassword(props) {
                 noValidate
                 className={loading ? 'loading' : ''}
             >
-                <h1>Reset Password</h1>
+                <h1>{t('rPW.title')}</h1>
                 {/* <label>Email or phone number</label> */}
                 <Input
                     name='email'
                     required = "required"
                     type='text'
-                    placeholder='Email'
+                    placeholder={t('email')}
                     maxLength='30'
                     value={values.email}
                     onChange={onChange}
@@ -63,12 +64,12 @@ export default function Resetpassword(props) {
                 />
                 {Object.keys(errors).length > 0 && (<Alert>{errors.email}</Alert>)}
                 <Button type='submit' primary>
-                    Submit
+                    {t('rPW.send')}
                 </Button>
             </Form>
             <Signup>
-                <p>New to Hypertube?</p>
-                <a href='/register'>Sign up now.</a>
+                <p>{t('login.hypertube')}</p>
+                <a href='/register'>{t('login.signUp')}</a>
             </Signup>
         </Main>
     );
