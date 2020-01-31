@@ -13,7 +13,8 @@ module.exports = {
         ...postsResolvers.Query,
         ...usersResolvers.Query,
         ...resetResolvers.Query,
-        ...moviesResolvers.Query
+        ...moviesResolvers.Query,
+        ...commentsResolvers.Query
     },
     Mutation: {
         ...usersResolvers.Mutation,

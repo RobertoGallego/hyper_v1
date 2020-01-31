@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import gql from "graphql-tag";
+import moment from 'moment';
 import { useQuery, useMutation } from "@apollo/react-hooks";
 
 export default function Com(movieID) {
@@ -10,7 +11,6 @@ export default function Com(movieID) {
     const commentChange = e => {
         setBodyCom(e.target.value);
     }
-
 
     const FETCH_COMMENTS = gql`
         query getComments($movId: String!){
@@ -35,43 +35,43 @@ export default function Com(movieID) {
             }
         }
     `
+
     const [addCom] = useMutation(ADD_COMMENT);
 
     const sendComment = () => {
+        if(bodyCom !== ""){
             addCom({variables : {id : movieID.movie, text: bodyCom}});
+            window.location.reload();
+        }
     }
 
     const comRes = useQuery(FETCH_COMMENTS, {variables : {movId : movieID.movie}});
-    const comments = comRes.data.getComments;
-
-    
-    console.log(comRes);
-    
+    const comments = comRes.data.getComments;    
 
     if(!comments){
         return (
             <Comment>
-                <NoCom> No Comments</NoCom>
                 <NewCom>
                     <Form>
                         <Input onChange={commentChange} type="text" name="CommentInput" placeholder="Add a Comment" />
                         <Send onClick={sendComment} type="submit" name="Send" value="Send" />
                     </Form>
                 </NewCom>
+                <NoCom> No Comments</NoCom>
             </Comment>
         );
     }
     return (
         <Comment>
-            <OldCom><b>UserName:</b> <br/><br/> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </OldCom>
             <NewCom>
                 <Form>
-                <Form>
-                        <Input onChange={commentChange} type="text" name="CommentInput" placeholder="Add a Comment" />
-                        <Send onClick={sendComment} type="submit" name="Send" value="Send" />
-                    </Form>
+                    <Input onChange={commentChange} type="text" name="CommentInput" placeholder="Add a Comment" />
+                    <Send onClick={sendComment} type="submit" name="Send" value="Send" />
                 </Form>
             </NewCom>
+            {comments.map((comment,i) => 
+                <OldCom key={i}><b>{comment.username}</b><br/>{comment.body}<br/>{moment(comment.createdAt).format("LLL")}</OldCom>
+            )}
         </Comment>
     );
 }
@@ -93,7 +93,7 @@ const NoCom = styled.h3`
 `
 
 const NewCom = styled.div`
-    margin: 0 auto;
+    margin: 0 auto 2vmin;
 `
 
 const Form = styled.div`
