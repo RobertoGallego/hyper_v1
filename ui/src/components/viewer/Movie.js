@@ -1,15 +1,45 @@
 import React from 'react';
+import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import Header from '../general/Header';
 import Footer from '../general/Footer';
 import Com from './Comment';
+import gql from "graphql-tag";
+import noImage from "../../assets/images/noImage.png";
+import { useQuery } from "@apollo/react-hooks";
 
 export default function Movie() {
+
+    const FETCH_ONE_MOVIE = gql`
+        query($id: ID!){
+        getOneMovie(id: $id){
+            id
+            title
+            poster_path
+            vote_average
+            overview
+            release_date
+            runtime
+        }
+    }`;
+
+    const movieID = useParams().id;
+    const res = useQuery(FETCH_ONE_MOVIE, {variables : {id : movieID}});
+    const movie = res.data.getOneMovie;
+    
+    if (!movie) {
+        return <h3>Loading ...</h3>;
+    }
+    var image;
+    if (!movie.poster_path)
+        image = noImage
+    else
+        image = `https://image.tmdb.org/t/p/original${movie.poster_path}`
     return (
         <MoviePage>
             <Header/>
                 <Content>
-                    <Title>Movie Title</Title>
+                    <Title>{movie.title}</Title>
                     <HR/>
                     <Split>
                         <Left>
@@ -18,15 +48,13 @@ export default function Movie() {
                             <Text>Torrents: </Text>
                             <span>Link for Torrent</span>
                             <Text>Comments: </Text>
-                            <Com/>
+                            <Com movie={movieID}/>
                         </Left>
                         <Right>
-                            <Text>Casting: </Text>
-                            <Text>Production Year: </Text>
-                            <Text>Duration: </Text>
-                            <Picture src='https://images-na.ssl-images-amazon.com/images/I/41g1na32tAL._SX322_BO1,204,203,200_.jpg' alt='MoviePageImage'/>
-                            <Text>Grade: </Text>
-                            {/* ⭐⭐⭐⭐⭐ */}
+                            <Text>Grade: {movie.vote_average}</Text>
+                            <Picture src={image} alt={`${movie.title}Image`}/>
+                            <Text>Release Date: {movie.release_date}</Text>
+                            <Text>Duration: {movie.runtime}min</Text>
                         </Right>
                     </Split>
                 </Content>

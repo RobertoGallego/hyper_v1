@@ -1,5 +1,6 @@
 const postsResolvers = require('./posts');
 const usersResolvers = require('./users');
+const moviesResolvers = require('./movies');
 const commentsResolvers = require('./comments');
 const resetResolvers = require('./email'); 
 
@@ -13,6 +14,8 @@ module.exports = {
         ...usersResolvers.Query,
         ...resetResolvers.Query,
         currentUser: (parent, args, context) => context.getUser(),
+        ...moviesResolvers.Query,
+        ...commentsResolvers.Query
     },
     Mutation: {
         ...usersResolvers.Mutation,

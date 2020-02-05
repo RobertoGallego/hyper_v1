@@ -10,8 +10,10 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "apollo-datasource-rest": "^0.6.11",
         "apollo-server": "^2.5.0",
         "apollo-server-express": "^2.9.15",
+        "axios": "^0.19.2",
         "bcryptjs": "^2.4.3",
         "cookie-session": "^1.4.0",
         "esm": "^3.2.25",
@@ -26,7 +28,8 @@
         "passport-42": "^1.2.6",
         "passport-facebook": "^3.0.0",
         "passport-jwt": "^4.0.0",
-        "uuid": "^3.4.0"
+        "uuid": "^3.4.0",
+        "torrent-stream": "^1.2.0"
     },
     "devDependencies": {
         "nodemon": "^1.19.4"

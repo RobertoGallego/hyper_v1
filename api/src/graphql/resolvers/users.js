@@ -4,7 +4,9 @@ const { UserInputError } = require('apollo-server');
 
 const {
     validateRegisterInput,
-    validateLoginInput
+    validateLoginInput,
+    validateEditInput,
+    validatePasswordsInput
 } = require('../../util/validators');
 const { SECRET_KEY } = require('../../config');
 const User = require('../../models/User');
@@ -52,8 +54,8 @@ module.exports = {
             if (!valid) {
                 throw new UserInputError('Errors', { errors });
             }
-            console.log(username);
-            console.log(password);
+            // console.log(username);
+            // console.log(password);
 
             const user = await User.findOne({ username });
             if (!user) {
@@ -86,10 +88,10 @@ module.exports = {
             { registerInput: { username, prenom, nom, email, password, confirmPassword, image } }
         ) {
             // Validate user data
-            console.log("Holaaaa");
-            console.log({username});
+            // console.log("Holaaaa");
+            // console.log({username});
 
-            console.log({image});
+            // console.log({image});
             
             const { valid, errors } = validateRegisterInput(
                 username,
@@ -139,15 +141,15 @@ module.exports = {
             //     token: crypto.randomBytes(16).toString('hex') 
             // });
 
-            console.log("IMAGEN:", image);
+            // console.log("IMAGEN:", image);
 
             // const tokenMail = await token.save()
 
             // console.log("token mail:", user.email);
-            console.log("mail:", newUser.email);
+            // console.log("mail:", newUser.email);
             // console.log("token mail:", valid.email);
             // console.log("token mail:", email);
-            console.log("token:", token);
+            // console.log("token:", token);
             
             const link = `<a href="http://localhost:3000/confirmation/${token}">Activate</a>`;
             // Send the email
@@ -178,6 +180,71 @@ module.exports = {
                 id: res._id,
                 token
             };
+        },
+        async modifyPassword ( _, { userId, oldPassword, newPassword, confirmPassword }) {
+            const { valid, errors } = validatePasswordsInput(
+                oldPassword,
+                newPassword,
+                confirmPassword,
+            )
+            if (!valid) {
+                throw new UserInputError('Errors', { errors });
+            }
+            const user = await User.findById(userId);
+            const match = await bcrypt.compare(oldPassword, user.password);
+            if (!match) {
+                errors.oldPassword = 'Wrong password';
+                throw new UserInputError('Wrong crendetials', { errors });
+            } else {
+                newPassword = await bcrypt.hash(newPassword, 12);
+                const res = await User.findByIdAndUpdate({ _id: user.id }, { password: newPassword }, {new: true})
+                const token = generateToken(user);
+
+                return {
+                    ...res._doc,
+                    id: res._id,
+                    token,
+                }
+            }
+        },
+        async editProfile( _, { userId, username, prenom, nom, email }) {
+            const { valid, errors } = validateEditInput(
+                username,
+                prenom,
+                nom,
+                email,
+            )
+            if (!valid) {
+                throw new UserInputError('Errors', { errors });
+            }
+            const user = await User.findById(userId);
+            if (user.email !== email) {
+                const verifyEmail = await User.findOne({ email });
+                if (verifyEmail) {
+                    throw new UserInputError('Email is taken', {
+                        errors: {
+                            email: "This email is taken"
+                        }
+                    });
+                }
+            }
+            if (user.username !== username) {
+                const verifyUsername = await User.findOne({ username });
+                if (verifyUsername) {
+                    throw new UserInputError('Username is taken', {
+                        errors: {
+                            email: "This username is taken"
+                        }
+                    });
+                }
+            }
+            const res = await User.findByIdAndUpdate({ _id: userId }, { email: email, username: username, prenom: prenom, nom: nom }, {new: true})
+            const token = generateToken(user);
+            return {
+                ...res._doc,
+                id: res._id,
+                token,
+            }
         }
     }
 };

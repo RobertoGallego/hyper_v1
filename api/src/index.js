@@ -34,7 +34,7 @@ const facebookCallback = (accessToken, refreshToken, profile, done) => {
             done(null, currentUser);
             // console.log('ok');
         } else {
-            console.log('new user');
+            // console.log('new user');
             var newUser = new User({
                 id: uuid(),
                 facebookId: profile.id,

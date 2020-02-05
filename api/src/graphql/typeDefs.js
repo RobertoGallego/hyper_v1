@@ -16,6 +16,7 @@ module.exports = gql`
         createdAt: String!
         username: String!
         body: String!
+        movieId: String!
     }
     type Like {
         id: ID!
@@ -33,6 +34,21 @@ module.exports = gql`
         createdAt: String!
         tokenMail: String!
     }
+    type Movie{
+        id: ID!
+        title: String!
+        poster_path: String
+        vote_average: Float!
+    }
+    type MovieDetails{
+        id: ID!
+        title: String!
+        poster_path: String
+        vote_average: Float
+        overview: String
+        release_date: String
+        runtime: Float
+    }
     input RegisterInput {
         username: String!
         prenom: String!
@@ -48,6 +64,9 @@ module.exports = gql`
         getUsers: [User]
         getUser(userId: ID!): User
         currentUser: User
+        getMovies(search: String!): [Movie]
+        getOneMovie(id: ID!): MovieDetails
+        getComments(movieId: String!): [Comment]
     }
     type Mutation {
         register(registerInput: RegisterInput): User!
@@ -59,6 +78,9 @@ module.exports = gql`
         deleteComment(postId: ID!, commentId: ID!): Post!
         likePost(postId: ID!): Post!
         logout: Boolean
+        editProfile(userId: ID!, username: String!, prenom: String!, nom: String!, email: String!): User!
+        modifyPassword(userId: ID!, oldPassword: String!, newPassword: String!, confirmPassword: String!): User!
+        addComment(movieId: String!, body: String!): Comment!
     }
     type Subscription {
         newPost: Post!

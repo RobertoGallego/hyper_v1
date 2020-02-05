@@ -16,42 +16,38 @@ const Container = styled.div`
 const FETCH_USER_QUERY = gql`
   query($userId: ID!) {
     getUser(userId: $userId) {
-      id
-      email
       prenom
       nom
       username
       createdAt
+      email
     }
   }
 `;
 
-export default function Profile() {
+export default function Profile(props) {
   const user = useContext(AuthContext);
   const userId = user.user.id;
-  console.log(userId)
-  const {
-    data: { getUser }
-  } = useQuery(FETCH_USER_QUERY, {
+  // console.log(user.login);
+  const { data: { getUser }} = useQuery(FETCH_USER_QUERY, { 
     variables: {
-      userId
+      userId: userId
     }
   });
 
   if (!getUser) {
     return <h3>Loading ...</h3>;
   } else {
-    const { id, email, prenom, nom, username, createdAt } = getUser;
+    const { prenom, nom, username, createdAt, email } = getUser;
     return (
       <Container>
         <Header />
         <ProfileCard
-          id={id}
-          email={email}
           prenom={prenom}
           nom={nom}
           username={username}
           createdAt={createdAt}
+          email={email}
         />
         <Footer />
       </Container>

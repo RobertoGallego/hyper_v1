@@ -1,34 +1,25 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { SocialIcon } from 'react-social-icons';
+// import { useForm } from 'react-hook-form';
+
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { AuthContext } from '../../context/auth';
 import { useForForm } from '../../util/hooks';
 
-import ImagePicker from 'react-image-picker'
-import profilePic1 from "../../assets/images/profilePic1.png";
-import profilePic2 from "../../assets/images/profilePic2.png";
-import profilePic3 from "../../assets/images/profilePic3.png";
-import profilePic4 from "../../assets/images/profilePic4.png";
-import "./index.css";
-
-
 export default function Formin(props) {
     const context = useContext(AuthContext);
     const [errors, setErrors] = useState({});
     
-    const { onChange, onSubmit, values, onPick } = useForForm(registerUser, {
+    const { onChange, onSubmit, values } = useForForm(registerUser, {
         username: '',
         prenom: '',
         nom: '',
         email: '',
         password: '',
         confirmPassword: '',
-        image: ''
       });
-
-    const imageList = [profilePic1, profilePic2, profilePic3, profilePic4]
 
     const [addUser, { loading }] = useMutation(REGISTER_USER, {
     update(
@@ -49,30 +40,18 @@ export default function Formin(props) {
     function registerUser() {
         addUser();
     }
-
-    // image: '/static/media/profilePic1.62db51f5.png'
-
+    // const onSubmit = async data => {
+    // alert(JSON.stringify(data));
+    // };
+    // console.log(values.username);
+    // console.log(values.prenom);
+    // console.log(values.nom);
+    
     return (
         <Main>
             <Form onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>
-                <h2>SIGN UP</h2>
-                {Object.keys(errors).length > 0 && (<AlertD>{errors.image}</AlertD>)}
-                <div>
-                    <ImagePicker 
-                        name='image'
-                        required = "required"
-                        error={errors.image ? true : false}
-                        images={imageList.map((image, i) => ({src: image, value: i}))}
-                        // onPick={() => {setonPick(image)}}
-                        value={values.image}
-                        onPick = {onPick}
-                        
-                        // onChange={onChange}
-                        
-                    />
-                </div>  
-                {Object.keys(errors).length > 0 && (<Alert>{errors.username}</Alert>)}
-                {Object.keys(errors).length > 0 && (<AlertA>{errors.email}</AlertA>)}
+                <h1>Sign Up</h1>
+                {/* <label>Email or phone number</label> */}
                 <Input
                     name='username'
                     required = "required"
@@ -83,19 +62,7 @@ export default function Formin(props) {
                     error={errors.username ? true : false}
                     onChange={onChange}
                 />
-                {Object.keys(errors).length > 0 && (<AlertB>{errors.email}</AlertB>)}
-                <Input
-                    name='email'
-                    required = "required"
-                    type='text'
-                    placeholder='Email'
-                    maxLength='30'
-                    value={values.email}
-                    error={errors.email ? true : false}
-                    onChange={onChange}
-                />
-                {Object.keys(errors).length > 0 && (<Alert>{errors.prenom}</Alert>)}
-                {Object.keys(errors).length > 0 && (<AlertA>{errors.nom}</AlertA>)}
+                {Object.keys(errors).length > 0 && (<Alert>{errors.username}</Alert>)}
                 <Input
                     name='prenom'
                     required = "required"
@@ -106,7 +73,7 @@ export default function Formin(props) {
                     error={errors.prenom ? true : false}
                     onChange={onChange}
                 />
-                {Object.keys(errors).length > 0 && (<AlertB>{errors.nom}</AlertB>)}
+                {Object.keys(errors).length > 0 && (<Alert>{errors.prenom}</Alert>)}
                 <Input
                     name='nom'
                     required = "required"
@@ -117,8 +84,18 @@ export default function Formin(props) {
                     error={errors.nom ? true : false}
                     onChange={onChange}
                 />
-                {Object.keys(errors).length > 0 && (<Alert>{errors.password}</Alert>)}
-                {Object.keys(errors).length > 0 && (<AlertA>{errors.password}</AlertA>)}
+                {Object.keys(errors).length > 0 && (<Alert>{errors.nom}</Alert>)}
+                <Input
+                    name='email'
+                    required = "required"
+                    type='text'
+                    placeholder='Email'
+                    maxLength='30'
+                    value={values.email}
+                    error={errors.email ? true : false}
+                    onChange={onChange}
+                />
+                {Object.keys(errors).length > 0 && (<Alert>{errors.email}</Alert>)}
                 <Input
                     name='password'
                     required = "required"
@@ -129,7 +106,7 @@ export default function Formin(props) {
                     error={errors.password ? true : false}
                     onChange={onChange}
                 />
-                {Object.keys(errors).length > 0 && (<AlertB>{errors.password}</AlertB>)}
+                {Object.keys(errors).length > 0 && (<Alert>{errors.password}</Alert>)}
                 <Input
                     name="confirmPassword"
                     required = "required"
@@ -140,12 +117,21 @@ export default function Formin(props) {
                     error={errors.confirmPassword ? true : false}
                     onChange={onChange}
                 />
+                {Object.keys(errors).length > 0 && (<Alert>{errors.password}</Alert>)}
                 <Button type='submit' primary>
                     Sign Up
                 </Button>
+                {/* {Object.keys(errors).length > 0 && (
+                <div className="ui error message">
+                <ul className="list">
+                    {Object.values(errors).map((value) => (
+                    <li key={value}>{value}</li>
+                    ))}
+                </ul>
+                </div>)} */}
                 <Social>
                     <div>
-                        <SocialIcon fgColor="#fff" network="facebook" url='http://localhost:5000/auth/facebook' style={{ height: 35, width: 35 }}/>
+                        <SocialIcon url='http://facebook.com/rvgallego' style={{ height: 35, width: 35 }}/>
                     </div>
                     <p>Sign up with Facebook</p>
                 </Social>
@@ -166,7 +152,6 @@ const REGISTER_USER = gql`
     $email: String!
     $password: String!
     $confirmPassword: String!
-    $image: String!
   ) {
     register(
       registerInput: {
@@ -176,7 +161,6 @@ const REGISTER_USER = gql`
         email: $email
         password: $password
         confirmPassword: $confirmPassword
-        image: $image
       }
     ) {
         id
@@ -186,27 +170,25 @@ const REGISTER_USER = gql`
         nom
         createdAt
         token
-        image
     }
   }
 `;
 
 const Main = styled.main`
     box-sizing: border-box;
-    margin: 1rem auto;
+    width: 28rem;
+    margin: 2rem auto 10rem;
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
-    padding: 3rem 4.5rem;
+    padding: 3rem 4.5rem 2rem;
     border-radius: 3px;
-    max-width: 90%;
+
     flex: 1;
 `;
 
 const Form = styled.form`
-    & h2 {
-        margin: 0 0 1rem 0;
+    & h1 {
+        margin: 0 0 2rem 0;
         color: white;
-        display: flex;
-        justify-content: center;
     }
 `;
 
@@ -220,19 +202,13 @@ const Input = styled.input`
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 0 1% 1.5rem;
+    margin: 0 0 1.5rem;
     cursor: default;
     outline: 0;
-    width: 48%;
-    min-width: 48%;
-
+    width: 100%;
     ::placeholder {
         text-align: center;
         text-indent: -0.1rem;
-    }
-    @media (max-width: 768px) {
-    flex-direction: row;
-    width: 100%;
     }
 `;
 
@@ -247,7 +223,7 @@ const Button = styled.button`
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 1rem 0 1rem;
+    margin: 1rem 0 5rem;
     cursor: pointer;
     outline: 0;
 `;
@@ -281,51 +257,7 @@ const Login = styled.div`
 `;
 
 const Alert = styled.p`
-    display: inline-block;
     font-size: 0.8rem;
     color: #e87c03;
-    padding-top: 0rem; 
-    width: 50%;
-    text-align: center;
-    @media (max-width: 768px) {
-        width: 100%;
-    }
-`;
-
-const AlertA = styled.p`
-    display: inline-block;
-    font-size: 0.8rem;
-    color: #e87c03;
-    padding-top: 0rem; 
-    width: 50%;
-    text-align: center;
-    @media (max-width: 768px) {
-        display: none;
-    }
-`;
-
-const AlertB = styled.p`
-    display: none;
-    @media (max-width: 768px) {
-        display: inline-block;
-        font-size: 0.8rem;
-        color: #e87c03;
-        padding-top: 0rem; 
-        width: 100%;
-        text-align: center;
-    }
-`;
-
-const AlertD = styled.p`
-/* margin: 0 0 0 -10rem; */
-    /* position: ; */
-    display: block;
-    text-align: center;
-    font-size: 0.8rem;
-    color: #e87c03;
-    margin: 0rem 0rem -0.5rem 0rem;
-    padding-top: 0rem; 
-    width: 100%;    /* padding: 0.9rem 0; */
-    /* text-indent: 1rem; */
-    /* display: absolute; */
+    margin: -1.3rem 0 1rem;
 `;
