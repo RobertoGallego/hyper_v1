@@ -61,7 +61,7 @@ export default function EditCard(props) {
         </div>
       </div>
       <div className="text-center mt-4">
-        <HyperLink to="/profile">{t('profile.return')}</HyperLink>
+        <HyperLink href="/profile">{t('profile.return')}</HyperLink>
       </div>
     </Container>
   ) : (
@@ -126,7 +126,7 @@ export default function EditCard(props) {
             </div>
           </form>
           <div className="text-center mt-4 mb-4">
-            <HyperLink to="/profile">{t('profile.return')}</HyperLink>
+            <HyperLink href="/profile">{t('profile.return')}</HyperLink>
           </div>
         </div>
       </div>

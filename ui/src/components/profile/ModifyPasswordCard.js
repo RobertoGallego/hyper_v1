@@ -58,7 +58,7 @@ export default function ModifyPasswordCard() {
         </div>
       </div>
       <div className="text-center mt-4">
-        <HyperLink to="/profile">{t('profile.return')}</HyperLink>
+        <HyperLink href="/profile">{t('profile.return')}</HyperLink>
       </div>
     </Container>
   ) : (
@@ -118,7 +118,7 @@ export default function ModifyPasswordCard() {
             </div>
           </form>
           <div className="text-center mt-4">
-            <HyperLink to="/profile">{t('profile.return')}</HyperLink>
+            <HyperLink href="/profile">{t('profile.return')}</HyperLink>
           </div>
         </div>
       </div>

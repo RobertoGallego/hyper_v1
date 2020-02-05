@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 
 export const Container = styled.div`
   flex-grow: 1;
@@ -13,7 +12,7 @@ export const Button = styled.button`
   }
 `;
 
-export const HyperLink = styled(Link)`
+export const HyperLink = styled.a`
   color: #666;
 
   &:hover {

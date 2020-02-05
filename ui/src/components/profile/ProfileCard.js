@@ -65,7 +65,7 @@ export default function ProfileCard(props) {
       </div>
       <div className="row mt-4 justify-content-center">
         <div className="col-11 col-xl-4 text-center">
-          <HyperLink to="/modifypassword">{t('profile.link')}</HyperLink>
+          <HyperLink href="/modifypassword">{t('profile.link')}</HyperLink>
         </div>
       </div>
       <div className="row mt-4 justify-content-center">

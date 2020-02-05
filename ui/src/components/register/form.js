@@ -59,11 +59,7 @@ export default function Formin(props) {
     return (
         <Main>
             <Form onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>
-<<<<<<< HEAD
-                <h1>{t('signUp.title')}</h1>
-                {/* <label>Email or phone number</label> */}
-=======
-                <h2>SIGN UP</h2>
+                <h2>{t('signUp.title')}</h2>
                 {Object.keys(errors).length > 0 && (<AlertD>{errors.image}</AlertD>)}
                 <div>
                     <ImagePicker 
@@ -81,7 +77,6 @@ export default function Formin(props) {
                 </div>  
                 {Object.keys(errors).length > 0 && (<Alert>{errors.username}</Alert>)}
                 {Object.keys(errors).length > 0 && (<AlertA>{errors.email}</AlertA>)}
->>>>>>> 81df9e6e15b18b3c52b319a26f0229cce8dacc55
                 <Input
                     name='username'
                     required = "required"
@@ -126,23 +121,8 @@ export default function Formin(props) {
                     error={errors.nom ? true : false}
                     onChange={onChange}
                 />
-<<<<<<< HEAD
-                {Object.keys(errors).length > 0 && (<Alert>{errors.nom}</Alert>)}
-                <Input
-                    name='email'
-                    required = "required"
-                    type='text'
-                    placeholder={t('email')}
-                    maxLength='30'
-                    value={values.email}
-                    error={errors.email ? true : false}
-                    onChange={onChange}
-                />
-                {Object.keys(errors).length > 0 && (<Alert>{errors.email}</Alert>)}
-=======
                 {Object.keys(errors).length > 0 && (<Alert>{errors.password}</Alert>)}
                 {Object.keys(errors).length > 0 && (<AlertA>{errors.password}</AlertA>)}
->>>>>>> 81df9e6e15b18b3c52b319a26f0229cce8dacc55
                 <Input
                     name='password'
                     required = "required"
@@ -171,14 +151,10 @@ export default function Formin(props) {
                     <div>
                         <SocialIcon fgColor="#fff" network="facebook" url='http://localhost:5000/auth/facebook' style={{ height: 35, width: 35 }}/>
                     </div>
-<<<<<<< HEAD
-                    <p>{t('signUp.facebook')}</p>
-=======
                     <SocialI>
                         <a href="/login"><img src={iconSocial} alt='42' /></a>
                     </SocialI>
-                    <p>Sign up with Facebook</p>
->>>>>>> 81df9e6e15b18b3c52b319a26f0229cce8dacc55
+                    <p>{t('signUp.facebook')}</p>
                 </Social>
                 <Login>
                     <p>{t('signUp.hypertube')}</p>

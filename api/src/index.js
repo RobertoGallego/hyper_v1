@@ -17,8 +17,8 @@ const jwt = require('jsonwebtoken');
 const { SECRET_KEY } = require('./config');
 
 const facebookOptions = {
-    clientID: '473679669966044',
-    clientSecret: '964e9a615d3c4b01212054e4a4666871',
+    clientID: '2549894308664081',
+    clientSecret: '7a6bea04b9382229af813060bdb1ede9',
     callbackURL: 'http://localhost:5000/auth/facebook/callback',
     profileFields: ['id', 'email', 'first_name', 'last_name']
 };
