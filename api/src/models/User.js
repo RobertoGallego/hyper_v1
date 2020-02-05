@@ -2,6 +2,7 @@ const { model, Schema } = require('mongoose');
 
 const userSchema = new Schema({
   username: String,
+  facebookId: String,
   prenom: String,
   nom: String,
   password: String,
