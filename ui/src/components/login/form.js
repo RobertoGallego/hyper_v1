@@ -7,6 +7,7 @@ import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { AuthContext } from '../../context/auth';
 import { useForForm } from '../../util/hooks';
+import iconSocial from '../../assets/images/42-icon.png';
 
 export default function Formin(props) {
     const { t } = useTranslation();
@@ -92,8 +93,11 @@ export default function Formin(props) {
                 </div>)} */}
             <Social>
                 <div>
-                    <SocialIcon url='http://facebook.com/rvgallego' style={{ height: 35, width: 35 }}/>
+                    <SocialIcon fgColor="#fff" network="facebook" url='http://localhost:5000/auth/facebook' style={{ height: 35, width: 35 }}/>
                 </div>
+                <SocialI>
+                    <a href="/login"><img src={iconSocial} alt='42' /></a>
+                </SocialI>
                 <p>{t('login.facebook')}</p>
             </Social>
             <Signup>
@@ -131,6 +135,10 @@ const Label = styled.label`
     display: flex;
     align-items: center;
     justify-content: space-between;
+`
+
+const SocialI = styled.div`
+    margin-right: 3rem;
 `
 
 const Form = styled.form`

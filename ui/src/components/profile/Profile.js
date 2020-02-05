@@ -30,10 +30,8 @@ export default function Profile() {
   const { t } = useTranslation();
   const user = useContext(AuthContext);
   const userId = user.user.id;
-
-  const {
-    data: { getUser }
-  } = useQuery(FETCH_USER_QUERY, {
+  // console.log(user.login);
+  const { data: { getUser }} = useQuery(FETCH_USER_QUERY, { 
     variables: {
       userId: userId
     }

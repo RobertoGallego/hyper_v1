@@ -1,13 +1,16 @@
-const { model, Schema } = require('mongoose');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   username: String,
+  facebookId: String,
+  username: String,
   prenom: String,
   nom: String,
-  password: String,
-  email: String,
-  createdAt: String,
-  isVerified: { type: Boolean, default: false },
+  email: String
 });
 
-module.exports = model('User', userSchema);
+// const User = mongoose.model('AuthFacebook', userSchema);
+const User = mongoose.model('users', userSchema);
+
+module.exports = User;

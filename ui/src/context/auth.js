@@ -5,9 +5,12 @@ const initialState = {
   user: null
 };
 
+// console.log(initialState);
+
 if (localStorage.getItem('jwtToken')) {
   const decodedToken = jwtDecode(localStorage.getItem('jwtToken'));
-
+  // , { header: true }
+  // console.log(decodedToken);
   if (decodedToken.exp * 1000 < Date.now()) {
     localStorage.removeItem('jwtToken');
   } else {

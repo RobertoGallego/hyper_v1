@@ -13,13 +13,16 @@ module.exports = {
         ...postsResolvers.Query,
         ...usersResolvers.Query,
         ...resetResolvers.Query,
-        ...moviesResolvers.Query
+        currentUser: (parent, args, context) => context.getUser(),
+        ...moviesResolvers.Query,
+        ...commentsResolvers.Query
     },
     Mutation: {
         ...usersResolvers.Mutation,
         ...postsResolvers.Mutation,
         ...commentsResolvers.Mutation,
-        ...resetResolvers.Mutation
+        ...resetResolvers.Mutation,
+        logout: (parent, args, context) => context.logout(),
     },
     Subscription: {
         ...postsResolvers.Subscription

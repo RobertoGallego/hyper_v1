@@ -48,15 +48,16 @@ module.exports = {
         }
     },
     Mutation: {
-        async login(_, { username, password }) {
+        async login(_, { username, password }, context) {
             const { errors, valid } = validateLoginInput(username, password);
 
             if (!valid) {
                 throw new UserInputError('Errors', { errors });
             }
+            // console.log(username);
+            // console.log(password);
 
             const user = await User.findOne({ username });
-            console.log("caca", user);
             if (!user) {
                 errors.username = "Sorry, we can't find an account with this username. Please try again.";
                 throw new UserInputError('User not found', { errors });
@@ -79,25 +80,32 @@ module.exports = {
             return {
                 ...user._doc,
                 id: user._id,
-                token
+                token,
             };
         },
         async register(
             _,
-            { registerInput: { username, prenom, nom, email, password, confirmPassword } }
+            { registerInput: { username, prenom, nom, email, password, confirmPassword, image } }
         ) {
             // Validate user data
+            // console.log("Holaaaa");
+            // console.log({username});
+
+            // console.log({image});
+            
             const { valid, errors } = validateRegisterInput(
                 username,
                 prenom,
                 nom,
                 email,
                 password,
-                confirmPassword
+                confirmPassword,
+                image
             );
             if (!valid) {
                 throw new UserInputError('Errors', { errors });
             }
+
             // TODO: Make sure user doesnt already exist
             const user = await User.findOne({ username, email });
             if (user) {
@@ -117,7 +125,8 @@ module.exports = {
                 prenom,
                 nom,
                 password,
-                createdAt: new Date().toISOString()
+                createdAt: new Date().toISOString(),
+                image
             });
 
             const res = await newUser.save();
@@ -132,15 +141,15 @@ module.exports = {
             //     token: crypto.randomBytes(16).toString('hex') 
             // });
 
-            // console.log("new token:", newtoken);
+            // console.log("IMAGEN:", image);
 
             // const tokenMail = await token.save()
 
             // console.log("token mail:", user.email);
-            console.log("mail:", newUser.email);
+            // console.log("mail:", newUser.email);
             // console.log("token mail:", valid.email);
             // console.log("token mail:", email);
-            console.log("token:", token);
+            // console.log("token:", token);
             
             const link = `<a href="http://localhost:3000/confirmation/${token}">Activate</a>`;
             // Send the email

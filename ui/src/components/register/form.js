@@ -1,27 +1,38 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { SocialIcon } from 'react-social-icons';
-// import { useForm } from 'react-hook-form';
-
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { AuthContext } from '../../context/auth';
 import { useForForm } from '../../util/hooks';
 import { useTranslation } from "react-i18next";
 
+import ImagePicker from 'react-image-picker'
+import profilePic1 from "../../assets/images/profilePic1.png";
+import profilePic2 from "../../assets/images/profilePic2.png";
+import profilePic3 from "../../assets/images/profilePic3.png";
+import profilePic4 from "../../assets/images/profilePic4.png";
+import "./index.css";
+import iconSocial from '../../assets/images/42-icon.png';
+
+
+
 export default function Formin(props) {
     const { t } = useTranslation();
     const context = useContext(AuthContext);
     const [errors, setErrors] = useState({});
     
-    const { onChange, onSubmit, values } = useForForm(registerUser, {
+    const { onChange, onSubmit, values, onPick } = useForForm(registerUser, {
         username: '',
         prenom: '',
         nom: '',
         email: '',
         password: '',
         confirmPassword: '',
+        image: ''
       });
+
+    const imageList = [profilePic1, profilePic2, profilePic3, profilePic4]
 
     const [addUser, { loading }] = useMutation(REGISTER_USER, {
     update(
@@ -42,14 +53,35 @@ export default function Formin(props) {
     function registerUser() {
         addUser();
     }
-    // const onSubmit = async data => {
-    // alert(JSON.stringify(data));
-    // };
+
+    // image: '/static/media/profilePic1.62db51f5.png'
+
     return (
         <Main>
             <Form onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>
+<<<<<<< HEAD
                 <h1>{t('signUp.title')}</h1>
                 {/* <label>Email or phone number</label> */}
+=======
+                <h2>SIGN UP</h2>
+                {Object.keys(errors).length > 0 && (<AlertD>{errors.image}</AlertD>)}
+                <div>
+                    <ImagePicker 
+                        name='image'
+                        required = "required"
+                        error={errors.image ? true : false}
+                        images={imageList.map((image, i) => ({src: image, value: i}))}
+                        // onPick={() => {setonPick(image)}}
+                        value={values.image}
+                        onPick = {onPick}
+                        
+                        // onChange={onChange}
+                        
+                    />
+                </div>  
+                {Object.keys(errors).length > 0 && (<Alert>{errors.username}</Alert>)}
+                {Object.keys(errors).length > 0 && (<AlertA>{errors.email}</AlertA>)}
+>>>>>>> 81df9e6e15b18b3c52b319a26f0229cce8dacc55
                 <Input
                     name='username'
                     required = "required"
@@ -60,7 +92,19 @@ export default function Formin(props) {
                     error={errors.username ? true : false}
                     onChange={onChange}
                 />
-                {Object.keys(errors).length > 0 && (<Alert>{errors.username}</Alert>)}
+                {Object.keys(errors).length > 0 && (<AlertB>{errors.email}</AlertB>)}
+                <Input
+                    name='email'
+                    required = "required"
+                    type='text'
+                    placeholder='Email'
+                    maxLength='30'
+                    value={values.email}
+                    error={errors.email ? true : false}
+                    onChange={onChange}
+                />
+                {Object.keys(errors).length > 0 && (<Alert>{errors.prenom}</Alert>)}
+                {Object.keys(errors).length > 0 && (<AlertA>{errors.nom}</AlertA>)}
                 <Input
                     name='prenom'
                     required = "required"
@@ -71,7 +115,7 @@ export default function Formin(props) {
                     error={errors.prenom ? true : false}
                     onChange={onChange}
                 />
-                {Object.keys(errors).length > 0 && (<Alert>{errors.prenom}</Alert>)}
+                {Object.keys(errors).length > 0 && (<AlertB>{errors.nom}</AlertB>)}
                 <Input
                     name='nom'
                     required = "required"
@@ -82,6 +126,7 @@ export default function Formin(props) {
                     error={errors.nom ? true : false}
                     onChange={onChange}
                 />
+<<<<<<< HEAD
                 {Object.keys(errors).length > 0 && (<Alert>{errors.nom}</Alert>)}
                 <Input
                     name='email'
@@ -94,6 +139,10 @@ export default function Formin(props) {
                     onChange={onChange}
                 />
                 {Object.keys(errors).length > 0 && (<Alert>{errors.email}</Alert>)}
+=======
+                {Object.keys(errors).length > 0 && (<Alert>{errors.password}</Alert>)}
+                {Object.keys(errors).length > 0 && (<AlertA>{errors.password}</AlertA>)}
+>>>>>>> 81df9e6e15b18b3c52b319a26f0229cce8dacc55
                 <Input
                     name='password'
                     required = "required"
@@ -104,7 +153,7 @@ export default function Formin(props) {
                     error={errors.password ? true : false}
                     onChange={onChange}
                 />
-                {Object.keys(errors).length > 0 && (<Alert>{errors.password}</Alert>)}
+                {Object.keys(errors).length > 0 && (<AlertB>{errors.password}</AlertB>)}
                 <Input
                     name="confirmPassword"
                     required = "required"
@@ -115,23 +164,21 @@ export default function Formin(props) {
                     error={errors.confirmPassword ? true : false}
                     onChange={onChange}
                 />
-                {Object.keys(errors).length > 0 && (<Alert>{errors.password}</Alert>)}
                 <Button type='submit' primary>
                     {t('signUp.title')}
                 </Button>
-                {/* {Object.keys(errors).length > 0 && (
-                <div className="ui error message">
-                <ul className="list">
-                    {Object.values(errors).map((value) => (
-                    <li key={value}>{value}</li>
-                    ))}
-                </ul>
-                </div>)} */}
                 <Social>
                     <div>
-                        <SocialIcon url='http://facebook.com/rvgallego' style={{ height: 35, width: 35 }}/>
+                        <SocialIcon fgColor="#fff" network="facebook" url='http://localhost:5000/auth/facebook' style={{ height: 35, width: 35 }}/>
                     </div>
+<<<<<<< HEAD
                     <p>{t('signUp.facebook')}</p>
+=======
+                    <SocialI>
+                        <a href="/login"><img src={iconSocial} alt='42' /></a>
+                    </SocialI>
+                    <p>Sign up with Facebook</p>
+>>>>>>> 81df9e6e15b18b3c52b319a26f0229cce8dacc55
                 </Social>
                 <Login>
                     <p>{t('signUp.hypertube')}</p>
@@ -150,6 +197,7 @@ const REGISTER_USER = gql`
     $email: String!
     $password: String!
     $confirmPassword: String!
+    $image: String!
   ) {
     register(
       registerInput: {
@@ -159,6 +207,7 @@ const REGISTER_USER = gql`
         email: $email
         password: $password
         confirmPassword: $confirmPassword
+        image: $image
       }
     ) {
         id
@@ -168,25 +217,31 @@ const REGISTER_USER = gql`
         nom
         createdAt
         token
+        image
     }
   }
 `;
 
 const Main = styled.main`
     box-sizing: border-box;
-    width: 28rem;
-    margin: 2rem auto 10rem;
+    margin: 1rem auto;
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
-    padding: 3rem 4.5rem 2rem;
+    padding: 3rem 4.5rem;
     border-radius: 3px;
-
+    max-width: 90%;
     flex: 1;
 `;
 
+const SocialI = styled.div`
+    margin-right: 42rem;
+`
+
 const Form = styled.form`
-    & h1 {
-        margin: 0 0 2rem 0;
+    & h2 {
+        margin: 0 0 1rem 0;
         color: white;
+        display: flex;
+        justify-content: center;
     }
 `;
 
@@ -200,13 +255,19 @@ const Input = styled.input`
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 0 0 1.5rem;
+    margin: 0 1% 1.5rem;
     cursor: default;
     outline: 0;
-    width: 100%;
+    width: 48%;
+    min-width: 48%;
+
     ::placeholder {
         text-align: center;
         text-indent: -0.1rem;
+    }
+    @media (max-width: 768px) {
+    flex-direction: row;
+    width: 100%;
     }
 `;
 
@@ -221,7 +282,7 @@ const Button = styled.button`
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 1rem 0 5rem;
+    margin: 1rem 0 1rem;
     cursor: pointer;
     outline: 0;
 `;
@@ -255,7 +316,51 @@ const Login = styled.div`
 `;
 
 const Alert = styled.p`
+    display: inline-block;
     font-size: 0.8rem;
     color: #e87c03;
-    margin: -1.3rem 0 1rem;
+    padding-top: 0rem; 
+    width: 50%;
+    text-align: center;
+    @media (max-width: 768px) {
+        width: 100%;
+    }
+`;
+
+const AlertA = styled.p`
+    display: inline-block;
+    font-size: 0.8rem;
+    color: #e87c03;
+    padding-top: 0rem; 
+    width: 50%;
+    text-align: center;
+    @media (max-width: 768px) {
+        display: none;
+    }
+`;
+
+const AlertB = styled.p`
+    display: none;
+    @media (max-width: 768px) {
+        display: inline-block;
+        font-size: 0.8rem;
+        color: #e87c03;
+        padding-top: 0rem; 
+        width: 100%;
+        text-align: center;
+    }
+`;
+
+const AlertD = styled.p`
+/* margin: 0 0 0 -10rem; */
+    /* position: ; */
+    display: block;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #e87c03;
+    margin: 0rem 0rem -0.5rem 0rem;
+    padding-top: 0rem; 
+    width: 100%;    /* padding: 0.9rem 0; */
+    /* text-indent: 1rem; */
+    /* display: absolute; */
 `;
