@@ -15,8 +15,7 @@ const cookieSession = require('cookie-session');
 // const checkAuth = require('./util/check-auth');
 const jwt = require('jsonwebtoken');
 const { SECRET_KEY } = require('./config');
-var generator = require('generate-password');
-const nodemailer = require('nodemailer');
+
 const facebookOptions = {
     clientID: '473679669966044',
     clientSecret: '964e9a615d3c4b01212054e4a4666871',
@@ -25,13 +24,13 @@ const facebookOptions = {
 };
 const facebookCallback = (accessToken, refreshToken, profile, done) => {
     User.findOne({ facebookId: profile.id }).then(currentUser => {
-        console.log(profile.id);
+        // console.log(profile.id);
         // console.log(User);
 
-        console.log(currentUser);
+        // console.log(currentUser);
         if (currentUser) {
-            console.log("ok");
-            console.log(currentUser);
+            // console.log("ok");
+            // console.log(currentUser);
             done(null, currentUser);
             // console.log('ok');
         } else {
@@ -106,7 +105,7 @@ app.get(
             { expiresIn: '3h' }
         );
         try {
-            var decoded = jwt.verify(token, SECRET_KEY);
+            // var decoded = jwt.verify(token, SECRET_KEY);
             // console.log(decoded);
             res.cookie('auth', token);
             return res.redirect('http://localhost:3000/SocialAuthRedirect');
@@ -114,7 +113,7 @@ app.get(
         } catch (e) {
             console.log(err);
         }
-        console.log(token);
+        // console.log(token);
         // successRedirect: 'http://localhost:3000/';
     }
 );

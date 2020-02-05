@@ -15,9 +15,10 @@ function SocialAuthRedirect(props) {
 
   useEffect(() => {
     async function getCookie() {
-        await console.log(cookies.auth);
+        // await console.log(cookies.auth);
         await localStorage.setItem('jwtToken', cookies.auth);
-        // await caca 
+
+        // await console.log(caca);
         await context.login(cookies.auth);
         // await removeCookie('auth');
         await props.history.push('/');
@@ -26,12 +27,16 @@ function SocialAuthRedirect(props) {
       }
       // Execute the created function directly
       getCookie();
+      // removeCookie('auth');
     // window.addEventListener('mousemove', () => {});
     // returned function will be called on component unmount 
     // return () => {
     //   window.removeEventListener('mousemove', () => {})
     // }
-  }, []);
+  // }, [context, cookies.auth, props.history]);
+  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
   return (
     <div></div>

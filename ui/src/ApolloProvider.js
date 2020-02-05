@@ -12,7 +12,6 @@ const httpLink = createHttpLink({
 
 const authLink = setContext(() => {
   const token = localStorage.getItem('jwtToken');
-  console.log("8===D" + token);
   return {
     headers: {
       Authorization: token ? `Bearer ${token}` : ''
