@@ -5,7 +5,7 @@ const initialState = {
   user: null
 };
 
-console.log(initialState);
+// console.log(initialState);
 
 if (localStorage.getItem('jwtToken')) {
   const decodedToken = jwtDecode(localStorage.getItem('jwtToken'));

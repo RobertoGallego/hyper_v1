@@ -12,6 +12,8 @@ import profilePic2 from "../../assets/images/profilePic2.png";
 import profilePic3 from "../../assets/images/profilePic3.png";
 import profilePic4 from "../../assets/images/profilePic4.png";
 import "./index.css";
+import iconSocial from '../../assets/images/42-icon.png';
+
 
 
 export default function Formin(props) {
@@ -147,6 +149,9 @@ export default function Formin(props) {
                     <div>
                         <SocialIcon fgColor="#fff" network="facebook" url='http://localhost:5000/auth/facebook' style={{ height: 35, width: 35 }}/>
                     </div>
+                    <SocialI>
+                        <a href="/login"><img src={iconSocial} alt='42' /></a>
+                    </SocialI>
                     <p>Sign up with Facebook</p>
                 </Social>
                 <Login>
@@ -200,6 +205,10 @@ const Main = styled.main`
     max-width: 90%;
     flex: 1;
 `;
+
+const SocialI = styled.div`
+    margin-right: 42rem;
+`
 
 const Form = styled.form`
     & h2 {
