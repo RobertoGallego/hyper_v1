@@ -29,7 +29,7 @@ const FETCH_USER_QUERY = gql`
 export default function Profile() {
   const user = useContext(AuthContext);
   const userId = user.user.id;
-
+  console.log(userId)
   const {
     data: { getUser }
   } = useQuery(FETCH_USER_QUERY, {

@@ -145,7 +145,7 @@ export default function Formin(props) {
                 </Button>
                 <Social>
                     <div>
-                        <SocialIcon url='http://facebook.com/rvgallego' style={{ height: 35, width: 35 }}/>
+                        <SocialIcon url='http://localhost:5000/auth/facebook' style={{ height: 35, width: 35 }}/>
                     </div>
                     <p>Sign up with Facebook</p>
                 </Social>
