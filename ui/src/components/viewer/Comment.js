@@ -3,10 +3,12 @@ import styled from 'styled-components';
 import gql from "graphql-tag";
 import moment from 'moment';
 import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useTranslation } from "react-i18next";
 
 export default function Com(movieID) {
 
     const [bodyCom, setBodyCom] = useState("");
+    const { t } = useTranslation();
 
     const commentChange = e => {
         setBodyCom(e.target.value);
@@ -53,11 +55,11 @@ export default function Com(movieID) {
             <Comment>
                 <NewCom>
                     <Form>
-                        <Input onChange={commentChange} type="text" name="CommentInput" placeholder="Add a Comment" />
-                        <Send onClick={sendComment} type="submit" name="Send" value="Send" />
+                        <Input onChange={commentChange} type="text" name="CommentInput" placeholder={t('viewer.addComment')} />
+                        <Send onClick={sendComment} type="submit" name="Send" value={t('viewer.send')} />
                     </Form>
                 </NewCom>
-                <NoCom> No Comments</NoCom>
+                <NoCom>{t('viewer.noComments')}</NoCom>
             </Comment>
         );
     }
@@ -65,8 +67,8 @@ export default function Com(movieID) {
         <Comment>
             <NewCom>
                 <Form>
-                    <Input onChange={commentChange} type="text" name="CommentInput" placeholder="Add a Comment" />
-                    <Send onClick={sendComment} type="submit" name="Send" value="Send" />
+                    <Input onChange={commentChange} type="text" name="CommentInput" placeholder={t('viewer.addComment')} />
+                    <Send onClick={sendComment} type="submit" name="Send" value={t('viewer.send')} />
                 </Form>
             </NewCom>
             {comments.map((comment,i) => 

@@ -17,11 +17,13 @@ const Container = styled.div`
 const FETCH_USER_QUERY = gql`
   query($userId: ID!) {
     getUser(userId: $userId) {
+      facebookId
+      email
+      username
       prenom
       nom
-      username
       createdAt
-      email
+      image
     }
   }
 `;
@@ -30,17 +32,18 @@ export default function Profile() {
   const { t } = useTranslation();
   const user = useContext(AuthContext);
   const userId = user.user.id;
-  // console.log(user.login);
   const { data: { getUser }} = useQuery(FETCH_USER_QUERY, { 
     variables: {
       userId: userId
     }
   });
 
+  console.log(getUser);
+
   if (!getUser) {
     return <h3>{t('loading')}</h3>;
   } else {
-    const { prenom, nom, username, createdAt, email } = getUser;
+    const { prenom, nom, username, createdAt, email, image, facebookId } = getUser;
     return (
       <Container>
         <Header />
@@ -50,6 +53,8 @@ export default function Profile() {
           username={username}
           createdAt={createdAt}
           email={email}
+          image={image}
+          facebookId={facebookId}
         />
         <Footer />
       </Container>

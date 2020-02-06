@@ -48,5 +48,14 @@
     "rPW.p1": "If that account is in our system, we emailed you a link to reset your password.",
     "rPW.return": "Go back to login page",
     "rPW.p2": "It happens to the best of us. Enter your email and we'll send you reset instructions.",
-    "rPW.send": "Send"
+    "rPW.send": "Send",
+
+    "viewer.span": "Link for torrent",
+    "viewer.comment": "Comments",
+    "viewer.grade": "Grade",
+    "viewer.date": "Release date",
+    "viewer.time": "Duration",
+    "viewer.addComment": "Add comment",
+    "viewer.send": "Send",
+    "viewer.noComments": "No comments"
 }

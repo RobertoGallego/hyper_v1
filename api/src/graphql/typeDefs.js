@@ -25,6 +25,7 @@ module.exports = gql`
     }
     type User {
         id: ID!
+        facebookId: String!
         email: String!
         prenom: String!
         nom: String!
@@ -79,9 +80,10 @@ module.exports = gql`
         deleteComment(postId: ID!, commentId: ID!): Post!
         likePost(postId: ID!): Post!
         logout: Boolean
-        editProfile(userId: ID!, username: String!, prenom: String!, nom: String!, email: String!): User!
+        editProfile(userId: ID!, username: String!, prenom: String!, nom: String!, email: String!, image: String!): User!
         modifyPassword(userId: ID!, oldPassword: String!, newPassword: String!, confirmPassword: String!): User!
         addComment(movieId: String!, body: String!): Comment!
+        setLanguage(userId: ID!, language: String!): User!
     }
     type Subscription {
         newPost: Post!

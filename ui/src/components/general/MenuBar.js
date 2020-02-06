@@ -12,7 +12,7 @@ const Nav = styled.nav`
   padding: 10px;
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = styled.a`
   color: #666;
   font-size: 20px;
   margin: 25px 15px;
@@ -75,9 +75,9 @@ function MenuBar({ fetchMovies }) {
         <Link to="/">
           <Pict src={logoTop} alt="Hypertube" />
         </Link>
-        <StyledLink to="/">{t('header.home')}</StyledLink>
-        <StyledLink to="/profile">{t('header.profile')}</StyledLink>
-        <StyledLink onClick={logout} to="/login">
+        <StyledLink href="/">{t('header.home')}</StyledLink>
+        <StyledLink href="/profile">{t('header.profile')}</StyledLink>
+        <StyledLink onClick={logout} href="/login">
           {t('header.logout')}
         </StyledLink>
         {isHome && (

@@ -38,14 +38,16 @@ const facebookCallback = (accessToken, refreshToken, profile, done) => {
             var newUser = new User({
                 id: uuid(),
                 facebookId: profile.id,
-                username: profile.name.givenName,
-                prenom: profile.name.givenName,
-                nom: profile.name.familyName,
-                createdAt: new Date().toISOString(),
                 email:
                     profile.emails &&
                     profile.emails[0] &&
-                    profile.emails[0].value
+                    profile.emails[0].value,
+                username: profile.name.givenName,
+                prenom: profile.name.givenName,
+                nom: profile.name.familyName,
+                password: "null",
+                createdAt: new Date().toISOString(),
+                image: "/static/media/profilePic1.62db51f5.png"
             })
                 .save()
                 .then(newUser => {

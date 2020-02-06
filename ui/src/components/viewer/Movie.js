@@ -7,6 +7,7 @@ import Com from './Comment';
 import gql from "graphql-tag";
 import noImage from "../../assets/images/noImage.png";
 import { useQuery } from "@apollo/react-hooks";
+import { useTranslation } from "react-i18next";
 
 export default function Movie() {
 
@@ -26,6 +27,7 @@ export default function Movie() {
     const movieID = useParams().id;
     const res = useQuery(FETCH_ONE_MOVIE, {variables : {id : movieID}});
     const movie = res.data.getOneMovie;
+    const { t } = useTranslation();
     
     if (!movie) {
         return <h3>Loading ...</h3>;
@@ -46,15 +48,15 @@ export default function Movie() {
                             <Video controls>
                             </Video>
                             <Text>Torrents: </Text>
-                            <span>Link for Torrent</span>
-                            <Text>Comments: </Text>
+                            <span>{t('viewer.span')}</span>
+                            <Text>{t('viewer.comment')}: </Text>
                             <Com movie={movieID}/>
                         </Left>
                         <Right>
-                            <Text>Grade: {movie.vote_average}</Text>
+                            <Text>{t('viewer.grade')}: {movie.vote_average}</Text>
                             <Picture src={image} alt={`${movie.title}Image`}/>
-                            <Text>Release Date: {movie.release_date}</Text>
-                            <Text>Duration: {movie.runtime}min</Text>
+                            <Text>{t('viewer.date')}: {movie.release_date}</Text>
+                            <Text>{t('viewer.time')}: {movie.runtime}mins</Text>
                         </Right>
                     </Split>
                 </Content>
