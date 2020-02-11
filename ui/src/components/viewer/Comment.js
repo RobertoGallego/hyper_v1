@@ -1,79 +1,25 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import gql from "graphql-tag";
-import moment from 'moment';
-import { useQuery, useMutation } from "@apollo/react-hooks";
-import { useTranslation } from "react-i18next";
 
-export default function Com(movieID) {
-
-    const [bodyCom, setBodyCom] = useState("");
-    const { t } = useTranslation();
-
-    const commentChange = e => {
-        setBodyCom(e.target.value);
-    }
-
-    const FETCH_COMMENTS = gql`
-        query getComments($movId: String!){
-            getComments(movieId: $movId){
-                id
-                username
-                body
-                movieId
-                createdAt
-            }
-        }
-    `
-
-    const ADD_COMMENT = gql`
-        mutation addComment($id: String!, $text: String!){
-            addComment(movieId: $id, body: $text){
-                id
-                body
-                username
-                createdAt
-                movieId
-            }
-        }
-    `
-
-    const [addCom] = useMutation(ADD_COMMENT);
-
-    const sendComment = () => {
-        if(bodyCom !== ""){
-            addCom({variables : {id : movieID.movie, text: bodyCom}});
-            window.location.reload();
-        }
-    }
-
-    const comRes = useQuery(FETCH_COMMENTS, {variables : {movId : movieID.movie}});
-    const comments = comRes.data.getComments;    
-
-    if(!comments){
-        return (
-            <Comment>
-                <NewCom>
-                    <Form>
-                        <Input onChange={commentChange} type="text" name="CommentInput" placeholder={t('viewer.addComment')} />
-                        <Send onClick={sendComment} type="submit" name="Send" value={t('viewer.send')} />
-                    </Form>
-                </NewCom>
-                <NoCom>{t('viewer.noComments')}</NoCom>
-            </Comment>
-        );
-    }
+export default function Com() {
     return (
         <Comment>
+            <OldCom><b>UserName:</b> <br/><br/> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </OldCom>
             <NewCom>
                 <Form>
-                    <Input onChange={commentChange} type="text" name="CommentInput" placeholder={t('viewer.addComment')} />
-                    <Send onClick={sendComment} type="submit" name="Send" value={t('viewer.send')} />
+                    <Input
+                        type="text"
+                        name="CommentInput"
+                        placeholder="Add a Comment"
+                        // onChange={this.handleInputChange} 
+                    />
+                    <Send
+                        type="submit"
+                        name="Send"
+                        value="Send"
+                    />
                 </Form>
             </NewCom>
-            {comments.map((comment,i) => 
-                <OldCom key={i}><b>{comment.username}</b><br/>{comment.body}<br/>{moment(comment.createdAt).format("LLL")}</OldCom>
-            )}
         </Comment>
     );
 }
@@ -90,12 +36,8 @@ padding: 1em;
 background: #696969;
 `
 
-const NoCom = styled.h3`
-    text-align: center;
-`
-
 const NewCom = styled.div`
-    margin: 0 auto 2vmin;
+    margin: 0 auto;
 `
 
 const Form = styled.div`
