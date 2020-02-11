@@ -68,7 +68,7 @@ module.exports = gql`
         getUsers: [User]
         getUser(userId: ID!): User
         currentUser: User
-        getMovies(search: String!): [Movie]
+         getMovies(search: String!, page: Int): [Movie]
         getOneMovie(id: ID!): MovieDetails
         getComments(movieId: String!): [Comment]
     }
