@@ -4,16 +4,6 @@ export const Container = styled.div`
   flex-grow: 1;
 `;
 
-export const CardBox = styled.div`
-  margin-top: 10vh;
-  margin-bottom: 10vh;
-`;
-
-export const CardBot = styled.div`
-  background-color: #101010;
-  border-radius: 7px;
-`;
-
 export const Button = styled.button`
   background-color: #db202c;
 
@@ -29,10 +19,6 @@ export const HyperLink = styled.a`
     color: #a4a4a4;
     text-decoration: none;
   }
-`;
-
-export const Loading = styled.h3`
-  color: #000000;
 `;
 
 export const Input = styled.input`
@@ -66,13 +52,9 @@ export const Img = styled.img`
   width: 200px;
   border-radius: 50%;
   margin: auto;
-  -webkit-box-shadow: 0px 0px 96px -26px rgba(255, 255, 255, 1);
-  -moz-box-shadow: 0px 0px 96px -26px rgba(255, 255, 255, 1);
-  box-shadow: 0px 0px 96px -26px rgba(255, 255, 255, 1);
-`;
-
-export const Username = styled.h4`
-  margin-bottom: 22px;
+  -webkit-box-shadow: 0px 0px 20px 0px rgba(255, 255, 255, 1);
+  -moz-box-shadow: 0px 0px 20px 0px rgba(255, 255, 255, 1);
+  box-shadow: 0px 0px 20px 0px rgba(255, 255, 255, 1);
 `;
 
 export const Hr = styled.hr`

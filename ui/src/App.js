@@ -1,44 +1,46 @@
-import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { AuthProvider } from './context/auth';
-import AuthRoute from './util/AuthRoute';
-import SecureRoute from './util/SecureRoute';
-// import MenuBar from './components/MenuBar';
-import Home from './home/Home';
-import Register from './components/register';
-import Login from './components/login';
-import Profile from './components/profile/Profile';
-import Edit from './components/profile/Edit';
-import Movie from './components/viewer/Movie';
-import Resetpassword from './components/resetpassword';
-import UpdatePassword from './components/resetpassword/updatepassword';
+import React, { Suspense } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { AuthProvider } from "./context/auth";
+import AuthRoute from "./util/AuthRoute";
+import SecureRoute from "./util/SecureRoute";
+
+import Home from "./home/Home";
+import Register from "./components/register";
+import Login from "./components/login";
+import Profile from "./components/profile/Profile";
+import Edit from "./components/profile/Edit";
+import Movie from "./components/viewer/Movie";
+import Resetpassword from "./components/resetpassword";
+import UpdatePassword from "./components/resetpassword/updatepassword";
 import ModifyPassword from "./components/profile/ModifyPassword";
-import SocialAuthRedirect from './context/SocialAuthRedirect';
+import SocialAuthRedirect from "./context/SocialAuthRedirect";
 // import SinglePost from './pages/SinglePost';
 function App() {
-    return (
-        <AuthProvider>
-            <Router>
-                <SecureRoute exact path='/' component={Home} />
-                <Route exact path='/resetpassword' component={Resetpassword} />
-                <AuthRoute
-                    exact
-                    path='/updatepassword'
-                    component={UpdatePassword}
-                />
-                <Route
-                    exact
-                    path='/SocialAuthRedirect'
-                    component={SocialAuthRedirect}
-                />
-                <AuthRoute exact path='/login' component={Login} />
-                <AuthRoute exact path='/register' component={Register} />
-                <SecureRoute exact path='/profile' component={Profile} />
-                <SecureRoute exact path='/edit' component={Edit} />
-                <SecureRoute exact path="/movie/:id" component={Movie} />
-                <SecureRoute exact path="/modifyPassword" component={ModifyPassword} />
-            </Router>
-        </AuthProvider>
-    );
+  return (
+    <Suspense fallback="loading">
+      <AuthProvider>
+        <Router>
+          <SecureRoute exact path="/" component={Home} />
+          <Route exact path="/resetpassword" component={Resetpassword} />
+          <AuthRoute exact path="/updatepassword" component={UpdatePassword} />
+          <Route
+            exact
+            path="/SocialAuthRedirect"
+            component={SocialAuthRedirect}
+          />
+          <AuthRoute exact path="/login" component={Login} />
+          <AuthRoute exact path="/register" component={Register} />
+          <SecureRoute exact path="/profile" component={Profile} />
+          <SecureRoute exact path="/edit" component={Edit} />
+          <SecureRoute exact path="/movie/:id" component={Movie} />
+          <SecureRoute
+            exact
+            path="/modifyPassword"
+            component={ModifyPassword}
+          />
+        </Router>
+      </AuthProvider>
+    </Suspense>
+  );
 }
 export default App;

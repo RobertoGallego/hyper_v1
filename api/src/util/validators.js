@@ -117,10 +117,14 @@ module.exports.validateEditInput = (
 	username,
 	prenom,
 	nom,
-	email
+	email,
+	image
 	) => {
 		const errors = {};
 
+		if (image.trim() === '') {
+			errors.image = 'Choose one perfil icon';
+		}
 		if (prenom === '') {
 			errors.prenom = 'Prenom must not empty';
 		} else if (prenom.length < 2) {

@@ -11,19 +11,29 @@ import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
 import { AuthContext } from "../../context/auth";
 import { useForForm } from "../../util/hooks";
+import { useTranslation } from "react-i18next";
+import ImagePicker from 'react-image-picker';
+import profilePic1 from "../../assets/images/profilePic1.png";
+import profilePic2 from "../../assets/images/profilePic2.png";
+import profilePic3 from "../../assets/images/profilePic3.png";
+import profilePic4 from "../../assets/images/profilePic4.png";
 
 export default function EditCard(props) {
+  const { t } = useTranslation();
   const { prenom, nom, username, email } = props;
   const context = useContext(AuthContext);
   const userId = context.user.id;
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
-  const { onChange, onSubmit, values } = useForForm(editProfileCallback, {
+  const { onChange, onSubmit, values, onPick } = useForForm(editProfileCallback, {
     username: username,
     prenom: prenom,
     nom: nom,
-    email: email
+    email: email,
+    image: ''
   });
+
+  const imageList = [profilePic1, profilePic2, profilePic3, profilePic4]
 
   const [editProfile, { loading }] = useMutation(EDIT_PROFILE_MUTATION, {
     update(_, { data: { editProfile: userData } }) {
@@ -37,7 +47,8 @@ export default function EditCard(props) {
       username: values.username,
       prenom: values.prenom,
       nom: values.nom,
-      email: values.email
+      email: values.email,
+      image: values.image
     }
   });
 
@@ -48,70 +59,84 @@ export default function EditCard(props) {
   const Render = success ? (
     <Container className="container-fluid">
       <div className="row mt-5 justify-content-center">
-        <div className="col-xl-4">
-          <h2>Modify password</h2>
+        <div className="col-sm-8 col-xl-4">
+          <h2>{t("profile.edit.title")}</h2>
           <Hr />
         </div>
       </div>
       <div className="row mt-4 justify-content-center">
-        <div className="col-xl-4 text-center">
-          <h6>Your profile has been successfully edited!</h6>
+        <div className="col-sm-8 col-xl-4 text-center">
+          <h6>{t("profile.edit.msg")}</h6>
         </div>
       </div>
       <div className="text-center mt-4">
-        <HyperLink href="/profile">Return to profile</HyperLink>
+        <HyperLink href="/profile">{t("profile.return")}</HyperLink>
       </div>
     </Container>
   ) : (
     <Container className="container-fluid">
       <div className="row mt-5 justify-content-center">
-        <div className="col-xl-4">
-          <h2>Edit profile</h2>
+        <div className="col-sm-8 col-xl-4">
+          <h2>{t("profile.edit.title")}</h2>
           <Hr />
         </div>
       </div>
       <div className="row mt-4 justify-content-center">
-        <div className="col-xl-2">
+        <div className="col-sm-6 col-xl-2">
           <form onSubmit={onSubmit}>
-            <label for="username">Username</label>
+            <div>
+              <ImagePicker
+                name="image"
+                required="required"
+                error={errors.image ? true : false}
+                images={imageList.map((image, i) => ({ src: image, value: i }))}
+                // onPick={() => {setonPick(image)}}
+                value={values.image}
+                onPick={onPick}
+
+                // onChange={onChange}
+              />
+            </div>
+            {Object.keys(errors).length > 0 && (<Alert>{errors.image}</Alert>)}
+            <label htmlFor="username">{t("username")}</label>
             <Input
               name="username"
               required="required"
               type="text"
-              placeholder="Username"
+              placeholder={t("username")}
               value={values.username}
               error={errors.username ? true : false}
               onChange={onChange}
             />
             {Object.keys(errors).length > 0 && <Alert>{errors.username}</Alert>}
-            <label for="prenom">First name</label>
+            <label htmlFor="prenom">{t("firstName")}</label>
             <Input
               name="prenom"
               required="required"
               type="text"
-              placeholder="First Name"
+              placeholder={t("firstName")}
               value={values.prenom}
               error={errors.prenom ? true : false}
               onChange={onChange}
             />
-            <label for="nom">Last name</label>
+            <label htmlFor="nom">{t("lastName")}</label>
             <Input
               name="nom"
               required="required"
               type="text"
-              placeholder="Last Name"
+              placeholder={t("lastName")}
               value={values.nom}
               error={errors.nom ? true : false}
               onChange={onChange}
             />
             {Object.keys(errors).length > 0 && <Alert>{errors.prenom}</Alert>}
             {Object.keys(errors).length > 0 && <Alert>{errors.nom}</Alert>}
-            <label for="email">Email address</label>
+            <label htmlFor="email">{t("email")}</label>
             <Input
               name="email"
               required="required"
               type="text"
-              placeholder="Email"
+              placeholder={t("email")}
               value={values.email}
               error={errors.email ? true : false}
               onChange={onChange}
@@ -119,12 +144,12 @@ export default function EditCard(props) {
             {Object.keys(errors).length > 0 && <Alert>{errors.email}</Alert>}
             <div className="text-center mt-4">
               <Button type="submit" className="btn btn-danger">
-                Save
+                {t("save")}
               </Button>
             </div>
           </form>
-          <div className="text-center mt-4">
-            <HyperLink href="/profile">Return to profile</HyperLink>
+          <div className="text-center mt-4 mb-4">
+            <HyperLink href="/profile">{t("profile.return")}</HyperLink>
           </div>
         </div>
       </div>
@@ -137,14 +162,14 @@ export default function EditCard(props) {
     return (
       <Container className="container-fluid">
         <div className="row mt-5 justify-content-center">
-          <div className="col-xl-4">
-            <h2>Edit profile</h2>
+          <div className="col-sm-8 col-xl-4">
+            <h2>{t("profile.edit.title")}</h2>
             <Hr />
           </div>
         </div>
         <div className="row mt-4 justify-content-center">
-          <div className="col-xl-4 text-center">
-            <h6>Loading ...</h6>
+          <div className="col-sm-8 col-xl-4 text-center">
+            <h6>{t("loading")}</h6>
           </div>
         </div>
       </Container>
@@ -159,6 +184,7 @@ const EDIT_PROFILE_MUTATION = gql`
     $prenom: String!
     $nom: String!
     $email: String!
+    $image: String!
   ) {
     editProfile(
       userId: $userId
@@ -166,6 +192,7 @@ const EDIT_PROFILE_MUTATION = gql`
       prenom: $prenom
       nom: $nom
       email: $email
+      image: $image
     ) {
       id
     }

@@ -118,15 +118,22 @@ module.exports = {
             }
             // hash password and create an auth token
             password = await bcrypt.hash(password, 12);
+            const facebookId = "";
+            const fortytwoId = "";
+            const googleId = "";
 
             const newUser = new User({
+                facebookId,
+                fortytwoId,
+                googleId,
                 email,
                 username,
                 prenom,
                 nom,
                 password,
                 createdAt: new Date().toISOString(),
-                image
+                image,
+                language: "en"
             });
 
             const res = await newUser.save();
@@ -207,12 +214,13 @@ module.exports = {
                 }
             }
         },
-        async editProfile( _, { userId, username, prenom, nom, email }) {
+        async editProfile( _, { userId, username, prenom, nom, email, image }) {
             const { valid, errors } = validateEditInput(
                 username,
                 prenom,
                 nom,
                 email,
+                image
             )
             if (!valid) {
                 throw new UserInputError('Errors', { errors });
@@ -238,12 +246,19 @@ module.exports = {
                     });
                 }
             }
-            const res = await User.findByIdAndUpdate({ _id: userId }, { email: email, username: username, prenom: prenom, nom: nom }, {new: true})
+            const res = await User.findByIdAndUpdate({ _id: userId }, { email: email, username: username, prenom: prenom, nom: nom, image: image }, {new: true})
             const token = generateToken(user);
             return {
                 ...res._doc,
                 id: res._id,
                 token,
+            }
+        },
+        async setLanguage( _, {userId, language}) {
+            const res = await User.findByIdAndUpdate({ _id: userId }, { language: language}, {new: true})
+            return {
+                ...res._doc,
+                id: res._id
             }
         }
     }

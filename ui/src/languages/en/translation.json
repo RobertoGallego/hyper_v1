@@ -1,0 +1,61 @@
+{
+    "footer": "Hypertube by BabyYodaSayDame",
+
+    "header.home": "Home",
+    "header.profile": "Profile",
+    "header.logout": "Logout",
+    "header.search": "Search",
+
+    "login.title": "Sign in",
+    "username": "Username",
+    "password": "Password",
+    "login.rememberMe": "Remember me",
+    "login.forgotPassword": "Forgot your password ?",
+    "login.facebook": "Sign in with Facebook",
+    "login.hypertube": "New to Hypertube ?",
+    "login.signUp": "Sign up now !",
+
+    "loading": "Loading ...",
+    "profile.edit.title": "Edit profile",
+    "profile.edit.msg": "Your profile has been successfully edited !",
+    "profile.return": "Return to profile",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "save": "Save",
+
+    "profile.mPW.title": "Modify password",
+    "profile.mPW.msg": "Your password has been successfully modified !",
+    "oldPassword": "Old password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+
+    "profile.title": "Profile",
+    "joinedIn": "Joined in",
+    "profile.btn": "Edit profile",
+    "profile.link": "Modify your password",
+    "preferences": "Preferences",
+    "changeLanguage": "Change language:",
+    "english": "English",
+    "french": "French",
+
+    "signUp.title": "Sign up",
+    "signUp.facebook": "Sign up with Facebook",
+    "signUp.hypertube": "Already have an account ?",
+    "signUp.login": "Login now",
+
+    "rPW.title": "Reset your password",
+    "rPW.p1": "If that account is in our system, we emailed you a link to reset your password.",
+    "rPW.return": "Go back to login page",
+    "rPW.p2": "It happens to the best of us. Enter your email and we'll send you reset instructions.",
+    "rPW.send": "Send",
+
+    "viewer.span": "Link for torrent",
+    "viewer.comment": "Comments",
+    "viewer.grade": "Grade",
+    "viewer.date": "Release date",
+    "viewer.time": "Duration",
+    "viewer.addComment": "Add comment",
+    "viewer.send": "Send",
+    "viewer.noComments": "No comments"
+}

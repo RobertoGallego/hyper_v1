@@ -4,6 +4,7 @@ import styled from "styled-components"
 import { Button, GhostInput } from "./styledComponents"
 import RecoverPasswordStyles from "./RecoverPassword.styles"
 import axios from "axios"
+import { useTranslation } from 'react-i18next';
 
 class RecoverPassword extends Component {
   state = {
@@ -20,37 +21,36 @@ class RecoverPassword extends Component {
     this.setState({ email: "", submitted: true })
   }
   render() {
+    const { t } = useTranslation();
     const { email, submitted } = this.state
     return (
       <RecoverPasswordStyles>
-        <h3>Reset your password</h3>
+        <h3>{t('login.rPW.title')}</h3>
         {submitted ? (
           <div className="reset-password-form-sent-wrapper">
             <p>
-              If that account is in our system, we emailed you a link to reset
-              your password.
+              {t('login.rPW.p1')}
             </p>
             <Link to="/login" className="ghost-btn">
-              Return to sign in
+              {t('login.rPW.return')}
             </Link>
           </div>
         ) : (
           <div className="reset-password-form-wrapper">
             <p>
-              It happens to the best of us. Enter your email and we'll send you
-              reset instructions.
+              {t('login.rPW.p2')}
             </p>
             <form onSubmit={this.sendPasswordResetEmail}>
               <GhostInput
                 onChange={this.handleChange}
                 value={email}
-                placeholder="Email address"
+                placeholder={t('email')}
               />
               <Button className="btn-primary password-reset-btn">
-                Send password reset email
+                {t('login.rPW.send')}
               </Button>
             </form>
-            <Link to="/login">I remember my password</Link>
+            <Link to="/login">{t('login.rPW.return')}</Link>
           </div>
         )}
       </RecoverPasswordStyles>

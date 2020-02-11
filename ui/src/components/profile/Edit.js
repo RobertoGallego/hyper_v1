@@ -6,6 +6,7 @@ import EditCard from "./EditCard";
 import { AuthContext } from "../../context/auth";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
+import { useTranslation } from 'react-i18next';
 
 const Container = styled.div`
   display: flex;
@@ -20,11 +21,13 @@ const FETCH_USER_QUERY = gql`
       prenom
       nom
       username
+      image
     }
   }
 `;
 
 export default function Edit() {
+  const { t } = useTranslation();
   const user = useContext(AuthContext);
   const userId = user.user.id;
 
@@ -37,9 +40,9 @@ export default function Edit() {
   });
 
   if (!getUser) {
-    return <h3>Loading ...</h3>;
+    return <h3>{t('loading')}</h3>;
   } else {
-    const { email, prenom, nom, username } = getUser;
+    const { email, prenom, nom, username, image } = getUser;
     return (
       <Container>
         <Header />
@@ -48,6 +51,7 @@ export default function Edit() {
           prenom={prenom}
           nom={nom}
           username={username}
+          image={image}
         />
         <Footer />
       </Container>

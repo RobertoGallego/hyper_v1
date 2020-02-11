@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 
 const Container = styled.div`
     background-color: #191919;
@@ -14,9 +15,11 @@ const Text = styled.p`
 `;
 
 export default function Footer () {
+    const { t } = useTranslation();
+
     return (
         <Container>
-            <Text>Hypertube by Team YodaDame &copy;</Text>
+            <Text>{t('footer')}</Text>
         </Container>
     )
 }

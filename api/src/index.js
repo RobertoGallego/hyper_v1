@@ -17,17 +17,18 @@ const jwt = require('jsonwebtoken');
 const { SECRET_KEY } = require('./config');
 var FortyTwoStrategy = require('passport-42').Strategy;
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
+require('dotenv').config()
 
 const facebookOptions = {
-    clientID: '473679669966044',
-    clientSecret: '964e9a615d3c4b01212054e4a4666871',
+    clientID: process.env.FACEBOOK_ID,
+    clientSecret: process.env.FACEBOOK_KEY,
     callbackURL: 'http://localhost:5000/auth/facebook/callback',
     profileFields: ['id', 'email', 'first_name', 'last_name']
 };
 
 passport.use(new GoogleStrategy({
-    clientID: '731416029302-v05o5cbt5f3hu5vkoq4loqiqsk2frue6.apps.googleusercontent.com',
-    clientSecret: 'fP6islCpdGn3Om_5Bs4lbTTd',
+    clientID: process.env.GOOGLE_ID,
+    clientSecret: process.env.GOOGLE_KEY,
     callbackURL: 'http://localhost:5000/auth/google/callback',
     profileFields: ['id', 'email', 'first_name', 'last_name']
   },
@@ -41,11 +42,14 @@ passport.use(new GoogleStrategy({
         var newUser = new User({
             id: uuid(),
             googleId: profile.id,
+            fortytwoId: "",
+            facebookId: "",
             username: profile.displayName,
             prenom: profile.name.givenName,
             nom: profile.name.familyName,
             email: 'not specified',
             createdAt: new Date().toISOString(),
+            image: "/static/media/profilePic1.62db51f5.png"
         })
             .save()
             .then(newUser => {
@@ -57,8 +61,8 @@ passport.use(new GoogleStrategy({
 ));
 
 passport.use(new FortyTwoStrategy({
-    clientID: '7b5a7e3f754d9689bda9bd0b926f6ad06f2c9d8d6c8c8735fe35d738d9dc86c7',
-    clientSecret: '407c1461fd0207d8848f12274b0e6b77e11d1bfd255a88ef35f8b2931dc90eb2',
+    clientID: process.env.FORTYTWO_ID,
+    clientSecret: process.env.FORTYTWO_KEY,
     callbackURL: 'http://localhost:5000/auth/42/callback'
   },
   function(accessToken, refreshToken, profile, done) {
@@ -69,10 +73,13 @@ passport.use(new FortyTwoStrategy({
             var newUser = new User({
                 id: uuid(),
                 fortytwoId: profile.id,
+                googleId: "",
+                facebookId: "",
                 username: profile.username,
                 prenom: profile.name.givenName,
                 nom: profile.name.familyName,
                 createdAt: new Date().toISOString(),
+                image: "/static/media/profilePic1.62db51f5.png",
                 email:
                     profile.emails &&
                     profile.emails[0] &&
@@ -102,14 +109,18 @@ const facebookCallback = (accessToken, refreshToken, profile, done) => {
             var newUser = new User({
                 id: uuid(),
                 facebookId: profile.id,
-                username: profile.name.givenName,
-                prenom: profile.name.givenName,
-                nom: profile.name.familyName,
-                createdAt: new Date().toISOString(),
+                fortytwoId: "",
+                googleId: "",
                 email:
                     profile.emails &&
                     profile.emails[0] &&
-                    profile.emails[0].value
+                    profile.emails[0].value,
+                username: profile.name.givenName,
+                prenom: profile.name.givenName,
+                nom: profile.name.familyName,
+                password: "null",
+                createdAt: new Date().toISOString(),
+                image: "/static/media/profilePic1.62db51f5.png"
             })
                 .save()
                 .then(newUser => {
