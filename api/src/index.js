@@ -26,6 +26,8 @@ const facebookOptions = {
     profileFields: ['id', 'email', 'first_name', 'last_name']
 };
 
+// console.log(process.env.FACEBOOK_ID);
+
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_ID,
     clientSecret: process.env.GOOGLE_KEY,
