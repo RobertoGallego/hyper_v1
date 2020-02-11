@@ -152,7 +152,10 @@ export default function Formin(props) {
                     <SocialI>
                         <a href="http://localhost:5000/auth/42/callback"><img src={iconSocial} alt='42' /></a>
                     </SocialI>
-                    <p>Sign up with Facebook</p>
+                    <div>
+                        <SocialIcon fgColor="#fff" network="google" url='http://localhost:5000/auth/google' style={{ height: 35, width: 35 }}/>
+                    </div>
+                    {/* <p>Sign up with Facebook</p> */}
                 </Social>
                 <Login>
                     <p>Sign up to Hypertube</p>
@@ -207,7 +210,7 @@ const Main = styled.main`
 `;
 
 const SocialI = styled.div`
-    margin-right: 42rem;
+    margin-top: 0.5rem;
 `
 
 const Form = styled.form`

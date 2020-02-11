@@ -96,7 +96,10 @@ export default function Formin(props) {
                 <SocialI>
                     <a href="http://localhost:5000/auth/42/callback"><img src={iconSocial} alt='42' /></a>
                 </SocialI>
-                <p>Login with Facebook</p>
+                <div>
+                        <SocialIcon fgColor="#fff" network="google" url='http://localhost:5000/auth/google' style={{ height: 35, width: 35 }}/>
+                </div>
+                {/* <p>Login with Facebook</p> */}
             </Social>
             <Signup>
                 <p>New to Hypertube?</p>
@@ -136,7 +139,7 @@ const Label = styled.label`
 `
 
 const SocialI = styled.div`
-    margin-right: 3rem;
+    /* margin-right: 3rem; */
 `
 
 const Form = styled.form`
