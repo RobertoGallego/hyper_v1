@@ -16,6 +16,7 @@ const cookieSession = require('cookie-session');
 const jwt = require('jsonwebtoken');
 const { SECRET_KEY } = require('./config');
 var FortyTwoStrategy = require('passport-42').Strategy;
+var GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 const facebookOptions = {
     clientID: '473679669966044',
@@ -24,6 +25,36 @@ const facebookOptions = {
     profileFields: ['id', 'email', 'first_name', 'last_name']
 };
 
+passport.use(new GoogleStrategy({
+    clientID: '731416029302-v05o5cbt5f3hu5vkoq4loqiqsk2frue6.apps.googleusercontent.com',
+    clientSecret: 'fP6islCpdGn3Om_5Bs4lbTTd',
+    callbackURL: 'http://localhost:5000/auth/google/callback',
+    profileFields: ['id', 'email', 'first_name', 'last_name']
+  },
+  function(accessToken, refreshToken, profile, done) {
+    User.findOne({ googleId: profile.id }).then(currentUser => {
+        if (currentUser) {
+            console.log("ok");
+            done(null, currentUser);
+        }
+        else {
+        var newUser = new User({
+            id: uuid(),
+            googleId: profile.id,
+            username: profile.displayName,
+            prenom: profile.name.givenName,
+            nom: profile.name.familyName,
+            email: 'not specified',
+            createdAt: new Date().toISOString(),
+        })
+            .save()
+            .then(newUser => {
+                done(null, newUser);
+            });
+    }
+    });
+  }
+));
 
 passport.use(new FortyTwoStrategy({
     clientID: '7b5a7e3f754d9689bda9bd0b926f6ad06f2c9d8d6c8c8735fe35d738d9dc86c7',
@@ -32,12 +63,6 @@ passport.use(new FortyTwoStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
     User.findOne({ fortytwoId: profile.id }).then(currentUser => {
-        // console.log(profile);
-        // console.log(profile.name.givenName);
-        // console.log(profile.name.familyName);
-        // console.log("email 1" + profile.emails);
-        // console.log("email 2" + profile.emails[0]);
-        // console.log("email 3" + profile.emails[0].value);
         if (currentUser) {
             done(null, currentUser);
         } else {
@@ -131,7 +156,6 @@ app.get('/auth/42',
 app.get('/auth/42/callback',
   passport.authenticate('42', { failureRedirect: 'http://localhost:3000/login' }),
     // Successful authentication, redirect home.
-    // return res.redirect('http://localhost:3000/');
     function(req, res) {
         var token = jwt.sign(
             {
@@ -143,16 +167,11 @@ app.get('/auth/42/callback',
             { expiresIn: '3h' }
         );
         try {
-            // var decoded = jwt.verify(token, SECRET_KEY);
-            // console.log(decoded);
             res.cookie('auth', token);
             return res.redirect('http://localhost:3000/SocialAuthRedirect');
-            // return decoded;
         } catch (e) {
             console.log(err);
         }
-        // console.log(token);
-        // successRedirect: 'http://localhost:3000/';
     });
 
 app.get(
@@ -185,7 +204,32 @@ app.get(
         }
         // console.log(token);
         // successRedirect: 'http://localhost:3000/';
-    });
+});
+
+
+
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile'] }));
+
+app.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: 'http://localhost:3000/login' }),
+  function(req, res) {
+    var token = jwt.sign(
+        {
+            id: req.user.id,
+            email: '',
+            username: req.user.username
+        },
+        SECRET_KEY,
+        { expiresIn: '3h' }
+    );
+    try {
+        res.cookie('auth', token);
+        return res.redirect('http://localhost:3000/SocialAuthRedirect');
+    } catch (e) {
+        console.log(err);
+    }
+  });
 
 const connection = mongoose.connect(MONGODB, { useNewUrlParser: true });
 connection
