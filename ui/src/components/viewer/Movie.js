@@ -9,7 +9,7 @@ import noImage from "../../assets/images/noImage.png";
 import { useQuery } from "@apollo/react-hooks";
 import axios from 'axios';
 var _ = require('lodash');
-var torrentStream = require('torrent-stream');
+// var torrentStream = require('torrent-stream');
 
 export default function Movie() {
 
@@ -47,17 +47,18 @@ export default function Movie() {
     const res = useQuery(FETCH_ONE_MOVIE, { variables: { id: movieID } })
     const Torrent = useQuery(FETCH_TORRENT_LINK, { variables: { id: movieID } })
     const TorrentHash = _.get(Torrent, 'data.getTorrentInfos.data.movie.torrents[0].hash')
-    if (TorrentHash) {
-        var engine = torrentStream(`magnet:?xt=urn:sha1:${TorrentHash}`);
+    console.log("Hash " + TorrentHash)
+    // if (TorrentHash) {
+    //     var engine = torrentStream(`magnet:?xt=urn:btih:${TorrentHash}`);
 
-        engine.on('ready', function () {
-            engine.files.forEach(function (file) {
-                console.log('filename:', file.name);
-                var stream = file.createReadStream();
-                // stream is readable stream to containing the file content
-            });
-        });
-    }
+    //     engine.on('ready', function () {
+    //         engine.files.forEach(function (file) {
+    //             console.log('filename:', file.name);
+    //             var stream = file.createReadStream();
+    //             // stream is readable stream to containing the file content
+    //         });
+    //     });
+    // }
     const movie = res.data.getOneMovie;
     const youtube = async () => {
         try {
