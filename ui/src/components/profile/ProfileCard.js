@@ -89,6 +89,7 @@ export default function ProfileCard(props) {
           <Select defaultValue={language} onChange={onChange}>
             <option value="en">{t("english")}</option>
             <option value="fr">{t("french")}</option>
+            <option value="es">{t("spanish")}</option>
           </Select>
         </div>
       </div>

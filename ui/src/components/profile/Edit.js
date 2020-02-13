@@ -6,12 +6,21 @@ import EditCard from "./EditCard";
 import { AuthContext } from "../../context/auth";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
+import { FadeLoader } from "react-spinners";
 
 const Container = styled.div`
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+`;
+
+const Override = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
 `;
 
 const FETCH_USER_QUERY = gql`
@@ -27,9 +36,10 @@ const FETCH_USER_QUERY = gql`
 `;
 
 export default function Edit() {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const user = useContext(AuthContext);
   const userId = user.user.id;
+  const { loading } = true;
 
   const {
     data: { getUser }
@@ -40,7 +50,15 @@ export default function Edit() {
   });
 
   if (!getUser) {
-    return <h3>{t('loading')}</h3>;
+    return (
+      <Override className="sweet-loading">
+        <FadeLoader
+          size={20}
+          color={"#fff"}
+          loading={loading}
+        />
+      </Override>
+    );
   } else {
     const { email, prenom, nom, username, image } = getUser;
     return (

@@ -8,6 +8,7 @@ import gql from "graphql-tag";
 import noImage from "../../assets/images/noImage.png";
 import { useQuery } from "@apollo/react-hooks";
 import axios from 'axios';
+import { FadeLoader } from "react-spinners";
 
 export default function Movie() {
 
@@ -25,6 +26,7 @@ export default function Movie() {
     }`;
     const [Link, setLink] = useState("")
     const movieID = useParams().id;
+    const { loading } = true;
 
     const res = useQuery(FETCH_ONE_MOVIE, { variables: { id: movieID } })
     const movie = res.data.getOneMovie;
@@ -40,7 +42,15 @@ export default function Movie() {
     }
     youtube()
     if (!movie) {
-        return <h3>Loading ...</h3>;
+        return (
+            <Override className="sweet-loading">
+                <FadeLoader
+                size={20}
+                color={"#fff"}
+                loading={loading}
+                />
+            </Override>
+        );
     }
     var image;
     if (!movie.poster_path)
@@ -143,4 +153,12 @@ margin: 0 auto;
 const Text = styled.span`
 margin: 30px 0;
 font-size: 1.5em;
+`;
+
+const Override = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
 `;

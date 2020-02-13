@@ -5,11 +5,13 @@ import Footer from '../components/general/Footer';
 import Film from './FilmCard';
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
+import { FadeLoader } from "react-spinners";
 
 function Home() {
 
     const [searchText, setSearchText] = useState("");
     const [page, setPage] = useState(1);
+    const { loading } = true;
 
     const FETCH_MOVIES = gql`
         query($search: String!, $page: Int){
@@ -24,7 +26,15 @@ function Home() {
     const movies = res.data.getMovies;
 
     if (!movies) {
-        return <h3>Loading ...</h3>;
+        return (
+            <Override className="sweet-loading">
+              <FadeLoader
+                size={20}
+                color={"#fff"}
+                loading={loading}
+              />
+            </Override>
+        );
     }
     return (
         <div>
@@ -56,6 +66,14 @@ const Page = styled.div`
     display: flex;
     justify-content: space-between;
     text-align: center;
+`;
+
+const Override = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
 `;
 
 const Button = styled.button`

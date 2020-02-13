@@ -2,6 +2,7 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import English from "./languages/en/translation.json";
 import French from "./languages/fr/translation.json";
+import Spanish from "./languages/es/translation.json";
 
 let language = localStorage.getItem('language');
 if (!language) {
@@ -14,7 +15,10 @@ const resources = {
   },
   fr: {
     translation: French
-  } 
+  },
+  es: {
+    translation: Spanish
+  }
 };
 
 i18n
