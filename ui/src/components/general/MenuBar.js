@@ -2,54 +2,91 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router";
 import { AuthContext } from "../../context/auth";
-import logoTop from "../../assets/images/logo-top.png";
+import logoMenu from "../../assets/images/logomenu.png";
 import styled from "styled-components";
 import { useTranslation } from 'react-i18next';
 
 const Nav = styled.nav`
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
   background-color: #191919;
-  padding: 10px;
+  padding: 1rem 3.5rem;
 `;
 
-const StyledLink = styled.a`
-  color: #666;
-  font-size: 20px;
-  margin: 25px 15px;
+const Menubar = styled.div`
+`
 
-  &:hover {
-    color: #db202c;
-    text-decoration: none;
-  }
+const StyledLink = styled.a`
+    color: #fff;
+    font-size: 16px;
+    padding: 0 1rem;
+    transition-duration: 0.3s;
+    &:hover {
+        color: #db202c;
+        text-decoration: none;
+    }
+`;
+
+const StyledLinka = styled.a`
+    transition-duration: 0.3s;
+    color: #fff;
+    font-size: 16px;
+    margin-left: 5rem;
+    padding: 0 1rem;
+    &:hover {
+        color: #db202c;
+        text-decoration: none;
+    }
+    @media (max-width: 768px) {
+      margin: 1rem;
+      margin-left: 0;
+    }
 `;
 
 const Pict = styled.img`
-  height: 75px;
-  width: 130px;
-  margin: 0 20px;
+  margin-left: 1rem;
+  @media (max-width: 768px) {
+      margin: 1rem 0 2rem 1.5rem;
+    }
 `;
 
-const Bar = styled.div``;
+const Searchbar = styled.div`
+  justify-content: center;
+`;
+
+const Bar = styled.div`
+  margin-right: 1rem;
+  @media (max-width: 768px) {
+      margin-top: 2rem;
+    }
+`;
 
 const Input = styled.input`
-  background-color: #191919;
+  width: 300px;
+  height: 50px;
+  background: #2b303b;
   border: none;
-  border-bottom: 1px solid white;
-  margin: 25px 15px;
+  font-size: 10pt;
   color: white;
-  outline: none;
+  outline: 0;
+  padding-left: 40px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 `;
 
 const Search = styled.button`
   border-color: #db202c;
   background-color: #db202c;
   color: white;
-  border-radius: 5px;
+  border-radius: 15rem;
   padding: 10px 15px;
   transition-duration: 0.3s;
-
+  margin-left: 0.5rem;
   &:hover {
-    color: black;
+    color: #000;
   }
 `;
 
@@ -72,25 +109,27 @@ function MenuBar({ fetchMovies }) {
   if (user) {
     return (
       <Nav>
-        <Link to="/">
-          <Pict src={logoTop} alt="Hypertube" />
-        </Link>
-        <StyledLink href="/">{t('header.home')}</StyledLink>
-        <StyledLink href="/profile">{t('header.profile')}</StyledLink>
-        <StyledLink onClick={logout} href="/login">
-          {t('header.logout')}
-        </StyledLink>
-        {isHome && (
-          <Bar>
-            <Input
-              onChange={searchChange}
-              value={textState}
-              name="search"
-              placeholder={t('header.search')}
-            />
-            <Search onClick={sendSearch}>{t('header.search')}</Search>
-          </Bar>
-        )}
+        <Menubar>
+            <Link to="/">
+            <Pict src={logoMenu} alt="Hypertube" />
+            </Link>
+            <StyledLinka href="/">{t('header.home')}</StyledLinka>
+            <StyledLink href="/profile">{t('header.profile')}</StyledLink>
+            <StyledLink onClick={logout} href="/login">{t('header.logout')}</StyledLink>
+        </Menubar>
+        <Searchbar>
+            {isHome && (
+                <Bar>
+                  <Input
+                      onChange={searchChange}
+                      value={textState}
+                      name="search"
+                      placeholder={t('header.placeholder.search')}
+                  />
+                  <Search onClick={sendSearch}>{t('header.search')}</Search>
+                </Bar>
+            )}
+        </Searchbar>  
       </Nav>
     );
   }

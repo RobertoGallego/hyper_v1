@@ -1,10 +1,11 @@
 {
     "footer": "Hypertube creado por BabyYodaSayDame",
 
-    "header.home": "Inicio",
-    "header.profile": "Perfil",
-    "header.logout": "Cerrar sesión",
-    "header.search": "Buscar",
+    "header.home": "INICIO",
+    "header.profile": "PERFIL",
+    "header.logout": "CERRAR SESIÓN",
+    "header.search": "O",
+    "header.placeholder.search" : "BUSCAR",
 
     "login.title": "Conectar",
     "username": "Nombre de usuario",
