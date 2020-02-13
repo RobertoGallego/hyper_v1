@@ -41,7 +41,7 @@ export default function Com(movieID) {
     const sendComment = () => {
         if(bodyCom !== ""){
             addCom({variables : {id : movieID.movie, text: bodyCom}});
-            window.location.reload();
+            setTimeout(function(){ window.location.reload(); }, 500);
         }
     }
 
@@ -70,7 +70,7 @@ export default function Com(movieID) {
                 </Form>
             </NewCom>
             {comments.map((comment,i) => 
-                <OldCom key={i}><b>{comment.username}</b><br/>{comment.body}<br/>{moment(comment.createdAt).format("LLL")}</OldCom>
+                <OldCom key={i}><p><b>{comment.username}</b><br/>{comment.body}<br/>{moment(comment.createdAt).format("LLL")}</p></OldCom>
             )}
         </Comment>
     );
@@ -82,10 +82,12 @@ const Comment = styled.div`
 `
 
 const OldCom = styled.div`
-border: 1px solid #fff;
-margin-bottom: 2em;
-padding: 1em;
-background: #696969;
+    border-top: 15px solid #fff;
+    border-left: 15px solid #fff;
+    margin-bottom: 2em;
+    padding: 1em;
+    background: #696969;
+    overflow:scroll;
 `
 
 const NoCom = styled.h3`

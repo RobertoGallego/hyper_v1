@@ -62,7 +62,7 @@ export default function Movie() {
                         <Text>Torrents: </Text>
                         <span>Link for Torrent</span>
                         <Text>Comments: </Text>
-                        <Com />
+                        <Com movie={movieID}/>
                     </Left>
                     <Right>
                         <Text>Grade: {movie.vote_average}</Text>
