@@ -43,14 +43,25 @@ function Home() {
                 {movies.map((movie, i) => <Film key={i} {...movie} />)}
             </List>
             <Page>
-                <Button onClick={() => { if (page > 1 && page < 1000) setPage(page - 1) }}>Previous</Button>
-                <span>Page {page}</span>
-                <Button onClick={() => setPage(page + 1)}>Next</Button>
+                {!searchText && (
+                    <Paginator>
+                        <Button onClick={() => { if (page > 1 && page < 1000) setPage(page - 1) }}>Previous</Button>
+                        <span>Page {page}</span>
+                        <Button onClick={() => setPage(page + 1)}>Next</Button>
+                    </Paginator>
+                )}
             </Page>
+
             <Footer />
         </div>
     );
 }
+
+const Paginator = styled.div`
+    margin: auto ;
+    display: flex;
+    justify-content: space-between;
+`
 
 const List = styled.div`
     margin: 2vmin auto 0 ;
@@ -77,6 +88,7 @@ const Override = styled.div`
 `;
 
 const Button = styled.button`
+margin: 0 10vmin;
 border-color: #DB202C;
 background-color: #DB202C;
 color: white;
