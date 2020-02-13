@@ -62,15 +62,31 @@ module.exports = gql`
         email: String!
         image: String!
     }
+    type Torrents {
+        url: String!
+        hash: String!
+    }
+    type MovieTorrent {
+        id: ID!
+        torrents: [Torrents]
+    }
+    type Data {
+        movie: MovieTorrent
+    }
+    type Torrent {
+        status: ID!
+        data: Data!
+    }
     type Query {
         getPosts: [Post]
         getPost(postId: ID!): Post
         getUsers: [User]
         getUser(userId: ID!): User
         currentUser: User
-         getMovies(search: String!, page: Int): [Movie]
+        getMovies(search: String!, page: Int): [Movie]
         getOneMovie(id: ID!): MovieDetails
         getComments(movieId: String!): [Comment]
+        getTorrentInfos(id: ID!): Torrent
     }
     type Mutation {
         register(registerInput: RegisterInput): User!

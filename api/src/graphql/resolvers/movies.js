@@ -21,6 +21,14 @@ module.exports = {
             } else {
                 throw new Error('No Movie finded ...');
             }
+        },
+        async getTorrentInfos(_, { id }) {
+            const res = await axios.get(`https://yts.am/api/v2/movie_details.json?movie_id=${id}`);
+            if (res) {
+                return res.data;
+            } else {
+                throw new Error('No Movie finded ...');
+            }
         }
     }
 }
