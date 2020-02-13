@@ -44,7 +44,38 @@ export default function MenuBar({ fetchMovies, pageReset, listReset }) {
               placeholder={t('header.search')}
             />
             <Search onClick={sendSearch}>{t('header.search')}</Search>
-          </Bar>
+          </Bar>)}
+        {isHome && (
+          <Filter>
+            <Slct name="gender">
+              <Opt value="">Gender</Opt>
+              <Opt value="28">Action</Opt>
+              <Opt value="12">Adventure</Opt>
+              <Opt value="16">Animation</Opt>
+              <Opt value="35">Comedy</Opt>
+              <Opt value="80">Crime</Opt>
+              <Opt value="99">Documentary</Opt>
+              <Opt value="18">Drama</Opt>
+              <Opt value="14">Fantasy</Opt>
+              <Opt value="36">History</Opt>
+              <Opt value="27">Horror</Opt>
+              <Opt value="9648">Mystery</Opt>
+              <Opt value="878">Sci-Fi</Opt>
+              <Opt value="53">Thriller</Opt>
+              <Opt value="10752">War</Opt>
+              <Opt value="37">Western</Opt>
+            </Slct>
+          </Filter>
+        )}
+        {isHome && (
+          <Filter>
+            <Check type ="checkbox" name="date" />
+            <Label for="date">Date</Label>
+            <Check type ="checkbox" name="duration" />
+            <Label for="duration">Duration</Label>
+            <Check type ="checkbox" name="reverse" />
+            <Label for="reverse">Reverse</Label>
+          </Filter>
         )}
       </Nav>
     );
@@ -98,3 +129,18 @@ const Search = styled.button`
     color: black;
   }
 `;
+
+const Filter = styled.div``;
+
+const Slct = styled.select`
+
+`
+const Opt = styled.option`
+
+`
+
+const Check = styled.input`
+
+`
+
+const Label = styled.label``
