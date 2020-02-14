@@ -16,7 +16,7 @@ module.exports = {
     },
     Mutation: {
         async addComment(_, { movieId, body }, context) {
-            const { username } = checkAuth(context);
+            const { id, username } = checkAuth(context);
             if (body.trim() === '') {
                 throw new UserInputError('Empty comment', {
                     errors: {
@@ -26,6 +26,7 @@ module.exports = {
             }
 
             const newComment = new Comment({
+                userId: id,
                 body,
                 username,
                 createdAt: new Date().toISOString(),

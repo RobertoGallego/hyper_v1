@@ -8,6 +8,7 @@ import Home from "./home/Home";
 import Register from "./components/register";
 import Login from "./components/login";
 import Profile from "./components/profile/Profile";
+import ProfileView from "./components/profile/ProfileView";
 import Edit from "./components/profile/Edit";
 import Movie from "./components/viewer/Movie";
 import Resetpassword from "./components/resetpassword";
@@ -31,6 +32,7 @@ function App() {
           <AuthRoute exact path="/login" component={Login} />
           <AuthRoute exact path="/register" component={Register} />
           <SecureRoute exact path="/profile" component={Profile} />
+          <SecureRoute exact path="/profile/:id" component={ProfileView} />
           <SecureRoute exact path="/edit" component={Edit} />
           <SecureRoute exact path="/movie/:id" component={Movie} />
           <SecureRoute

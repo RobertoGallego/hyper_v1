@@ -40,8 +40,6 @@ export default function Profile() {
     }
   });
 
-  console.log(getUser);
-
   if (!getUser) {
     return <h3>{t('loading')}</h3>;
   } else {
