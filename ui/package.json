@@ -8,12 +8,15 @@
     "apollo-client": "^2.6.2",
     "apollo-link-context": "^1.0.18",
     "apollo-link-http": "^1.5.14",
+    "axios": "^0.19.2",
     "graphql": "^14.3.1",
     "graphql-tag": "^2.10.1",
     "i18next": "^19.1.0",
     "jwt-decode": "^2.2.0",
+    "loadash": "^1.0.0",
     "moment": "^2.24.0",
     "react": "^16.8.6",
+    "react-bottom-scroll-listener": "^3.0.0",
     "react-cookie": "^4.0.3",
     "react-dom": "^16.8.6",
     "react-hook-form": "^4.4.7",
@@ -24,7 +27,8 @@
     "react-scripts": "^3.3.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.88.1",
-    "styled-components": "^4.4.1"
+    "styled-components": "^4.4.1",
+    "torrent-stream": "^1.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

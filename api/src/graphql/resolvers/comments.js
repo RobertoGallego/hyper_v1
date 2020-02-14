@@ -24,7 +24,8 @@ module.exports = {
                     }
                 });
             }
-
+            console.log(body);
+            
             const newComment = new Comment({
                 userId: id,
                 body,

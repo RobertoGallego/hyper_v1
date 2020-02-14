@@ -6,6 +6,52 @@ import logoTop from "../../assets/images/logo-top.png";
 import styled from "styled-components";
 import { useTranslation } from 'react-i18next';
 
+export default function MenuBar({ fetchMovies, pageReset, listReset }) {
+  const { t } = useTranslation();
+  const { user, logout } = useContext(AuthContext);
+  const [textState, setTextState] = useState("");
+
+  const searchChange = e => {
+    setTextState(e.target.value);
+  };
+
+  const sendSearch = () => {
+    fetchMovies(textState);
+    pageReset(1);
+    listReset([]);
+  };
+
+  const loc = useLocation();
+  const isHome = loc.pathname === "/";
+
+  if (user) {
+    return (
+      <Nav>
+        <Link to="/">
+          <Pict src={logoTop} alt="Hypertube" />
+        </Link>
+        <StyledLink href="/">{t('header.home')}</StyledLink>
+        <StyledLink href="/profile">{t('header.profile')}</StyledLink>
+        <StyledLink onClick={logout} href="/login">
+          {t('header.logout')}
+        </StyledLink>
+        {isHome && (
+          <Bar>
+            <Input
+              onChange={searchChange}
+              value={textState}
+              name="search"
+              placeholder={t('header.search')}
+            />
+            <Search onClick={sendSearch}>{t('header.search')}</Search>
+          </Bar>
+        )}
+      </Nav>
+    );
+  }
+  return <Link to="/">Please Click Here to log</Link>;
+}
+
 const Nav = styled.nav`
   display: flex;
   background-color: #191919;
@@ -52,49 +98,3 @@ const Search = styled.button`
     color: black;
   }
 `;
-
-function MenuBar({ fetchMovies }) {
-  const { t } = useTranslation();
-  const { user, logout } = useContext(AuthContext);
-  const [textState, setTextState] = useState("");
-
-  const searchChange = e => {
-    setTextState(e.target.value);
-  };
-
-  const sendSearch = () => {
-    fetchMovies(textState);
-  };
-
-  const loc = useLocation();
-  const isHome = loc.pathname === "/";
-
-  if (user) {
-    return (
-      <Nav>
-        <Link to="/">
-          <Pict src={logoTop} alt="Hypertube" />
-        </Link>
-        <StyledLink href="/">{t('header.home')}</StyledLink>
-        <StyledLink href="/profile">{t('header.profile')}</StyledLink>
-        <StyledLink onClick={logout} href="/login">
-          {t('header.logout')}
-        </StyledLink>
-        {isHome && (
-          <Bar>
-            <Input
-              onChange={searchChange}
-              value={textState}
-              name="search"
-              placeholder={t('header.search')}
-            />
-            <Search onClick={sendSearch}>{t('header.search')}</Search>
-          </Bar>
-        )}
-      </Nav>
-    );
-  }
-  return <Link to="/">Please Click Here to log</Link>;
-}
-
-export default MenuBar;

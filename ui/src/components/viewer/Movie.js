@@ -1,5 +1,5 @@
-import React from 'react';
-import {useParams} from 'react-router-dom';
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Header from '../general/Header';
 import Footer from '../general/Footer';
@@ -7,7 +7,9 @@ import Com from './Comment';
 import gql from "graphql-tag";
 import noImage from "../../assets/images/noImage.png";
 import { useQuery } from "@apollo/react-hooks";
-import { useTranslation } from "react-i18next";
+import axios from 'axios';
+var _ = require('lodash');
+// var torrentStream = require('torrent-stream');
 
 export default function Movie() {
 
@@ -23,12 +25,52 @@ export default function Movie() {
             runtime
         }
     }`;
+    const FETCH_TORRENT_LINK = gql`
+        query($id: ID!){
+        getTorrentInfos(id: $id) {
+            status
+            data {
+            movie {
+            id
+            torrents {
+                url
+                hash
+            }
+           }
+         }
+       }
+    }`;
 
+    const [Link, setLink] = useState("")
     const movieID = useParams().id;
-    const res = useQuery(FETCH_ONE_MOVIE, {variables : {id : movieID}});
+
+    const res = useQuery(FETCH_ONE_MOVIE, { variables: { id: movieID } })
+    const Torrent = useQuery(FETCH_TORRENT_LINK, { variables: { id: movieID } })
+    const TorrentHash = _.get(Torrent, 'data.getTorrentInfos.data.movie.torrents[0].hash')
+    console.log("Hash " + TorrentHash)
+    // if (TorrentHash) {
+    //     var engine = torrentStream(`magnet:?xt=urn:btih:${TorrentHash}`);
+
+    //     engine.on('ready', function () {
+    //         engine.files.forEach(function (file) {
+    //             console.log('filename:', file.name);
+    //             var stream = file.createReadStream();
+    //             // stream is readable stream to containing the file content
+    //         });
+    //     });
+    // }
     const movie = res.data.getOneMovie;
-    const { t } = useTranslation();
-    
+    const youtube = async () => {
+        try {
+            const rest = await axios.get(`https://api.themoviedb.org/3/movie/${movieID}/videos?api_key=3cbc26720809cfa6649145e5d10a0b7c&language=en-US`);
+            if (rest.data.results[0].key)
+                setLink(rest.data.results[0].key)
+        }
+        catch (e) {
+            console.log("No Trailer available")
+        }
+    }
+    youtube()
     if (!movie) {
         return <h3>Loading ...</h3>;
     }
@@ -39,29 +81,31 @@ export default function Movie() {
         image = `https://image.tmdb.org/t/p/original${movie.poster_path}`
     return (
         <MoviePage>
-            <Header/>
-                <Content>
-                    <Title>{movie.title}</Title>
-                    <HR/>
-                    <Split>
-                        <Left>
-                            <Video controls>
-                            </Video>
-                            <Text>Torrents: </Text>
-                            <span>{t('viewer.span')}</span>
-                            <Text>{t('viewer.comment')}: </Text>
-                            <Com movie={movieID}/>
-                        </Left>
-                        <Right>
-                            <Text>{t('viewer.grade')}: {movie.vote_average}</Text>
-                            <Picture src={image} alt={`${movie.title}Image`}/>
-                            <Text>{t('viewer.date')}: {movie.release_date}</Text>
-                            <Text>{t('viewer.time')}: {movie.runtime}mins</Text>
-                        </Right>
-                    </Split>
-                </Content>
-            <Footer/>
-        </MoviePage>
+            <Header />
+            <Content>
+                <Title>{movie.title}</Title>
+                <HR />
+                <Split>
+                    <Left>
+                        <Iframe src={"https://www.youtube.com/embed/" + Link} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></Iframe>
+                        <Video controls>
+
+                        </Video>
+                        <Text>Torrents: </Text>
+                        <span>Link for Torrent</span>
+                        <Text>Comments: </Text>
+                        <Com movie={movieID}/>
+                    </Left>
+                    <Right>
+                        <Text>Grade: {movie.vote_average}</Text>
+                        <Picture src={image} alt={`${movie.title}Image`} />
+                        <Text>Release Date: {movie.release_date}</Text>
+                        <Text>Duration: {movie.runtime}min</Text>
+                    </Right>
+                </Split>
+            </Content>
+            <Footer />
+        </MoviePage >
     );
 }
 
@@ -78,6 +122,11 @@ const MoviePage = styled.div`
     flex-direction: column;
     color: white;
 `
+const Iframe = styled.iframe`
+    margin: 5vmin; 
+    width: 60vmin;
+    height: 30vmin;
+`;
 
 const HR = styled.hr`
     border: 1px solid white;
@@ -103,6 +152,7 @@ const Left = styled.div`
 const Video = styled.video`
     margin: 5vmin;
     width: 60vmin;
+    height: 40vmin;
 
 `
 

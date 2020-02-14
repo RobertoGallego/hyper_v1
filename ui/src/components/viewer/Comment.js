@@ -3,12 +3,10 @@ import styled from 'styled-components';
 import gql from "graphql-tag";
 import moment from 'moment';
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { useTranslation } from "react-i18next";
 
 export default function Com(movieID) {
 
     const [bodyCom, setBodyCom] = useState("");
-    const { t } = useTranslation();
 
     const commentChange = e => {
         setBodyCom(e.target.value);
@@ -44,7 +42,7 @@ export default function Com(movieID) {
     const sendComment = () => {
         if(bodyCom !== ""){
             addCom({variables : {id : movieID.movie, text: bodyCom}});
-            window.location.reload();
+            setTimeout(function(){ window.location.reload(); }, 500);
         }
     }
 
@@ -56,11 +54,11 @@ export default function Com(movieID) {
             <Comment>
                 <NewCom>
                     <Form>
-                        <Input onChange={commentChange} type="text" name="CommentInput" placeholder={t('viewer.addComment')} />
-                        <Send onClick={sendComment} type="submit" name="Send" value={t('viewer.send')} />
+                        <Input onChange={commentChange} type="text" name="CommentInput" placeholder="Add a Comment" />
+                        <Send onClick={sendComment} type="submit" name="Send" value="Send" />
                     </Form>
                 </NewCom>
-                <NoCom>{t('viewer.noComments')}</NoCom>
+                <NoCom> No Comments</NoCom>
             </Comment>
         );
     }
@@ -68,8 +66,8 @@ export default function Com(movieID) {
         <Comment>
             <NewCom>
                 <Form>
-                    <Input onChange={commentChange} type="text" name="CommentInput" placeholder={t('viewer.addComment')} />
-                    <Send onClick={sendComment} type="submit" name="Send" value={t('viewer.send')} />
+                    <Input onChange={commentChange} type="text" name="CommentInput" placeholder="Add a Comment" />
+                    <Send onClick={sendComment} type="submit" name="Send" value="Send" />
                 </Form>
             </NewCom>
             {comments.map((comment,i) => 
@@ -85,10 +83,12 @@ const Comment = styled.div`
 `
 
 const OldCom = styled.div`
-border: 1px solid #fff;
-margin-bottom: 2em;
-padding: 1em;
-background: #696969;
+    border-top: 15px solid #fff;
+    border-left: 15px solid #fff;
+    margin-bottom: 2em;
+    padding: 1em;
+    background: #696969;
+    overflow:scroll;
 `
 
 const NoCom = styled.h3`
