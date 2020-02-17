@@ -7,7 +7,6 @@ import Com from './Comment';
 import gql from "graphql-tag";
 import noImage from "../../assets/images/noImage.png";
 import { useQuery } from "@apollo/react-hooks";
-import axios from 'axios';
 var _ = require('lodash');
 // var torrentStream = require('torrent-stream');
 
@@ -21,6 +20,11 @@ export default function Movie() {
                 movie {
                     id
                     yt_trailer_code
+                    title
+                    year
+                    rating
+                    runtime
+                    large_cover_image
                     torrents {
                         url
                         hash
@@ -63,27 +67,19 @@ export default function Movie() {
     //         });
     //     });
     // }
-    const movie = res.data.getOneMovie;
-    const youtube = async () => {
-        try {
-            const rest = await axios.get(`https://yts.mx/api/v2/movie_details.json?movie_id=${movieID}`);
-            console.log('ICI ' + rest.data.data.movie[0].yt_trailer_code)
-            // if (rest.data.data.movie[0].id)
-            //     setLink(rest.data.results[0].key)
-        }
-        catch (e) {
-            console.log("No Trailer available")
-        }
-    }
-    youtube()
+    let movie = res.data.getOneMovie;
+    movie = Object.assign({}, _.get(movie, 'data.movie'))
+    console.log(JSON.stringify(movie))
+   
     if (!movie) {
         return <h3>Loading ...</h3>;
     }
+    
     var image;
-    if (!movie.poster_path)
+    if (!movie.large_cover_image)
         image = noImage
     else
-        image = `https://image.tmdb.org/t/p/original${movie.poster_path}`
+        image = `${movie.large_cover_image}`
     return (
         <MoviePage>
             <Header />
@@ -92,7 +88,7 @@ export default function Movie() {
                 <HR />
                 <Split>
                     <Left>
-                        <Iframe src={"https://www.youtube.com/embed/" + Link} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></Iframe>
+                        { movie.yt_trailer_code && <Iframe src={"https://www.youtube.com/embed/" + movie.yt_trailer_code} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></Iframe>}
                         <Video controls>
 
                         </Video>
@@ -102,9 +98,9 @@ export default function Movie() {
                         <Com movie={movieID}/>
                     </Left>
                     <Right>
-                        <Text>Grade: {movie.vote_average}</Text>
+                        <Text>Grade: {movie.rating}</Text>
                         <Picture src={image} alt={`${movie.title}Image`} />
-                        <Text>Release Date: {movie.release_date}</Text>
+                        <Text>Release Date: {movie.year}</Text>
                         <Text>Duration: {movie.runtime}min</Text>
                     </Right>
                 </Split>

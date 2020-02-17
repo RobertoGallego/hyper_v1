@@ -7,7 +7,7 @@ module.exports = {
             if (search)
                 res = await axios.get(`https://yts.mx/api/v2/list_movies.json?query_term=${search}&limit=40`);
             else 
-                res = await axios.get(`https://yts.mx/api/v2/list_movies.json?sort=rating&limit=20&page=${page}`);
+                res = await axios.get(`https://yts.mx/api/v2/list_movies.json?sort_by=rating&limit=20&page=${page}`);
             if (res)
                 return res.data.data;    
             else 
