@@ -89,7 +89,12 @@ module.exports = gql`
     }
     type MovieTorrent {
         id: ID!
+        year: Int
+        title: String!
+        runtime: Int
+        rating: Float!
         yt_trailer_code: String
+        large_cover_image: String
         torrents: [Torrents]
     }
     type Data {
