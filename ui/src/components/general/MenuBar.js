@@ -2,9 +2,62 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router";
 import { AuthContext } from "../../context/auth";
-import logoMenu from "../../assets/images/logomenu.png";
+import logoMenu from "../../assets/images/hyperlogo.png";
 import styled from "styled-components";
 import { useTranslation } from 'react-i18next';
+import logoSearch from "../../assets/images/lupsearch.png";
+
+function MenuBar({ fetchMovies }) {
+  const { t } = useTranslation();
+  const { user, logout } = useContext(AuthContext);
+  const [textState, setTextState] = useState("");
+
+  const searchChange = e => {
+    setTextState(e.target.value);
+  };
+
+  const sendSearch = () => {
+    fetchMovies(textState);
+  };
+
+  const loc = useLocation();
+  const isHome = loc.pathname === "/";
+
+  if (user) {
+    return (
+      <Nav>
+        <Menubar>
+            <Link to="/">
+            <Pict src={logoMenu} alt="Hypertube" />
+            </Link>
+            <StyledLinka href="/">{t('header.home')}</StyledLinka>
+            <StyledLink href="/profile">{t('header.profile')}</StyledLink>
+            <StyledLink onClick={logout} href="/login">{t('header.logout')}</StyledLink>
+        </Menubar>
+        <Searchbar>
+            {isHome && (
+                <Bar>
+                  <Input
+                        onChange={searchChange}
+                        value={textState}
+                        name="search"
+                        placeholder={t('header.placeholder.search')}
+                  />
+                <Search 
+                    type="image"
+                    src={logoSearch}
+                    alt="Submit"
+                    onClick={sendSearch}> 
+                    {/* {t('header.search')} */}
+                </Search>
+                </Bar>
+            )}
+        </Searchbar>  
+      </Nav>
+    );
+  }
+  return <Link to="/">Please Click Here to log</Link>;
+}
 
 const Nav = styled.nav`
   display: flex;
@@ -47,6 +100,7 @@ const StyledLinka = styled.a`
 
 const Pict = styled.img`
   margin-left: 1rem;
+  cursor: pointer;
   @media (max-width: 768px) {
       margin: 1rem 0 2rem 1.5rem;
     }
@@ -57,10 +111,12 @@ const Searchbar = styled.div`
 `;
 
 const Bar = styled.div`
-  margin-right: 1rem;
-  @media (max-width: 768px) {
-      margin-top: 2rem;
-    }
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+    @media (max-width: 768px) {
+        margin-top: 2rem;
+        }
 `;
 
 const Input = styled.input`
@@ -77,63 +133,19 @@ const Input = styled.input`
   border-radius: 5px;
 `;
 
-const Search = styled.button`
-  border-color: #db202c;
-  background-color: #db202c;
-  color: white;
-  border-radius: 15rem;
-  padding: 10px 15px;
-  transition-duration: 0.3s;
-  margin-left: 0.5rem;
-  &:hover {
-    color: #000;
-  }
+const Search = styled.input`
+    width: 3rem;
+    border-color: #db202c;
+    background-color: #db202c;
+    color: white;
+    border-radius: 15rem;
+    padding: 10px 15px;
+    transition-duration: 0.3s;
+    margin: 0 0 0 0.5rem;
+    outline: 0;
+    &:hover {
+        opacity: 0.5;
+    }
 `;
-
-function MenuBar({ fetchMovies }) {
-  const { t } = useTranslation();
-  const { user, logout } = useContext(AuthContext);
-  const [textState, setTextState] = useState("");
-
-  const searchChange = e => {
-    setTextState(e.target.value);
-  };
-
-  const sendSearch = () => {
-    fetchMovies(textState);
-  };
-
-  const loc = useLocation();
-  const isHome = loc.pathname === "/";
-
-  if (user) {
-    return (
-      <Nav>
-        <Menubar>
-            <Link to="/">
-            <Pict src={logoMenu} alt="Hypertube" />
-            </Link>
-            <StyledLinka href="/">{t('header.home')}</StyledLinka>
-            <StyledLink href="/profile">{t('header.profile')}</StyledLink>
-            <StyledLink onClick={logout} href="/login">{t('header.logout')}</StyledLink>
-        </Menubar>
-        <Searchbar>
-            {isHome && (
-                <Bar>
-                  <Input
-                      onChange={searchChange}
-                      value={textState}
-                      name="search"
-                      placeholder={t('header.placeholder.search')}
-                  />
-                  <Search onClick={sendSearch}>{t('header.search')}</Search>
-                </Bar>
-            )}
-        </Searchbar>  
-      </Nav>
-    );
-  }
-  return <Link to="/">Please Click Here to log</Link>;
-}
 
 export default MenuBar;
