@@ -6,6 +6,7 @@ import Film from './FilmCard';
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
+var _ = require('lodash');
 
 export default function Home () {
 
@@ -25,17 +26,26 @@ export default function Home () {
     useBottomScrollListener(handleOnDocumentBottom);
 
     const FETCH_MOVIES = gql`
-        query($search: String!, $page: Int){
-        getMovies(search: $search, page: $page){
-            id
-            title
-            poster_path
-            vote_average
+        query($search: String!){
+        getMovies(search: $search){
+            page_number
+            movies {
+                id
+                title
+                large_cover_image
+                rating
+                torrents {
+                    url
+                    hash
+                    quality
+                }
+            }
         }
     }`;
 
-    const res = useQuery(FETCH_MOVIES, { variables: { search: searchText, page: page } });
-    const movies = list.concat(res.data.getMovies);
+    const res = useQuery(FETCH_MOVIES, { variables: { search: searchText } });
+    const movies_tab=  _.get(res.data.getMovies, 'movies')
+    const movies = list.concat(movies_tab);
     console.log(movies);
     
 
