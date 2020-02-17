@@ -77,13 +77,6 @@ const List = styled.div`
     justify-content: space-between;
     flex-wrap: wrap;
 `
-const Page = styled.div`
-    margin: 20px auto;
-    width: 30vw;
-    display: flex;
-    justify-content: space-between;
-    text-align: center;
-`;
 
 const Override = styled.div`
   display: flex;
@@ -93,19 +86,5 @@ const Override = styled.div`
   height: 100vh;
 `;
 
-const Button = styled.button`
-margin: 0 10vmin;
-border-color: #DB202C;
-background-color: #DB202C;
-color: white;
-border-radius: 5px;
-padding: 10px 15px;
-transition-duration: 0.3s;
-
-&:hover {
-  
-  color: black;
-}
-`;
 
 export default Home;

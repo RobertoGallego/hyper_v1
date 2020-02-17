@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Header from '../general/Header';
@@ -7,7 +7,6 @@ import Com from './Comment';
 import gql from "graphql-tag";
 import noImage from "../../assets/images/noImage.png";
 import { useQuery } from "@apollo/react-hooks";
-import axios from 'axios';
 import { FadeLoader } from "react-spinners";
 var _ = require('lodash');
 // var torrentStream = require('torrent-stream');
@@ -35,23 +34,7 @@ export default function Movie() {
             }
         }
     }`;
-    const FETCH_TORRENT_LINK = gql`
-        query($id: ID!){
-        getTorrentInfos(id: $id) {
-            status
-            data {
-            movie {
-            id
-            torrents {
-                url
-                hash
-            }
-           }
-         }
-       }
-    }`;
 
-    const [Link, setLink] = useState("")
     const movieID = useParams().id;
     const { loading } = true;
 
