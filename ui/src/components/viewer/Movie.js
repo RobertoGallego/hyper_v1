@@ -16,13 +16,17 @@ export default function Movie() {
     const FETCH_ONE_MOVIE = gql`
         query($id: ID!){
         getOneMovie(id: $id){
-            id
-            title
-            poster_path
-            vote_average
-            overview
-            release_date
-            runtime
+            status
+            data {
+                movie {
+                    id
+                    yt_trailer_code
+                    torrents {
+                        url
+                        hash
+                    }
+                }
+            }
         }
     }`;
     const FETCH_TORRENT_LINK = gql`
@@ -45,9 +49,9 @@ export default function Movie() {
     const movieID = useParams().id;
 
     const res = useQuery(FETCH_ONE_MOVIE, { variables: { id: movieID } })
-    const Torrent = useQuery(FETCH_TORRENT_LINK, { variables: { id: movieID } })
-    const TorrentHash = _.get(Torrent, 'data.getTorrentInfos.data.movie.torrents[0].hash')
-    console.log("Hash " + TorrentHash)
+    // const Torrent = useQuery(FETCH_TORRENT_LINK, { variables: { id: movieID } })
+    // const TorrentHash = _.get(Torrent, 'data.getTorrentInfos.data.movie.torrents[0].hash')
+    // console.log("Hash " + TorrentHash)
     // if (TorrentHash) {
     //     var engine = torrentStream(`magnet:?xt=urn:btih:${TorrentHash}`);
 
@@ -62,9 +66,10 @@ export default function Movie() {
     const movie = res.data.getOneMovie;
     const youtube = async () => {
         try {
-            const rest = await axios.get(`https://api.themoviedb.org/3/movie/${movieID}/videos?api_key=3cbc26720809cfa6649145e5d10a0b7c&language=en-US`);
-            if (rest.data.results[0].key)
-                setLink(rest.data.results[0].key)
+            const rest = await axios.get(`https://yts.mx/api/v2/movie_details.json?movie_id=${movieID}`);
+            console.log('ICI ' + rest.data.data.movie[0].yt_trailer_code)
+            // if (rest.data.data.movie[0].id)
+            //     setLink(rest.data.results[0].key)
         }
         catch (e) {
             console.log("No Trailer available")

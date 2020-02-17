@@ -89,13 +89,14 @@ module.exports = gql`
     }
     type MovieTorrent {
         id: ID!
+        yt_trailer_code: String
         torrents: [Torrents]
     }
     type Data {
         movie: MovieTorrent
     }
     type Torrent {
-        status: ID!
+        status: String!
         data: Data!
     }
     type Query {
@@ -104,8 +105,8 @@ module.exports = gql`
         getUsers: [User]
         getUser(userId: ID!): User
         currentUser: User
-        getMovies(search: String!): Result_YTS
-        getOneMovie(id: ID!): MovieDetails
+        getMovies(search: String!, page: Int!): Result_YTS
+        getOneMovie(id: ID!): Torrent
         getComments(movieId: String!): [Comment]
         getTorrentInfos(id: ID!): Torrent
     }

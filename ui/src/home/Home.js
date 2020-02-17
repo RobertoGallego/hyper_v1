@@ -18,7 +18,7 @@ export default function Home () {
 
     const handleOnDocumentBottom = () => 
     {
-        setList(list.concat(res.data.getMovies));
+        setList(list.concat(_.get(res.data.getMovies, 'movies')));
         const np = page + 1;
         setPage(np);
     }
@@ -26,8 +26,8 @@ export default function Home () {
     useBottomScrollListener(handleOnDocumentBottom);
 
     const FETCH_MOVIES = gql`
-        query($search: String!){
-        getMovies(search: $search){
+        query($search: String!, $page: Int!){
+        getMovies(search: $search, page: $page){
             page_number
             movies {
                 id
@@ -43,11 +43,10 @@ export default function Home () {
         }
     }`;
 
-    const res = useQuery(FETCH_MOVIES, { variables: { search: searchText } });
-    const movies_tab=  _.get(res.data.getMovies, 'movies')
-    const movies = list.concat(movies_tab);
-    console.log(movies);
-    
+    const res = useQuery(FETCH_MOVIES, { variables: { search: searchText, page: page } });
+    const movies = list.concat(_.get(res.data.getMovies, 'movies'));
+   
+    // console.log('movies ' + _.get(movies[0], 'id'))
 
     if (!movies) {
         return <h3>Loading ...</h3>;
