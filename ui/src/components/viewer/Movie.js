@@ -8,8 +8,11 @@ import gql from "graphql-tag";
 import noImage from "../../assets/images/noImage.png";
 import { useQuery } from "@apollo/react-hooks";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import axios from 'axios';
 import { FadeLoader } from "react-spinners";
+=======
+>>>>>>> 34c4ede49e69139190262b68e0b0ccaed988a96a
 =======
 >>>>>>> 34c4ede49e69139190262b68e0b0ccaed988a96a
 var _ = require('lodash');
