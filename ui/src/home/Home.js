@@ -6,24 +6,46 @@ import Film from './FilmCard';
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import { FadeLoader } from "react-spinners";
+import { useBottomScrollListener } from 'react-bottom-scroll-listener';
+var _ = require('lodash');
 
-function Home() {
-
-    const [searchText, setSearchText] = useState("");
+function Home () {
     const [page, setPage] = useState(1);
     const { loading } = true;
+    const [searchText, setSearchText] = useState("");
+    const [list, setList] = useState([]);
+
+    const handleOnDocumentBottom = () => 
+    {
+        setList(list.concat(_.get(res.data.getMovies, 'movies')));
+        const np = page + 1;
+        setPage(np);
+    }
+
+    useBottomScrollListener(handleOnDocumentBottom);
 
     const FETCH_MOVIES = gql`
-        query($search: String!, $page: Int){
+        query($search: String!, $page: Int!){
         getMovies(search: $search, page: $page){
-            id
-            title
-            poster_path
-            vote_average
+            page_number
+            movies {
+                id
+                title
+                large_cover_image
+                rating
+                torrents {
+                    url
+                    hash
+                    quality
+                }
+            }
         }
     }`;
+
     const res = useQuery(FETCH_MOVIES, { variables: { search: searchText, page: page } });
-    const movies = res.data.getMovies;
+    const movies = list.concat(_.get(res.data.getMovies, 'movies'));
+   
+    // console.log('movies ' + _.get(movies[0], 'id'))
 
     if (!movies) {
         return (
@@ -38,30 +60,14 @@ function Home() {
     }
     return (
         <div>
-            <MenuBar fetchMovies={setSearchText} />
+            <MenuBar fetchMovies={setSearchText} pageReset={setPage} listReset={setList} />
             <List>
                 {movies.map((movie, i) => <Film key={i} {...movie} />)}
             </List>
-            <Page>
-                {!searchText && (
-                    <Paginator>
-                        <Button onClick={() => { if (page > 1 && page < 1000) setPage(page - 1) }}>Previous</Button>
-                        <span>Page {page}</span>
-                        <Button onClick={() => setPage(page + 1)}>Next</Button>
-                    </Paginator>
-                )}
-            </Page>
-
             <Footer />
         </div>
     );
 }
-
-const Paginator = styled.div`
-    margin: auto ;
-    display: flex;
-    justify-content: space-between;
-`
 
 const List = styled.div`
     margin: 2vmin auto 0 ;

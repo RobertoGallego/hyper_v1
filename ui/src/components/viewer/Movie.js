@@ -9,32 +9,69 @@ import noImage from "../../assets/images/noImage.png";
 import { useQuery } from "@apollo/react-hooks";
 import axios from 'axios';
 import { FadeLoader } from "react-spinners";
+var _ = require('lodash');
+// var torrentStream = require('torrent-stream');
 
 export default function Movie() {
 
     const FETCH_ONE_MOVIE = gql`
         query($id: ID!){
         getOneMovie(id: $id){
-            id
-            title
-            poster_path
-            vote_average
-            overview
-            release_date
-            runtime
+            status
+            data {
+                movie {
+                    id
+                    yt_trailer_code
+                    torrents {
+                        url
+                        hash
+                    }
+                }
+            }
         }
     }`;
+    const FETCH_TORRENT_LINK = gql`
+        query($id: ID!){
+        getTorrentInfos(id: $id) {
+            status
+            data {
+            movie {
+            id
+            torrents {
+                url
+                hash
+            }
+           }
+         }
+       }
+    }`;
+
     const [Link, setLink] = useState("")
     const movieID = useParams().id;
     const { loading } = true;
 
     const res = useQuery(FETCH_ONE_MOVIE, { variables: { id: movieID } })
+    // const Torrent = useQuery(FETCH_TORRENT_LINK, { variables: { id: movieID } })
+    // const TorrentHash = _.get(Torrent, 'data.getTorrentInfos.data.movie.torrents[0].hash')
+    // console.log("Hash " + TorrentHash)
+    // if (TorrentHash) {
+    //     var engine = torrentStream(`magnet:?xt=urn:btih:${TorrentHash}`);
+
+    //     engine.on('ready', function () {
+    //         engine.files.forEach(function (file) {
+    //             console.log('filename:', file.name);
+    //             var stream = file.createReadStream();
+    //             // stream is readable stream to containing the file content
+    //         });
+    //     });
+    // }
     const movie = res.data.getOneMovie;
     const youtube = async () => {
         try {
-            const rest = await axios.get(`https://api.themoviedb.org/3/movie/${movieID}/videos?api_key=3cbc26720809cfa6649145e5d10a0b7c&language=en-US`);
-            if (rest.data.results[0].key)
-                setLink(rest.data.results[0].key)
+            const rest = await axios.get(`https://yts.mx/api/v2/movie_details.json?movie_id=${movieID}`);
+            console.log('ICI ' + rest.data.data.movie[0].yt_trailer_code)
+            // if (rest.data.data.movie[0].id)
+            //     setLink(rest.data.results[0].key)
         }
         catch (e) {
             console.log("No Trailer available")
@@ -72,7 +109,7 @@ export default function Movie() {
                         <Text>Torrents: </Text>
                         <span>Link for Torrent</span>
                         <Text>Comments: </Text>
-                        <Com />
+                        <Com movie={movieID}/>
                     </Left>
                     <Right>
                         <Text>Grade: {movie.vote_average}</Text>

@@ -4,25 +4,28 @@ import styled from 'styled-components';
 import noImage from "../assets/images/noImage.png";
 
 
-export default function FilmCard({id, title, poster_path, vote_average}) {
+export default function FilmCard({id, title, large_cover_image, rating}) {
     var image;
-    if (!poster_path)
+    if (!large_cover_image)
         image = noImage
     else
-        image = `https://image.tmdb.org/t/p/original${poster_path}`
-    return (
-        <Link to={`/movie/${id}`}>
-            <Card>
-                <Picture src={image} alt={`${title}Image`}/>
-                <Text>
-                    {vote_average}
-                </Text>
-                <Text>
-                    {title}
-                </Text>
-            </Card>
-        </Link>
-    );
+        image = `${large_cover_image}`;
+    if (id) {
+        return (
+            <Link to={`/movie/${id}`}>
+                <Card>
+                    <Picture src={image} alt={`${title}Image`}/>
+                    <Text>
+                        {rating}
+                    </Text>
+                    <Text>
+                        {title}
+                    </Text>
+                </Card>
+            </Link>
+        );
+    }
+    return '';
 }
 
 const Picture = styled.img`

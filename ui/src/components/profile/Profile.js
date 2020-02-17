@@ -51,8 +51,6 @@ export default function Profile() {
     }
   });
 
-  console.log(getUser);
-
   if (!getUser) {
     return (
       <Override className="sweet-loading">

@@ -7,7 +7,9 @@ import styled from "styled-components";
 import { useTranslation } from 'react-i18next';
 import logoSearch from "../../assets/images/lupsearch.png";
 
-function MenuBar({ fetchMovies }) {
+// function MenuBar({ fetchMovies }) {
+
+function MenuBar({ fetchMovies, pageReset, listReset }) {
   const { t } = useTranslation();
   const { user, logout } = useContext(AuthContext);
   const [textState, setTextState] = useState("");
@@ -18,6 +20,8 @@ function MenuBar({ fetchMovies }) {
 
   const sendSearch = () => {
     fetchMovies(textState);
+    pageReset(1);
+    listReset([]);
   };
 
   const loc = useLocation();

@@ -5,17 +5,25 @@ module.exports = {
         async getMovies(_, { search, page }) {
             let res
             if (search)
-                res = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=3cbc26720809cfa6649145e5d10a0b7c&language=en-US&query=${search}&page=1`);
-            else
-                res = await axios.get(`https://api.themoviedb.org/3/movie/top_rated?api_key=3cbc26720809cfa6649145e5d10a0b7c&language=en-US&page=${page}`);
+                res = await axios.get(`https://yts.mx/api/v2/list_movies.json?query_term=${search}&limit=40`);
+            else 
+                res = await axios.get(`https://yts.mx/api/v2/list_movies.json?sort=rating&limit=20&page=${page}`);
+            if (res)
+                return res.data.data;    
+            else 
+                throw new Error('No Movie finded ...');
+            
+        },
+        async getOneMovie(_, { id }) {
+            const res = await axios.get(`https://yts.mx/api/v2/movie_details.json?movie_id=${id}`);
             if (res) {
-                return res.data.results;
+                return res.data;
             } else {
                 throw new Error('No Movie finded ...');
             }
         },
-        async getOneMovie(_, { id }) {
-            const res = await axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=3cbc26720809cfa6649145e5d10a0b7c&language=en-US`);
+        async getTorrentInfos(_, { id }) {
+            const res = await axios.get(`https://yts.am/api/v2/movie_details.json?movie_id=${id}`);
             if (res) {
                 return res.data;
             } else {
