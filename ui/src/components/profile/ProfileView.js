@@ -3,10 +3,16 @@ import Moment from "react-moment";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import { useTranslation } from "react-i18next";
-import { Container, Hr, Img } from "./StyledComponentsProfile";
+import {
+  Content,
+  Card,
+  Infos,
+  Hr,
+  Img,
+  Footer,
+  Container
+} from "./StyleForProfile";
 import Header from "../general/Header";
-import Footer from "../general/Footer";
-import styled from "styled-components";
 
 const FETCH_USER_QUERY = gql`
   query($userId: ID!) {
@@ -35,47 +41,38 @@ export default function ProfileView(props) {
   } else {
     const { prenom, nom, username, createdAt, image } = getUser;
     return (
-      <BigContainer>
+      <div>
         <Header />
-        <Container className="container-fluid">
-          <div className="row mt-5 justify-content-center">
-            <div className="col-11 col-xl-4">
-              <h2>{t("profile.title")}</h2>
+        <Container>
+          <Content>
+            <Card>
+              <h3>{t("profile.title")}</h3>
               <Hr />
-            </div>
-          </div>
-          <div className="row mt-4 justify-content-center">
-            <div className="col-11 col-md-4 col-xl-2 text-center">
-              <Img
-                src={image}
-                className="card-img-top mb-4"
-                alt="Profile pic"
-              />
-            </div>
-            <div className="col-11 col-md-4 col-xl-2">
-              <h6>
-                {t("username")}: {username}
-              </h6>
-              <h6 className="mt-4">
-                {t("firstName")}: {prenom}
-              </h6>
-              <h6 className="mt-4">
-                {t("lastName")}: {nom}
-              </h6>
-              <h6 className="mt-4">
-                {t("joinedIn")} <Moment format="MMM YYYY">{createdAt}</Moment>
-              </h6>
-            </div>
-          </div>
+              <Infos>
+                <div>
+                  <Img src={image} alt="Profile pic" />
+                </div>
+                <div>
+                  <h6>
+                    {t("username")}: {username}
+                  </h6>
+                  <h6>
+                    {t("firstName")}: {prenom}
+                  </h6>
+                  <h6>
+                    {t("lastName")}: {nom}
+                  </h6>
+                  <h6>
+                    {t("joinedIn")}:{" "}
+                    <Moment format="MMM YYYY">{createdAt}</Moment>
+                  </h6>
+                </div>
+              </Infos>
+            </Card>
+          </Content>
+          <Footer />
         </Container>
-        <Footer />
-      </BigContainer>
+      </div>
     );
   }
 }
-
-const BigContainer = styled.div`
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-`;

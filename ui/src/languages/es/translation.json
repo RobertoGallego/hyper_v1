@@ -37,8 +37,9 @@
     "profile.link": "Modificar contraseña",
     "preferences": "Preferencias",
     "changeLanguage": "Cambiar idioma:",
-    "english": "Ingles",
-    "french": "Frances",
+    "english": "English",
+    "french": "Français",
+    "spanish": "Español",
 
     "signUp.title": "Contectar",
     "signUp.facebook": "Conectar con Facebook",

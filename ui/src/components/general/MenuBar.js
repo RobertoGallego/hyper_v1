@@ -4,7 +4,7 @@ import { useLocation } from "react-router";
 import { AuthContext } from "../../context/auth";
 import logoMenu from "../../assets/images/hyperlogo.png";
 import styled from "styled-components";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 import logoSearch from "../../assets/images/lupsearch.png";
 
 // function MenuBar({ fetchMovies }) {
@@ -31,32 +31,35 @@ function MenuBar({ fetchMovies, pageReset, listReset }) {
     return (
       <Nav>
         <Menubar>
-            <Link to="/">
+          <Link to="/">
             <Pict src={logoMenu} alt="Hypertube" />
-            </Link>
-            <StyledLinka href="/">{t('header.home')}</StyledLinka>
-            <StyledLink href="/profile">{t('header.profile')}</StyledLink>
-            <StyledLink onClick={logout} href="/login">{t('header.logout')}</StyledLink>
+          </Link>
+            <StyledLinka href="/">{t("header.home")}</StyledLinka>
+            <StyledLink href="/profile">{t("header.profile")}</StyledLink>
+            <StyledLink onClick={logout} href="/login">
+              {t("header.logout")}
+            </StyledLink>
         </Menubar>
         <Searchbar>
-            {isHome && (
-                <Bar>
-                  <Input
-                        onChange={searchChange}
-                        value={textState}
-                        name="search"
-                        placeholder={t('header.placeholder.search')}
-                  />
-                <Search 
-                    type="image"
-                    src={logoSearch}
-                    alt="Submit"
-                    onClick={sendSearch}> 
-                    {/* {t('header.search')} */}
-                </Search>
-                </Bar>
-            )}
-        </Searchbar>  
+          {isHome && (
+            <Bar>
+              <Input
+                onChange={searchChange}
+                value={textState}
+                name="search"
+                placeholder={t("header.placeholder.search")}
+              />
+              <Search
+                type="image"
+                src={logoSearch}
+                alt="Submit"
+                onClick={sendSearch}
+              >
+                {/* {t('header.search')} */}
+              </Search>
+            </Bar>
+          )}
+        </Searchbar>
       </Nav>
     );
   }
@@ -69,45 +72,45 @@ const Nav = styled.nav`
   justify-content: space-between;
   flex-wrap: wrap;
   background-color: #191919;
-  padding: 1rem 3.5rem;
+  padding: 1rem 1rem;
 `;
 
 const Menubar = styled.div`
-`
+`;
 
 const StyledLink = styled.a`
-    color: #fff;
-    font-size: 16px;
-    padding: 0 1rem;
-    transition-duration: 0.3s;
-    &:hover {
-        color: #db202c;
-        text-decoration: none;
-    }
+  color: #fff;
+  font-size: 16px;
+  padding: 0 1rem;
+  transition-duration: 0.3s;
+  &:hover {
+    color: #db202c;
+    text-decoration: none;
+  }
 `;
 
 const StyledLinka = styled.a`
-    transition-duration: 0.3s;
-    color: #fff;
-    font-size: 16px;
-    margin-left: 5rem;
-    padding: 0 1rem;
-    &:hover {
-        color: #db202c;
-        text-decoration: none;
-    }
-    @media (max-width: 768px) {
-      margin: 1rem;
-      margin-left: 0;
-    }
+  transition-duration: 0.3s;
+  color: #fff;
+  font-size: 16px;
+  margin-left: 5rem;
+  padding: 0 1rem;
+  &:hover {
+    color: #db202c;
+    text-decoration: none;
+  }
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
 `;
 
 const Pict = styled.img`
   margin-left: 1rem;
   cursor: pointer;
   @media (max-width: 768px) {
-      margin: 1rem 0 2rem 1.5rem;
-    }
+    margin: 0 20vw 1vh;
+    width: 50vw;
+  }
 `;
 
 const Searchbar = styled.div`
@@ -115,12 +118,12 @@ const Searchbar = styled.div`
 `;
 
 const Bar = styled.div`
-    display: flex;
-    align-items: center;
-    margin-right: 1rem;
-    @media (max-width: 768px) {
-        margin-top: 2rem;
-        }
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+  @media (max-width: 768px) {
+    margin-top: 2rem;
+  }
 `;
 
 const Input = styled.input`
@@ -128,7 +131,7 @@ const Input = styled.input`
   height: 50px;
   background: #2b303b;
   border: none;
-  font-size: 10pt;
+  font-size: 1rem;
   color: white;
   outline: 0;
   padding-left: 40px;
@@ -138,18 +141,18 @@ const Input = styled.input`
 `;
 
 const Search = styled.input`
-    width: 3rem;
-    border-color: #db202c;
-    background-color: #db202c;
-    color: white;
-    border-radius: 15rem;
-    padding: 10px 15px;
-    transition-duration: 0.3s;
-    margin: 0 0 0 0.5rem;
-    outline: 0;
-    &:hover {
-        opacity: 0.5;
-    }
+  width: 3rem;
+  border-color: #db202c;
+  background-color: #db202c;
+  color: white;
+  border-radius: 15rem;
+  padding: 10px 15px;
+  transition-duration: 0.3s;
+  margin: 0 0 0 0.5rem;
+  outline: 0;
+  &:hover {
+    opacity: 0.5;
+  }
 `;
 
 export default MenuBar;
