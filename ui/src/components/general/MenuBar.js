@@ -4,12 +4,7 @@ import { useLocation } from "react-router";
 import { AuthContext } from "../../context/auth";
 import logoTop from "../../assets/images/hyperlogo.png";
 import styled from "styled-components";
-<<<<<<< HEAD
-import { useTranslation } from 'react-i18next';
-=======
 import { useTranslation } from "react-i18next";
-import logoSearch from "../../assets/images/lupsearch.png";
->>>>>>> kwatanab
 
   export default function MenuBar({ fetchMovies, pageReset, listReset, genreAdd, sortAdd, reverseAdd}) {
   const { t } = useTranslation();
