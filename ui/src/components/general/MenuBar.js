@@ -68,7 +68,8 @@ const Nav = styled.nav`
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  background-color: #191919;
+  /* background-color: #191919; */
+  background: ${props => props.theme.colors.cardBackground};
   padding: 1rem 3.5rem;
 `;
 
@@ -76,7 +77,8 @@ const Menubar = styled.div`
 `
 
 const StyledLink = styled.a`
-    color: #fff;
+    /* color: #fff; */
+    color: ${props => props.theme.colors.textColor};
     font-size: 16px;
     padding: 0 1rem;
     transition-duration: 0.3s;
@@ -88,7 +90,8 @@ const StyledLink = styled.a`
 
 const StyledLinka = styled.a`
     transition-duration: 0.3s;
-    color: #fff;
+    /* color: #fff; */
+    color: ${props => props.theme.colors.textColor};
     font-size: 16px;
     margin-left: 5rem;
     padding: 0 1rem;
@@ -98,7 +101,7 @@ const StyledLinka = styled.a`
     }
     @media (max-width: 768px) {
       margin: 1rem;
-      margin-left: 0;
+      margin-left: 1.2rem;
     }
 `;
 
@@ -120,7 +123,8 @@ const Bar = styled.div`
     margin-right: 1rem;
     @media (max-width: 768px) {
         margin-top: 2rem;
-        }
+        margin-left: 1rem;
+      }
 `;
 
 const Input = styled.input`

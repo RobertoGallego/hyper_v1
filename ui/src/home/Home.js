@@ -59,23 +59,31 @@ function Home () {
         );
     }
     return (
-        <div>
+        <Homeindex>
             <MenuBar fetchMovies={setSearchText} pageReset={setPage} listReset={setList} />
             <List>
                 {movies.map((movie, i) => <Film key={i} {...movie} />)}
             </List>
             <Footer />
-        </div>
+        </Homeindex>
     );
 }
 
+const Homeindex = styled.div`
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    background: ${props => props.theme.colors.backgroungGeneral};
+`
+
 const List = styled.div`
     margin: 2vmin auto 0 ;
-    width: 70vw;
-    min-height: 75vh;
+    width: 80vw;
+    min-height: 80vh;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    flex: 1;
 `
 const Page = styled.div`
     margin: 20px auto;
