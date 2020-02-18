@@ -42,7 +42,7 @@ function App() {
                     localStorage.setItem("isDarkMode", !isDarkMode);
                     }}
                 >
-                    {status ? 'Dark' : 'Light'}
+                    {status ? ' ' : ' '}
                 </DarkLight>
                 
                 <SecureRoute exact path="/" component={Home} />
@@ -77,12 +77,17 @@ color: ${props => props.theme.colors.buttonColor};
 position: absolute;
 /* bottom: 0; */
 /* display: block; */
-margin: 24px;
+margin: 1rem;
 /* max-width: 100%; */
 border: none;
+border-color: #db202c;
+outline: 0;
+transition-duration: 0.3s;
 /* line-height: 36px; */
 /* padding: 0 12px; */
-border-radius: 4px;
+border-radius: 50%;
+height: 15px;
+width: 15px;
 font-size: 14px;
 `;
 export default App;
