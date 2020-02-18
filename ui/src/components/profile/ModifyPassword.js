@@ -1,21 +1,20 @@
 import React from "react";
-import styled from "styled-components";
 import Header from "../general/Header";
-import Footer from "../general/Footer";
+import { Container, Footer } from "./StyleForProfile";
+import { useTranslation } from "react-i18next";
 import ModifyPasswordCard from "./ModifyPasswordCard";
 
-const Container = styled.div`
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-`;
-
 export default function ModifyPassword() {
+  const { t } = useTranslation();
   return (
-    <Container>
+    <div>
       <Header />
-      <ModifyPasswordCard />
-      <Footer />
-    </Container>
+      <Container>
+        <ModifyPasswordCard />
+        <Footer>
+          <p>{t("footer")}</p>
+        </Footer>
+      </Container>
+    </div>
   );
 }

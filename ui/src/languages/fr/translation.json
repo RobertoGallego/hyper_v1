@@ -2,7 +2,7 @@
     "footer": "Hypertube par BabyYodaSayDame",
 
     "header.home": "ACCUEIL",
-    "header.profile": "PROFILE",
+    "header.profile": "PROFIL",
     "header.logout": "DÉCONNEXION",
     "header.search": "O",
     "header.placeholder.search": "RECHERCHER",
@@ -17,9 +17,9 @@
     "login.signUp": "Inscrivez vous maintenant !",
 
     "loading": "Chargement ...",
-    "profile.edit.title": "Modifier votre profile",
-    "profile.edit.msg": "Votre profile a été modifié avec succès !",
-    "profile.return": "Retourner sur votre profile",
+    "profile.edit.title": "Modifier votre profil",
+    "profile.edit.msg": "Votre profil a été modifié avec succès !",
+    "profile.return": "Retourner sur votre profil",
     "firstName": "Prénom",
     "lastName": "Nom",
     "email": "Email",
@@ -33,12 +33,13 @@
 
     "profile.title": "Profil",
     "joinedIn": "A rejoint en",
-    "profile.btn": "Modifier votre profile",
+    "profile.btn": "Modifier votre profil",
     "profile.link": "Modifier votre mot de passe",
     "preferences": "Préférences",
     "changeLanguage": "Changer la langue:",
-    "english": "Anglais",
+    "english": "English",
     "french": "Français",
+    "spanish": "Español",
 
     "signUp.title": "Inscription",
     "signUp.facebook": "S'inscrire avec Facebook",

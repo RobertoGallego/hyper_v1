@@ -4,7 +4,12 @@ import { useLocation } from "react-router";
 import { AuthContext } from "../../context/auth";
 import logoTop from "../../assets/images/hyperlogo.png";
 import styled from "styled-components";
+<<<<<<< HEAD
 import { useTranslation } from 'react-i18next';
+=======
+import { useTranslation } from "react-i18next";
+import logoSearch from "../../assets/images/lupsearch.png";
+>>>>>>> kwatanab
 
   export default function MenuBar({ fetchMovies, pageReset, listReset, genreAdd, sortAdd, reverseAdd}) {
   const { t } = useTranslation();
@@ -107,35 +112,36 @@ const Nav = styled.nav`
   justify-content: space-between;
   flex-wrap: wrap;
   background-color: #191919;
-  padding: 1rem 3.5rem;
+  padding: 1rem 1rem;
 `;
 
 const StyledLink = styled.a`
-    color: #fff;
-    font-size: 16px;
-    padding: 0 1rem;
-    transition-duration: 0.3s;
-    &:hover {
-        color: #db202c;
-        text-decoration: none;
-    }
+  color: #fff;
+  font-size: 16px;
+  padding: 0 1rem;
+  transition-duration: 0.3s;
+  &:hover {
+    color: #db202c;
+    text-decoration: none;
+  }
 `;
 
 const Pict = styled.img`
   margin-left: 1rem;
   cursor: pointer;
   @media (max-width: 768px) {
-      margin: 1rem 0 2rem 1.5rem;
-    }
+    margin: 0 20vw 1vh;
+    width: 50vw;
+  }
 `;
 
 const Bar = styled.div`
-    display: flex;
-    align-items: center;
-    margin-right: 1rem;
-    @media (max-width: 768px) {
-        margin-top: 2rem;
-        }
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+  @media (max-width: 768px) {
+    margin-top: 2rem;
+  }
 `;
 
 const Input = styled.input`
@@ -143,7 +149,7 @@ const Input = styled.input`
   height: 50px;
   background: #2b303b;
   border: none;
-  font-size: 10pt;
+  font-size: 1rem;
   color: white;
   outline: 0;
   padding-left: 40px;
