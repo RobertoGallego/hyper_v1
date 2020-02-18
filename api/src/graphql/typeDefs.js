@@ -13,6 +13,7 @@ module.exports = gql`
     }
     type Comment {
         id: ID!
+        userId: String!
         createdAt: String!
         username: String!
         body: String!
@@ -38,11 +39,31 @@ module.exports = gql`
         language: String!
         tokenMail: String!
     }
-    type Movie{
+    type Result_YTS{
+        movie_count: Int
+        limit: Int
+        page_number: Int
+        movies: [Movie_YTS]
+
+    }
+    type Torrent_YTS {
+        url: String
+        hash: String
+        quality: String
+
+    }
+    type Movie_YTS {
         id: ID!
-        title: String!
-        poster_path: String
-        vote_average: Float!
+        url: String
+        title: String
+        rating: Float
+        large_cover_image: String
+        torrents: [Torrent_YTS]
+    }
+    type Movie{
+        status: String!
+        status_message: String!
+        data: Result_YTS
     }
     type MovieDetails{
         id: ID!
@@ -68,13 +89,19 @@ module.exports = gql`
     }
     type MovieTorrent {
         id: ID!
+        year: Int
+        title: String!
+        runtime: Int
+        rating: Float!
+        yt_trailer_code: String
+        large_cover_image: String
         torrents: [Torrents]
     }
     type Data {
         movie: MovieTorrent
     }
     type Torrent {
-        status: ID!
+        status: String!
         data: Data!
     }
     type Query {
@@ -83,8 +110,8 @@ module.exports = gql`
         getUsers: [User]
         getUser(userId: ID!): User
         currentUser: User
-        getMovies(search: String!, page: Int): [Movie]
-        getOneMovie(id: ID!): MovieDetails
+        getMovies(search: String!, page: Int!, genre: String!, sort: String!, reverse: String!): Result_YTS
+        getOneMovie(id: ID!): Torrent
         getComments(movieId: String!): [Comment]
         getTorrentInfos(id: ID!): Torrent
     }

@@ -48,6 +48,12 @@ module.exports.validateRegisterInput = (
 		errors.password = 'Password must have at least 6 characters';
 	} else if (password !== confirmPassword) {
 		errors.confirmPassword = 'Passwords must match';
+	} else {
+		const regExPw = /^(?=.*\d)(?=.*[a-zA-Z])/;
+		if (!password.match(regExPw)) {
+			errors.password = 'Password must have at least one number and one character';
+		}
+
 	}
 	return {
 		errors,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Header from '../general/Header';
@@ -7,7 +7,7 @@ import Com from './Comment';
 import gql from "graphql-tag";
 import noImage from "../../assets/images/noImage.png";
 import { useQuery } from "@apollo/react-hooks";
-import axios from 'axios';
+import { FadeLoader } from "react-spinners";
 var _ = require('lodash');
 // var torrentStream = require('torrent-stream');
 
@@ -16,38 +16,32 @@ export default function Movie() {
     const FETCH_ONE_MOVIE = gql`
         query($id: ID!){
         getOneMovie(id: $id){
-            id
-            title
-            poster_path
-            vote_average
-            overview
-            release_date
-            runtime
-        }
-    }`;
-    const FETCH_TORRENT_LINK = gql`
-        query($id: ID!){
-        getTorrentInfos(id: $id) {
             status
             data {
-            movie {
-            id
-            torrents {
-                url
-                hash
+                movie {
+                    id
+                    yt_trailer_code
+                    title
+                    year
+                    rating
+                    runtime
+                    large_cover_image
+                    torrents {
+                        url
+                        hash
+                    }
+                }
             }
-           }
-         }
-       }
+        }
     }`;
 
-    const [Link, setLink] = useState("")
     const movieID = useParams().id;
+    const { loading } = true;
 
     const res = useQuery(FETCH_ONE_MOVIE, { variables: { id: movieID } })
-    const Torrent = useQuery(FETCH_TORRENT_LINK, { variables: { id: movieID } })
-    const TorrentHash = _.get(Torrent, 'data.getTorrentInfos.data.movie.torrents[0].hash')
-    console.log("Hash " + TorrentHash)
+    // const Torrent = useQuery(FETCH_TORRENT_LINK, { variables: { id: movieID } })
+    // const TorrentHash = _.get(Torrent, 'data.getTorrentInfos.data.movie.torrents[0].hash')
+    // console.log("Hash " + TorrentHash)
     // if (TorrentHash) {
     //     var engine = torrentStream(`magnet:?xt=urn:btih:${TorrentHash}`);
 
@@ -59,26 +53,27 @@ export default function Movie() {
     //         });
     //     });
     // }
-    const movie = res.data.getOneMovie;
-    const youtube = async () => {
-        try {
-            const rest = await axios.get(`https://api.themoviedb.org/3/movie/${movieID}/videos?api_key=3cbc26720809cfa6649145e5d10a0b7c&language=en-US`);
-            if (rest.data.results[0].key)
-                setLink(rest.data.results[0].key)
-        }
-        catch (e) {
-            console.log("No Trailer available")
-        }
-    }
-    youtube()
+    let movie = res.data.getOneMovie;
+    movie = Object.assign({}, _.get(movie, 'data.movie'))
+    console.log(JSON.stringify(movie))
+   
     if (!movie) {
-        return <h3>Loading ...</h3>;
+        return (
+            <Override className="sweet-loading">
+                <FadeLoader
+                size={20}
+                color={"#fff"}
+                loading={loading}
+                />
+            </Override>
+        );
     }
+    
     var image;
-    if (!movie.poster_path)
+    if (!movie.large_cover_image)
         image = noImage
     else
-        image = `https://image.tmdb.org/t/p/original${movie.poster_path}`
+        image = `${movie.large_cover_image}`
     return (
         <MoviePage>
             <Header />
@@ -87,7 +82,7 @@ export default function Movie() {
                 <HR />
                 <Split>
                     <Left>
-                        <Iframe src={"https://www.youtube.com/embed/" + Link} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></Iframe>
+                        { movie.yt_trailer_code && <Iframe src={"https://www.youtube.com/embed/" + movie.yt_trailer_code} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></Iframe>}
                         <Video controls>
 
                         </Video>
@@ -97,9 +92,9 @@ export default function Movie() {
                         <Com movie={movieID}/>
                     </Left>
                     <Right>
-                        <Text>Grade: {movie.vote_average}</Text>
+                        <Text>Grade: {movie.rating}</Text>
                         <Picture src={image} alt={`${movie.title}Image`} />
-                        <Text>Release Date: {movie.release_date}</Text>
+                        <Text>Release Date: {movie.year}</Text>
                         <Text>Duration: {movie.runtime}min</Text>
                     </Right>
                 </Split>
@@ -175,4 +170,12 @@ margin: 0 auto;
 const Text = styled.span`
 margin: 30px 0;
 font-size: 1.5em;
+`;
+
+const Override = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
 `;

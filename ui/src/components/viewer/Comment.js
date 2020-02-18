@@ -16,6 +16,7 @@ export default function Com(movieID) {
         query getComments($movId: String!){
             getComments(movieId: $movId){
                 id
+                userId
                 username
                 body
                 movieId
@@ -70,7 +71,7 @@ export default function Com(movieID) {
                 </Form>
             </NewCom>
             {comments.map((comment,i) => 
-                <OldCom key={i}><p><b>{comment.username}</b><br/>{comment.body}<br/>{moment(comment.createdAt).format("LLL")}</p></OldCom>
+                <OldCom key={i}><Link href={`/profile/${comment.userId}`}>{comment.username}</Link><br/>{comment.body}<br/>{moment(comment.createdAt).format("LLL")}</OldCom>
             )}
         </Comment>
     );
@@ -129,3 +130,10 @@ const Send = styled.input`
     font-size: .9em;
     margin-right: 2em;
 `
+const Link = styled.a`
+    color: #fff;
+
+    &:hover {
+        color: #fff;
+    }
+`;

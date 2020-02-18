@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 
 export default function ProfileCard(props) {
   const { t, i18n } = useTranslation();
-  const { username, prenom, nom, email, createdAt, image, facebookId } = props;
+  const { username, prenom, nom, email, createdAt, image, facebookId, googleId, fortytwoId } = props;
   const changeLanguage = lng => {
     i18n.changeLanguage(lng);
   };
@@ -66,7 +66,7 @@ export default function ProfileCard(props) {
           </Button>
         </div>
       </div>
-      {facebookId !== "null" ? (
+      {facebookId !== "" || googleId !== "" || fortytwoId !== "" ? (
         ""
       ) : (
         <div className="row mt-4 justify-content-center">
@@ -89,6 +89,7 @@ export default function ProfileCard(props) {
           <Select defaultValue={language} onChange={onChange}>
             <option value="en">{t("english")}</option>
             <option value="fr">{t("french")}</option>
+            <option value="es">{t("spanish")}</option>
           </Select>
         </div>
       </div>

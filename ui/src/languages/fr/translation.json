@@ -1,10 +1,11 @@
 {
     "footer": "Hypertube par BabyYodaSayDame",
 
-    "header.home": "Acceuil",
-    "header.profile": "Profile",
-    "header.logout": "Déconnexion",
-    "header.search": "Rechercher",
+    "header.home": "ACCUEIL",
+    "header.profile": "PROFILE",
+    "header.logout": "DÉCONNEXION",
+    "header.search": "O",
+    "header.placeholder.search": "RECHERCHER",
 
     "login.title": "Connexion",
     "username": "Nom d'utilisateur",

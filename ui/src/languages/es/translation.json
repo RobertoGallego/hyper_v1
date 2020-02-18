@@ -1,0 +1,62 @@
+{
+    "footer": "Hypertube creado por BabyYodaSayDame",
+
+    "header.home": "INICIO",
+    "header.profile": "PERFIL",
+    "header.logout": "CERRAR SESIÓN",
+    "header.search": "O",
+    "header.placeholder.search" : "BUSCAR",
+
+    "login.title": "Conectar",
+    "username": "Nombre de usuario",
+    "password": "Contraseña",
+    "login.rememberMe": "Recordarme",
+    "login.forgotPassword": "Recuperar contraseña",
+    "login.facebook": "Conectar con Facebook",
+    "login.hypertube": "Nuevo en Hypertube ?",
+    "login.signUp": "Registrate ahora !",
+
+    "loading": "Cargando ...",
+    "profile.edit.title": "Editar perfil",
+    "profile.edit.msg": "Enhorabuena tu perfil fue modificado !",
+    "profile.return": "Volver a perfil",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "email": "Email",
+    "save": "Guardar",
+
+    "profile.mPW.title": "Modificar contraseña",
+    "profile.mPW.msg": "Tu contraseña fue exitosamente modificada !",
+    "oldPassword": "Contraseña anterior",
+    "newPassword": "Nueva contraseña",
+    "confirmPassword": "Confirma tu nueva contraseña",
+
+    "profile.title": "Perfil",
+    "joinedIn": "Se unio",
+    "profile.btn": "Editar perfil",
+    "profile.link": "Modificar contraseña",
+    "preferences": "Preferencias",
+    "changeLanguage": "Cambiar idioma:",
+    "english": "Ingles",
+    "french": "Frances",
+
+    "signUp.title": "Contectar",
+    "signUp.facebook": "Conectar con Facebook",
+    "signUp.hypertube": "Ya estas registrado ?",
+    "signUp.login": "Ingresar",
+
+    "rPW.title": "Reiniciar contraseña",
+    "rPW.p1": "Si esta cuenta se encuentra en nuestro sistema, te enviamos un email para reiniciar tu contraseña.",
+    "rPW.return": "Volver a la pagina de conexión",
+    "rPW.p2": "Le puede pasar a cualquiera. Ingresa tu email y te enviaremos instrucciones para reiniciar.",
+    "rPW.send": "Enviar",
+
+    "viewer.span": "Enlace para torrent",
+    "viewer.comment": "Comentarios",
+    "viewer.grade": "Grado",
+    "viewer.date": "Fecha de salida",
+    "viewer.time": "Duracion",
+    "viewer.addComment": "Agregar comentario",
+    "viewer.send": "Enviar",
+    "viewer.noComments": "Sin comentarios"
+}

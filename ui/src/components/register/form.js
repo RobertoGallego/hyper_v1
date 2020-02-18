@@ -122,7 +122,7 @@ export default function Formin(props) {
                     onChange={onChange}
                 />
                 {Object.keys(errors).length > 0 && (<Alert>{errors.password}</Alert>)}
-                {Object.keys(errors).length > 0 && (<AlertA>{errors.password}</AlertA>)}
+                {Object.keys(errors).length > 0 && (<AlertA>{errors.confirmPassword}</AlertA>)}
                 <Input
                     name='password'
                     required = "required"
@@ -133,7 +133,7 @@ export default function Formin(props) {
                     error={errors.password ? true : false}
                     onChange={onChange}
                 />
-                {Object.keys(errors).length > 0 && (<AlertB>{errors.password}</AlertB>)}
+                {Object.keys(errors).length > 0 && (<AlertB>{errors.confirmPassword}</AlertB>)}
                 <Input
                     name="confirmPassword"
                     required = "required"

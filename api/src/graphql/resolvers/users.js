@@ -11,6 +11,7 @@ const {
 const { SECRET_KEY } = require('../../config');
 const User = require('../../models/User');
 const nodemailer = require("nodemailer");
+var ip = require('ip');
 
 function generateToken(user) {
     return jwt.sign(
@@ -75,7 +76,39 @@ module.exports = {
                 throw new UserInputError('Not been verified', { errors });
             }
 
+            const ipman = ip.address()
             const token = generateToken(user);
+            
+            let date_ob = new Date();
+
+            let date = ("0" + date_ob.getDate()).slice(-2);
+            let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+            let year = date_ob.getFullYear();
+            let hours = date_ob.getHours();
+            let minutes = date_ob.getMinutes();
+            let seconds = date_ob.getSeconds();
+            const teatime = hours + ":" + minutes + ":" + seconds + " " + date + "-" + month + "-" + year;
+
+            var transporter = nodemailer.createTransport({ 
+                service: 'gmail', 
+                auth: {
+                    user: 'willfln34@gmail.com',
+                    pass: 'matcha1234'
+                }
+            });
+
+            var mailOptions = { 
+                from: '"Hypertube" <no-reply@hypertube.com>',
+                to: user.email,
+                subject: `[Sign In] You signed in from ${ipman} at ${teatime}`, 
+                text: `Hello!,\nYou signed in from\n${ipman} ip at ${teatime}\nthis email is just for protect your account, please do not reply`};
+            
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                        return console.log(error);
+                    }
+                    console.log('Message sent: %s', info.messageId);
+                });
 
             return {
                 ...user._doc,
@@ -158,29 +191,29 @@ module.exports = {
             // console.log("token mail:", email);
             // console.log("token:", token);
             
-            const link = `<a href="http://localhost:3000/confirmation/${token}">Activate</a>`;
-            // Send the email
+            // const link = `<a href="http://localhost:3000/confirmation/${token}">Activate</a>`;
+            // // Send the email
 
-            var transporter = nodemailer.createTransport({ 
-                service: 'gmail', 
-                auth: {
-                    user: 'willfln34@gmail.com',
-                    pass: 'matcha1234'
-                }
-            });
+            // var transporter = nodemailer.createTransport({ 
+            //     service: 'gmail', 
+            //     auth: {
+            //         user: 'willfln34@gmail.com',
+            //         pass: 'matcha1234'
+            //     }
+            // });
 
-            var mailOptions = { 
-                from: '"Hypertube" <no-reply@hypertube.com>',
-                to: newUser.email,
-                subject: 'Account Verification', 
-                text: `Hello!,\n . ${link} `};
+            // var mailOptions = { 
+            //     from: '"Hypertube" <no-reply@hypertube.com>',
+            //     to: newUser.email,
+            //     subject: 'Account Verification', 
+            //     text: `Hello!,\n . ${link} `};
             
-                transporter.sendMail(mailOptions, (error, info) => {
-                    if (error) {
-                        return console.log(error);
-                    }
-                    console.log('Message sent: %s', info.messageId);
-                });
+            //     transporter.sendMail(mailOptions, (error, info) => {
+            //         if (error) {
+            //             return console.log(error);
+            //         }
+            //         console.log('Message sent: %s', info.messageId);
+            //     });
 
             return {
                 ...res._doc,

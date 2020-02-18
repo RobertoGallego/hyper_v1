@@ -6,12 +6,22 @@ import ProfileCard from "./ProfileCard";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import { AuthContext } from "../../context/auth";
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
+import { FadeLoader } from "react-spinners";
 
 const Container = styled.div`
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+`;
+
+const Override = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  /* border-color: white; */
 `;
 
 const FETCH_USER_QUERY = gql`
@@ -31,8 +41,9 @@ const FETCH_USER_QUERY = gql`
 `;
 
 export default function Profile() {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const user = useContext(AuthContext);
+  const { loading } = true;
   const userId = user.user.id;
   const { data: { getUser }} = useQuery(FETCH_USER_QUERY, { 
     variables: {
@@ -40,10 +51,16 @@ export default function Profile() {
     }
   });
 
-  console.log(getUser);
-
   if (!getUser) {
-    return <h3>{t('loading')}</h3>;
+    return (
+      <Override className="sweet-loading">
+        <FadeLoader
+          size={20}
+          color={"#fff"}
+          loading={loading}
+        />
+      </Override>
+    );
   } else {
     const { prenom, nom, username, createdAt, email, image, facebookId, googleId, fortytwoId } = getUser;
     return (

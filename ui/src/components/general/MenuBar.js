@@ -2,23 +2,44 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router";
 import { AuthContext } from "../../context/auth";
-import logoTop from "../../assets/images/logo-top.png";
+import logoTop from "../../assets/images/hyperlogo.png";
 import styled from "styled-components";
 import { useTranslation } from 'react-i18next';
 
-export default function MenuBar({ fetchMovies, pageReset, listReset }) {
+  export default function MenuBar({ fetchMovies, pageReset, listReset, genreAdd, sortAdd, reverseAdd}) {
   const { t } = useTranslation();
   const { user, logout } = useContext(AuthContext);
   const [textState, setTextState] = useState("");
+  const [genreState, setGenreState] = useState("");
+  const [sortState, setSortState] = useState("rating");
+  const [reverseState, setReverseState] = useState("desc");
 
   const searchChange = e => {
     setTextState(e.target.value);
   };
 
+  const genreChange = e => {
+    setGenreState(e.target.value);
+  };
+
+  const sortChange = e => {
+    setSortState(e.target.value);
+  };
+
+  const reverseChange = e => {
+    if (e.target.checked)
+      setReverseState("asc");
+    else
+      setReverseState("desc");
+  }
+
   const sendSearch = () => {
     fetchMovies(textState);
     pageReset(1);
     listReset([]);
+    genreAdd(genreState);
+    sortAdd(sortState);
+    reverseAdd(reverseState);
   };
 
   const loc = useLocation();
@@ -47,34 +68,31 @@ export default function MenuBar({ fetchMovies, pageReset, listReset }) {
           </Bar>)}
         {isHome && (
           <Filter>
-            <Slct name="gender">
+            <Slct onChange={genreChange}>
               <Opt value="">Gender</Opt>
-              <Opt value="28">Action</Opt>
-              <Opt value="12">Adventure</Opt>
-              <Opt value="16">Animation</Opt>
-              <Opt value="35">Comedy</Opt>
-              <Opt value="80">Crime</Opt>
-              <Opt value="99">Documentary</Opt>
-              <Opt value="18">Drama</Opt>
-              <Opt value="14">Fantasy</Opt>
-              <Opt value="36">History</Opt>
-              <Opt value="27">Horror</Opt>
-              <Opt value="9648">Mystery</Opt>
-              <Opt value="878">Sci-Fi</Opt>
-              <Opt value="53">Thriller</Opt>
-              <Opt value="10752">War</Opt>
-              <Opt value="37">Western</Opt>
+              <Opt value="action">Action</Opt>
+              <Opt value="adventure">Adventure</Opt>
+              <Opt value="animation">Animation</Opt>
+              <Opt value="comedy">Comedy</Opt>
+              <Opt value="crime">Crime</Opt>
+              <Opt value="documentary">Documentary</Opt>
+              <Opt value="drama">Drama</Opt>
+              <Opt value="fantasy">Fantasy</Opt>
+              <Opt value="history">History</Opt>
+              <Opt value="horror">Horror</Opt>
+              <Opt value="sci-fi">Sci-Fi</Opt>
+              <Opt value="thriller">Thriller</Opt>
+              <Opt value="war">War</Opt>
+              <Opt value="western">Western</Opt>
             </Slct>
-          </Filter>
-        )}
-        {isHome && (
-          <Filter>
-            <Check type ="checkbox" name="date" />
-            <Label for="date">Date</Label>
-            <Check type ="checkbox" name="duration" />
-            <Label for="duration">Duration</Label>
-            <Check type ="checkbox" name="reverse" />
-            <Label for="reverse">R everse</Label>
+            <Slct onChange={sortChange}>
+              <Opt value="rating">Rating</Opt>
+              <Opt value="year">Year</Opt>
+              <Opt value="title">Title</Opt>
+              <Opt value="peers">Peers</Opt>
+            </Slct>
+            <Check onChange={reverseChange} type ="checkbox" name="reverse"/>
+            <Label htmlFor="reverse">Reverse</Label>
           </Filter>
         )}
       </Nav>
@@ -85,49 +103,68 @@ export default function MenuBar({ fetchMovies, pageReset, listReset }) {
 
 const Nav = styled.nav`
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
   background-color: #191919;
-  padding: 10px;
+  padding: 1rem 3.5rem;
 `;
 
 const StyledLink = styled.a`
-  color: #666;
-  font-size: 20px;
-  margin: 25px 15px;
-
-  &:hover {
-    color: #db202c;
-    text-decoration: none;
-  }
+    color: #fff;
+    font-size: 16px;
+    padding: 0 1rem;
+    transition-duration: 0.3s;
+    &:hover {
+        color: #db202c;
+        text-decoration: none;
+    }
 `;
 
 const Pict = styled.img`
-  height: 75px;
-  width: 130px;
-  margin: 0 20px;
+  margin-left: 1rem;
+  cursor: pointer;
+  @media (max-width: 768px) {
+      margin: 1rem 0 2rem 1.5rem;
+    }
 `;
 
-const Bar = styled.div``;
+const Bar = styled.div`
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+    @media (max-width: 768px) {
+        margin-top: 2rem;
+        }
+`;
 
 const Input = styled.input`
-  background-color: #191919;
+  width: 300px;
+  height: 50px;
+  background: #2b303b;
   border: none;
-  border-bottom: 1px solid white;
-  margin: 25px 15px;
+  font-size: 10pt;
   color: white;
-  outline: none;
+  outline: 0;
+  padding-left: 40px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 `;
 
-const Search = styled.button`
-  border-color: #db202c;
-  background-color: #db202c;
-  color: white;
-  border-radius: 5px;
-  padding: 10px 15px;
-  transition-duration: 0.3s;
-
-  &:hover {
-    color: black;
-  }
+const Search = styled.div`
+    width: 3rem;
+    border-color: #db202c;
+    background-color: #db202c;
+    color: white;
+    border-radius: 15rem;
+    padding: 10px 15px;
+    transition-duration: 0.3s;
+    margin: 0 0 0 0.5rem;
+    outline: 0;
+    &:hover {
+        opacity: 0.5;
+    }
 `;
 
 const Filter = styled.div``;
