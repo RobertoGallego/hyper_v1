@@ -74,7 +74,7 @@ export default function MenuBar({ fetchMovies, pageReset, listReset }) {
             <Check type ="checkbox" name="duration" />
             <Label for="duration">Duration</Label>
             <Check type ="checkbox" name="reverse" />
-            <Label for="reverse">Reverse</Label>
+            <Label for="reverse">R everse</Label>
           </Filter>
         )}
       </Nav>
