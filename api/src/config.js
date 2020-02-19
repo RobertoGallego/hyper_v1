@@ -1,5 +1,5 @@
 module.exports = {
-  MONGODB: 'mongodb+srv://Hypertube:elpassword@cluster0-jhgjp.mongodb.net/test?retryWrites=true&w=majority',
+  MONGODB: 'mongodb+srv://kwatanab:qwerty123@cluster0-n8jzi.mongodb.net/test?retryWrites=true&w=majority',
   SECRET_KEY: 'some very secret key',
   keys: 'some very secret key again'
 };

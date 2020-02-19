@@ -69,30 +69,30 @@ import { useTranslation } from "react-i18next";
         {isHome && (
           <Filter>
             <Slct onChange={genreChange}>
-              <Opt value="">Gender</Opt>
-              <Opt value="action">Action</Opt>
-              <Opt value="adventure">Adventure</Opt>
-              <Opt value="animation">Animation</Opt>
-              <Opt value="comedy">Comedy</Opt>
-              <Opt value="crime">Crime</Opt>
-              <Opt value="documentary">Documentary</Opt>
-              <Opt value="drama">Drama</Opt>
-              <Opt value="fantasy">Fantasy</Opt>
-              <Opt value="history">History</Opt>
-              <Opt value="horror">Horror</Opt>
-              <Opt value="sci-fi">Sci-Fi</Opt>
-              <Opt value="thriller">Thriller</Opt>
-              <Opt value="war">War</Opt>
-              <Opt value="western">Western</Opt>
+              <Opt value="">{t('genre')}</Opt>
+              <Opt value="action">{t('action')}</Opt>
+              <Opt value="adventure">{t('adventure')}</Opt>
+              <Opt value="animation">{t('animation')}</Opt>
+              <Opt value="comedy">{t('comedy')}</Opt>
+              <Opt value="crime">{t('crime')}</Opt>
+              <Opt value="documentary">{t('documentary')}</Opt>
+              <Opt value="drama">{t('drama')}</Opt>
+              <Opt value="fantasy">{t('fantasy')}</Opt>
+              <Opt value="history">{t('history')}</Opt>
+              <Opt value="horror">{t('horror')}</Opt>
+              <Opt value="sci-fi">{t('sci-fi')}</Opt>
+              <Opt value="thriller">{t('thriller')}</Opt>
+              <Opt value="war">{t('war')}</Opt>
+              <Opt value="western">{t('western')}</Opt>
             </Slct>
             <Slct onChange={sortChange}>
-              <Opt value="rating">Rating</Opt>
-              <Opt value="year">Year</Opt>
-              <Opt value="title">Title</Opt>
-              <Opt value="peers">Peers</Opt>
+              <Opt value="rating">{t('rating')}</Opt>
+              <Opt value="year">{t('year')}</Opt>
+              <Opt value="title">{t('title')}</Opt>
+              <Opt value="peers">{t('peers')}</Opt>
             </Slct>
             <Check onChange={reverseChange} type ="checkbox" name="reverse"/>
-            <Label htmlFor="reverse">Reverse</Label>
+            <Label htmlFor="reverse">{t('reverse')}</Label>
           </Filter>
         )}
       </Nav>
