@@ -106,19 +106,46 @@ const Nav = styled.nav`
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  background-color: #191919;
-  padding: 1rem 1rem;
+  /* background-color: #191919; */
+  background: ${props => props.theme.colors.cardBackground};
+  padding: 1rem 3.5rem;
 `;
 
 const StyledLink = styled.a`
-  color: #fff;
-  font-size: 16px;
-  padding: 0 1rem;
-  transition-duration: 0.3s;
-  &:hover {
-    color: #db202c;
-    text-decoration: none;
-  }
+    /* color: #fff;
+    font-size: 16px;
+    padding: 0 1rem;
+    transition-duration: 0.3s;
+    &:hover {
+      color: #db202c;
+      text-decoration: none;
+    } */
+      /* color: #fff; */
+    color: ${props => props.theme.colors.textColor};
+    font-size: 16px;
+    padding: 0 1rem;
+    transition-duration: 0.3s;
+    &:hover {
+        color: #db202c;
+        text-decoration: none;
+    }
+`;
+
+const StyledLinka = styled.a`
+    transition-duration: 0.3s;
+    /* color: #fff; */
+    color: ${props => props.theme.colors.textColor};
+    font-size: 16px;
+    margin-left: 5rem;
+    padding: 0 1rem;
+    &:hover {
+        color: #db202c;
+        text-decoration: none;
+    }
+    @media (max-width: 768px) {
+      margin: 1rem;
+      margin-left: 1.2rem;
+    }
 `;
 
 const Pict = styled.img`
@@ -131,18 +158,25 @@ const Pict = styled.img`
 `;
 
 const Bar = styled.div`
-  display: flex;
+  /* display: flex;
   align-items: center;
   margin-right: 1rem;
   @media (max-width: 768px) {
     margin-top: 2rem;
-  }
+  } */
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+    @media (max-width: 768px) {
+        margin-top: 2rem;
+        margin-left: 1rem;
+      }
 `;
 
 const Input = styled.input`
   width: 300px;
   height: 50px;
-  background: #2b303b;
+  background: ${props => props.theme.colors.barras};
   border: none;
   font-size: 1rem;
   color: white;
