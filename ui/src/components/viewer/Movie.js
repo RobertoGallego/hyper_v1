@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Header from '../general/Header';
@@ -7,12 +7,9 @@ import Com from './Comment';
 import gql from "graphql-tag";
 import noImage from "../../assets/images/noImage.png";
 import { useQuery } from "@apollo/react-hooks";
-import { FadeLoader } from "react-spinners";
 import axios from 'axios';
 var _ = require('lodash');
-
 export default function Movie() {
-
     const FETCH_ONE_MOVIE = gql`
         query($id: ID!){
         getOneMovie(id: $id){
@@ -34,10 +31,6 @@ export default function Movie() {
             }
         }
     }`;
-
-    const movieID = useParams().id;
-    const { loading } = true;
-
     const startPlaying = async () => {
         console.log(movieID + "    " + torrentHash)
         await axios.get(`http://localhost:5000/downloadMovie/${movieID}/${torrentHash}`).then(data => {
@@ -59,19 +52,9 @@ export default function Movie() {
     if (torrentHash)
         console.log("Hash is here => " + torrentHash)
     // console.log(JSON.stringify(movie))
-
     if (!movie) {
-        return (
-            <Override className="sweet-loading">
-                <FadeLoader
-                    size={20}
-                    color={"#fff"}
-                    loading={loading}
-                />
-            </Override>
-        );
+        return <h3>Loading ...</h3>;
     }
-
     var image;
     if (!movie.large_cover_image)
         image = noImage
@@ -105,7 +88,6 @@ export default function Movie() {
         </MoviePage >
     );
 }
-
 const Link = styled.button`
   border-color: blue;
   background-color: blue;
@@ -119,7 +101,6 @@ const Link = styled.button`
     border-color: white
   }
 `;
-
 const MoviePage = styled.div`
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
     background-color: #111111;
@@ -127,7 +108,6 @@ const MoviePage = styled.div`
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-
     display: flex;
     min-height: 100vh;
     flex-direction: column;
@@ -138,11 +118,9 @@ const Iframe = styled.iframe`
     width: 60vmin;
     height: 30vmin;
 `;
-
 const HR = styled.hr`
     border: 1px solid white;
 `
-
 const Content = styled.div`
     display: flex;
     flex-direction: column;
@@ -152,46 +130,31 @@ const Content = styled.div`
 const Split = styled.div`
     display: flex;
 `
-
 const Left = styled.div`
     width: 70vmin;
     display: flex;
     flex-direction: column;
     text-align: center;
 `
-
 const Video = styled.video`
     margin: 5vmin;
     width: 60vmin;
     height: 40vmin;
-
 `
-
 const Right = styled.div`
     display: flex;
     flex-direction: column;
     width: 20vmin;
 `
-
 const Title = styled.h1`
 font-size: 5vmin;
 `;
-
 const Picture = styled.img`
 width: 25vmin;
 height: 25min;
 margin: 0 auto;
 `;
-
 const Text = styled.span`
 margin: 30px 0;
 font-size: 1.5em;
-`;
-
-const Override = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  height: 100vh;
 `;

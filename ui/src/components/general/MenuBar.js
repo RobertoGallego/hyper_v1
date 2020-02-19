@@ -51,7 +51,7 @@ import { useTranslation } from "react-i18next";
         <Link to="/">
           <Pict src={logoTop} alt="Hypertube" />
         </Link>
-        <StyledLink href="/">{t('header.home')}</StyledLink>
+        <StyledLinka href="/">{t('header.home')}</StyledLinka>
         <StyledLink href="/profile">{t('header.profile')}</StyledLink>
         <StyledLink onClick={logout} href="/login">
           {t('header.logout')}
