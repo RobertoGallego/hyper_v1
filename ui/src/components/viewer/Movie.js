@@ -31,17 +31,6 @@ export default function Movie() {
             }
         }
     }`;
-    const startPlaying = async () => {
-        console.log(movieID + "    " + torrentHash)
-        await axios.get(`http://localhost:5000/downloadMovie/${movieID}/${torrentHash}`).then(data => {
-            // console.log("data =>" + JSON.stringify(data.data.status));
-            if (data.data.status === "OK") {
-                setmovieLink(`http://localhost:5000/playMovie/${movieID}`)
-            }
-            else
-                console.log("error to get download")
-        });
-    }
     const [movieLink, setmovieLink] = useState("");
     const movieID = useParams().id;
     console.log("Movie link " + movieLink)
@@ -51,9 +40,17 @@ export default function Movie() {
     const torrentHash = _.get(movie, 'torrents[0].hash')
     if (torrentHash)
         console.log("Hash is here => " + torrentHash)
-    // console.log(JSON.stringify(movie))
     if (!movie) {
         return <h3>Loading ...</h3>;
+    }
+
+    const { loading } = true;
+    const startPlaying = async () => {
+        console.log(movieID + "    " + torrentHash)
+        await axios.get(`http://localhost:5000/downloadMovie/${movieID}/${torrentHash}`)
+        console.log("retour");
+                // setmovieLink(`http://localhost:5000/playMovie/${movieID}`)
+        setmovieLink(`Downloads/${movieID}.mp4`)
     }
     var image;
     if (!movie.large_cover_image)
@@ -64,12 +61,16 @@ export default function Movie() {
         <MoviePage>
             <Header />
             <Content>
+                {/* <Video controls autoPlay src={`./Downloads/${movieID}.mp4`} type="video/mp4" type="video/webm"></Video> */}
+                {/* <Text>Torrents: </Text>
+                    {torrentHash && <span><Link onClick={startPlaying}>YTS Torrent</Link></span>}
                 <Title>{movie.title}</Title>
-                <HR />
+                <HR /> */}
                 <Split>
                     <Left>
                         {movie.yt_trailer_code && <Iframe src={"https://www.youtube.com/embed/" + movie.yt_trailer_code} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></Iframe>}
-                        <Video controls autoPlay src={movieLink}>
+                        <Video controls autoPlay loop="">
+                            <source src={`/Downloads/${movieID}.mp4`} type="video/mp4" />
                         </Video>
                         <Text>Torrents: </Text>
                         {torrentHash && <span><Link onClick={startPlaying}>YTS Torrent</Link></span>}

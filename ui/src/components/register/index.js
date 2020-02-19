@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Header from './header';
 import Formin from './form';
-import Footer from './footer';
+import FooterLR from './footer';
 import background from '../../assets/images/background.jpg';
 
 const Signin = styled.div`
@@ -23,7 +23,7 @@ export default function signin(props) {
         <Signin>
             <Header/>
             <Formin history= {props.history}/>
-            <Footer/>
+            <FooterLR />
         </Signin>
     );
 }

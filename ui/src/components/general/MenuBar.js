@@ -5,14 +5,15 @@ import { AuthContext } from "../../context/auth";
 import logoTop from "../../assets/images/hyperlogo.png";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
+import logoSearch from "../../assets/images/lupsearch.png";
 
-  export default function MenuBar({ fetchMovies, pageReset, listReset, genreAdd, sortAdd, reverseAdd}) {
-  const { t } = useTranslation();
-  const { user, logout } = useContext(AuthContext);
-  const [textState, setTextState] = useState("");
-  const [genreState, setGenreState] = useState("");
-  const [sortState, setSortState] = useState("rating");
-  const [reverseState, setReverseState] = useState("desc");
+export default function MenuBar({ fetchMovies, pageReset, listReset, genreAdd, sortAdd, reverseAdd}) {
+const { t } = useTranslation();
+const { user, logout } = useContext(AuthContext);
+const [textState, setTextState] = useState("");
+const [genreState, setGenreState] = useState("");
+const [sortState, setSortState] = useState("rating");
+const [reverseState, setReverseState] = useState("desc");
 
   const searchChange = e => {
     setTextState(e.target.value);
@@ -48,51 +49,61 @@ import { useTranslation } from "react-i18next";
   if (user) {
     return (
       <Nav>
-        <Link to="/">
-          <Pict src={logoTop} alt="Hypertube" />
-        </Link>
-        <StyledLinka href="/">{t('header.home')}</StyledLinka>
-        <StyledLink href="/profile">{t('header.profile')}</StyledLink>
-        <StyledLink onClick={logout} href="/login">
-          {t('header.logout')}
-        </StyledLink>
-        {isHome && (
-          <Bar>
-            <Input
-              onChange={searchChange}
-              value={textState}
-              name="search"
-              placeholder={t('header.search')}
-            />
-            <Search onClick={sendSearch}>{t('header.search')}</Search>
-          </Bar>)}
+            <Menubar>
+                <Link to="/">
+                <Pict src={logoTop} alt="Hypertube" />
+                </Link>
+                <StyledLinka href="/">{t('header.home')}</StyledLinka>
+                <StyledLink href="/profile">{t('header.profile')}</StyledLink>
+                <StyledLink onClick={logout} href="/login">
+                {t('header.logout')}
+                </StyledLink>
+            </Menubar>
+            <Searchbar>
+                {isHome && (
+                <Bar>
+                    <Input
+                        onChange={searchChange}
+                        value={textState}
+                        name="search"
+                        placeholder={t('header.search')}
+                    />
+                    <Search 
+                        type="image"
+                        src={logoSearch}
+                        alt="Submit"
+                        onClick={sendSearch}> 
+                        {/* {t('header.search')} */}
+                    </Search>
+                </Bar>)}
+            </Searchbar>
         {isHome && (
           <Filter>
             <Slct onChange={genreChange}>
-              <Opt value="">Gender</Opt>
-              <Opt value="action">Action</Opt>
-              <Opt value="adventure">Adventure</Opt>
-              <Opt value="animation">Animation</Opt>
-              <Opt value="comedy">Comedy</Opt>
-              <Opt value="crime">Crime</Opt>
-              <Opt value="documentary">Documentary</Opt>
-              <Opt value="drama">Drama</Opt>
-              <Opt value="fantasy">Fantasy</Opt>
-              <Opt value="history">History</Opt>
-              <Opt value="horror">Horror</Opt>
-              <Opt value="sci-fi">Sci-Fi</Opt>
-              <Opt value="thriller">Thriller</Opt>
-              <Opt value="war">War</Opt>
-              <Opt value="western">Western</Opt>
+              <Opt value="">{t('genre')}</Opt>
+              <Opt value="action">{t('action')}</Opt>
+              <Opt value="adventure">{t('adventure')}</Opt>
+              <Opt value="animation">{t('animation')}</Opt>
+              <Opt value="comedy">{t('comedy')}</Opt>
+              <Opt value="crime">{t('crime')}</Opt>
+              <Opt value="documentary">{t('documentary')}</Opt>
+              <Opt value="drama">{t('drama')}</Opt>
+              <Opt value="fantasy">{t('fantasy')}</Opt>
+              <Opt value="history">{t('history')}</Opt>
+              <Opt value="horror">{t('horror')}</Opt>
+              <Opt value="sci-fi">{t('sci-fi')}</Opt>
+              <Opt value="thriller">{t('thriller')}</Opt>
+              <Opt value="war">{t('war')}</Opt>
+              <Opt value="western">{t('western')}</Opt>
             </Slct>
             <Slct onChange={sortChange}>
-              <Opt value="rating">Rating</Opt>
-              <Opt value="year">Year</Opt>
-              <Opt value="title">Title</Opt>
-              <Opt value="peers">Peers</Opt>
+              <Opt value="rating">{t('rating')}</Opt>
+              <Opt value="year">{t('year')}</Opt>
+              <Opt value="title">{t('title')}</Opt>
+              <Opt value="peers">{t('peers')}</Opt>
             </Slct>
             <Check onChange={reverseChange} type ="checkbox" name="reverse"/>
-            <Label htmlFor="reverse">Reverse</Label>
+            <Label htmlFor="reverse">{t('reverse')}</Label>
           </Filter>
         )}
       </Nav>
@@ -111,16 +122,15 @@ const Nav = styled.nav`
   padding: 1rem 3.5rem;
 `;
 
+const Menubar = styled.div`
+`
+
+const Searchbar = styled.div`
+  justify-content: center;
+`;
+
 const StyledLink = styled.a`
-    /* color: #fff;
-    font-size: 16px;
-    padding: 0 1rem;
-    transition-duration: 0.3s;
-    &:hover {
-      color: #db202c;
-      text-decoration: none;
-    } */
-      /* color: #fff; */
+    /* color: #fff; */
     color: ${props => props.theme.colors.textColor};
     font-size: 16px;
     padding: 0 1rem;
@@ -152,18 +162,11 @@ const Pict = styled.img`
   margin-left: 1rem;
   cursor: pointer;
   @media (max-width: 768px) {
-    margin: 0 20vw 1vh;
-    width: 50vw;
-  }
+      margin: 1rem 0 2rem 1.5rem;
+    }
 `;
 
 const Bar = styled.div`
-  /* display: flex;
-  align-items: center;
-  margin-right: 1rem;
-  @media (max-width: 768px) {
-    margin-top: 2rem;
-  } */
     display: flex;
     align-items: center;
     margin-right: 1rem;
@@ -187,7 +190,7 @@ const Input = styled.input`
   border-radius: 5px;
 `;
 
-const Search = styled.div`
+const Search = styled.input`
     width: 3rem;
     border-color: #db202c;
     background-color: #db202c;

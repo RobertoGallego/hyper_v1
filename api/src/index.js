@@ -162,11 +162,14 @@ const app = express();
 //*******STREAM ROUTE********//
 app.use(cors())
 app.get('/downloadMovie/:movieID/:torrentHash', function (req, res) {
+    console.log("hash " + req.params.torrentHash);
+    console.log("link " + req.params.movieID);
     const movieID = req.params.movieID;
     const torrentHash = req.params.torrentHash;
     if (!movieID || !torrentHash)
         res.send({ status: "Error!!", message: "movieID or Hash doesn't exist..." })
     const magnetLink = `magnet:?xt=urn:btih:${torrentHash}`;
+
     const convert = function (file, thread) {
         if (!thread)
             thread = 8
@@ -188,6 +191,7 @@ app.get('/downloadMovie/:movieID/:torrentHash', function (req, res) {
             .on('error', function (err) {
             })
     }
+    
     let downloadingStreams = {}
     const streaming = (filename, magnetLink) => {
         // CALCULS

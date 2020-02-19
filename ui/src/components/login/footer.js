@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTranslation } from "react-i18next";
 
 const Footer = styled.div`
     bottom: 0;
@@ -34,13 +35,10 @@ const FooterB = styled.div`
     align-content: center;
     justify-content: flex-start;
     flex-wrap: wrap;
-    & a {
+    & p {
         color: rgb(112, 112, 112);
         text-decoration: none;
         margin: 0 5rem 2rem;
-    }
-    & a:hover {
-        text-decoration: underline;
     }
 `
 
@@ -65,22 +63,31 @@ const FooterC = styled.div`
     }
 `
 
-export default function footer() {
+export default function FooterLR() {
+    const { t, i18n } = useTranslation();
+    const changeLanguage = lng => {
+        i18n.changeLanguage(lng);
+    };
+    let language = i18n.language;
+
+    function onChange(e) {
+        changeLanguage(e.target.value);
+        localStorage.setItem("language", e.target.value);
+    }
+
     return (
         <Footer>
             <FooterA>
-                <p>Questions? Call</p>
-                <a href='/#'>085-220-626</a>
+                <p>{t('footer.msg')}</p>
             </FooterA>
             <FooterB>
-                <a href='/#'>Gift Card Terms</a>
-                <a href='/#'>Terms of Use</a>
-                <a href='/#'>Privacy Statement</a>
+                <p>{t('footer')}</p>
             </FooterB>
             <FooterC>
-                <select>
-                    <option value='0'>English</option>
-                    <option value='1'>Français</option>
+                <select defaultValue={language} onChange={onChange}>
+                    <option value="en">{t("english")}</option>
+                    <option value="fr">{t("french")}</option>
+                    <option value="es">{t("spanish")}</option>
                 </select>
             </FooterC>
         </Footer>
