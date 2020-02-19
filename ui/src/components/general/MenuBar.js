@@ -130,7 +130,7 @@ const Bar = styled.div`
 const Input = styled.input`
   width: 300px;
   height: 50px;
-  background: #2b303b;
+  background: ${props => props.theme.colors.barras};
   border: none;
   font-size: 10pt;
   color: white;

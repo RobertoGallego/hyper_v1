@@ -26,7 +26,7 @@ font-size: 14px;
 `;
 
 const Container = styled.div`
-    background-color: #191919;
+    background: ${props => props.theme.colors.cardBackground};
     bottom: 0;
     left: 0;
     right: 0;

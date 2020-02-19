@@ -19,7 +19,7 @@ import SocialAuthRedirect from "./context/SocialAuthRedirect";
 import styled, { ThemeProvider } from "styled-components";
 import lightTheme from "./themes/light";
 import darkTheme from "./themes/dark";
-
+// import Icon from "./assets/icon/Message";
 // import SinglePost from './pages/SinglePost';
 
 function App() {
@@ -34,6 +34,7 @@ function App() {
             <Suspense fallback="loading">
                 <AuthProvider>
                 <Router>
+                    {/* <Icon name="message" width={100}/> */}
 
                 <DarkLight
                     onClick={() => {
@@ -75,19 +76,16 @@ const DarkLight = styled.button`
 background: ${props => props.theme.colors.buttonBackground};
 color: ${props => props.theme.colors.buttonColor};
 position: absolute;
-/* bottom: 0; */
-/* display: block; */
 margin: 1rem;
-/* max-width: 100%; */
+right: 0;
 border: none;
 border-color: #db202c;
-outline: 0;
+outline: 0 !important;
 transition-duration: 0.3s;
-/* line-height: 36px; */
-/* padding: 0 12px; */
 border-radius: 50%;
-height: 15px;
-width: 15px;
+height: 10px;
+width: 10px;
 font-size: 14px;
+text-decoration: none;
 `;
 export default App;
