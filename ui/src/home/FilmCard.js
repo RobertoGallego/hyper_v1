@@ -4,19 +4,19 @@ import styled from 'styled-components';
 import noImage from "../assets/images/noImage.png";
 
 
-export default function FilmCard({id, title, large_cover_image, rating}) {
+export default function FilmCard({id, title, poster_path, vote_average, overview, release_date, runtime}) {
     var image;
-    if (!large_cover_image)
+    if (!poster_path)
         image = noImage
     else
-        image = `${large_cover_image}`;
+        image = `https://image.tmdb.org/t/p/original${poster_path}`;
     if (id) {
         return (
             <Link to={`/movie/${id}`}>
                 <Card>
                     <Picture src={image} alt={`${title}Image`}/>
                     <Text>
-                        {rating}
+                        {vote_average}
                     </Text>
                     <Text>
                         {title}

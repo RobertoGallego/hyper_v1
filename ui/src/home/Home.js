@@ -30,25 +30,18 @@ function Home () {
     const FETCH_MOVIES = gql`
         query($search: String!, $page: Int!, $genre: String!, $sort: String!, $reverse: String!){
         getMovies(search: $search, page: $page, genre: $genre, sort: $sort, reverse: $reverse){
-            page_number
-            movies {
-                id
-                title
-                large_cover_image
-                rating
-                torrents {
-                    url
-                    hash
-                    quality
-                }
-            }
+            id
+            title
+            poster_path
+            vote_average
+            overview
+            release_date
+            runtime
         }
     }`;
 
     const res = useQuery(FETCH_MOVIES, { variables: { search: searchText, page: page, genre: genre, sort: sort, reverse: reverse } });
-    const movies = list.concat(_.get(res.data.getMovies, 'movies'));
-   
-    // console.log('movies ' + _.get(movies[0], 'id'))
+    const movies = res.data.getMovies;
 
     if (!movies) {
         return (
