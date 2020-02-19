@@ -2,12 +2,14 @@ const axios = require('axios')
 
 module.exports = {
     Query: {
-        async getMovies(_, { search, page }) {
+        async getMovies(_, { search, genre, sort, page, reverse }) {
             let res
             if (search)
-                res = await axios.get(`https://yts.mx/api/v2/list_movies.json?query_term=${search}&limit=40`);
-            else 
-                res = await axios.get(`https://yts.mx/api/v2/list_movies.json?sort_by=rating&limit=20&page=${page}`);
+                res = await axios.get(`https://yts.mx/api/v2/list_movies.json?sort_by=${sort}&order_by=${reverse}&query_term=${search}&limit=20&page=${page}`);
+            else if (genre) 
+                res = await axios.get(`https://yts.mx/api/v2/list_movies.json?sort_by=${sort}&order_by=${reverse}&genre=${genre}&limit=20&page=${page}`);
+            else
+                res = await axios.get(`https://yts.mx/api/v2/list_movies.json?sort_by=${sort}&order_by=${reverse}&limit=20&page=${page}`);
             if (res)
                 return res.data.data;    
             else 

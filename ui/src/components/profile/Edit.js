@@ -1,19 +1,13 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import Header from "../general/Header";
-import Footer from "../general/Footer";
 import EditCard from "./EditCard";
 import { AuthContext } from "../../context/auth";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
-// import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { FadeLoader } from "react-spinners";
-
-const Container = styled.div`
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-`;
+import { Container, Footer } from "./StyleForProfile";
 
 const Override = styled.div`
   display: flex;
@@ -36,7 +30,7 @@ const FETCH_USER_QUERY = gql`
 `;
 
 export default function Edit() {
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
   const user = useContext(AuthContext);
   const userId = user.user.id;
   const { loading } = true;
@@ -52,27 +46,27 @@ export default function Edit() {
   if (!getUser) {
     return (
       <Override className="sweet-loading">
-        <FadeLoader
-          size={20}
-          color={"#fff"}
-          loading={loading}
-        />
+        <FadeLoader size={20} color={"#fff"} loading={loading} />
       </Override>
     );
   } else {
     const { email, prenom, nom, username, image } = getUser;
     return (
-      <Container>
+      <div>
         <Header />
-        <EditCard
-          email={email}
-          prenom={prenom}
-          nom={nom}
-          username={username}
-          image={image}
-        />
-        <Footer />
-      </Container>
+        <Container>
+          <EditCard
+            email={email}
+            prenom={prenom}
+            nom={nom}
+            username={username}
+            image={image}
+          />
+          <Footer>
+            <p>{t("footer")}</p>
+          </Footer>
+        </Container>
+      </div>
     );
   }
 }

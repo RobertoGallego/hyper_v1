@@ -2,26 +2,45 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router";
 import { AuthContext } from "../../context/auth";
-import logoMenu from "../../assets/images/hyperlogo.png";
+import logoTop from "../../assets/images/hyperlogo.png";
 import styled from "styled-components";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 import logoSearch from "../../assets/images/lupsearch.png";
 
-// function MenuBar({ fetchMovies }) {
-
-function MenuBar({ fetchMovies, pageReset, listReset }) {
-  const { t } = useTranslation();
-  const { user, logout } = useContext(AuthContext);
-  const [textState, setTextState] = useState("");
+export default function MenuBar({ fetchMovies, pageReset, listReset, genreAdd, sortAdd, reverseAdd}) {
+const { t } = useTranslation();
+const { user, logout } = useContext(AuthContext);
+const [textState, setTextState] = useState("");
+const [genreState, setGenreState] = useState("");
+const [sortState, setSortState] = useState("rating");
+const [reverseState, setReverseState] = useState("desc");
 
   const searchChange = e => {
     setTextState(e.target.value);
   };
 
+  const genreChange = e => {
+    setGenreState(e.target.value);
+  };
+
+  const sortChange = e => {
+    setSortState(e.target.value);
+  };
+
+  const reverseChange = e => {
+    if (e.target.checked)
+      setReverseState("asc");
+    else
+      setReverseState("desc");
+  }
+
   const sendSearch = () => {
     fetchMovies(textState);
     pageReset(1);
     listReset([]);
+    genreAdd(genreState);
+    sortAdd(sortState);
+    reverseAdd(reverseState);
   };
 
   const loc = useLocation();
@@ -30,33 +49,63 @@ function MenuBar({ fetchMovies, pageReset, listReset }) {
   if (user) {
     return (
       <Nav>
-        <Menubar>
-            <Link to="/">
-            <Pict src={logoMenu} alt="Hypertube" />
-            </Link>
-            <StyledLinka href="/">{t('header.home')}</StyledLinka>
-            <StyledLink href="/profile">{t('header.profile')}</StyledLink>
-            <StyledLink onClick={logout} href="/login">{t('header.logout')}</StyledLink>
-        </Menubar>
-        <Searchbar>
-            {isHome && (
+            <Menubar>
+                <Link to="/">
+                <Pict src={logoTop} alt="Hypertube" />
+                </Link>
+                <StyledLinka href="/">{t('header.home')}</StyledLinka>
+                <StyledLink href="/profile">{t('header.profile')}</StyledLink>
+                <StyledLink onClick={logout} href="/login">
+                {t('header.logout')}
+                </StyledLink>
+            </Menubar>
+            <Searchbar>
+                {isHome && (
                 <Bar>
-                  <Input
+                    <Input
                         onChange={searchChange}
                         value={textState}
                         name="search"
-                        placeholder={t('header.placeholder.search')}
-                  />
-                <Search 
-                    type="image"
-                    src={logoSearch}
-                    alt="Submit"
-                    onClick={sendSearch}> 
-                    {/* {t('header.search')} */}
-                </Search>
-                </Bar>
-            )}
-        </Searchbar>  
+                        placeholder={t('header.search')}
+                    />
+                    <Search 
+                        type="image"
+                        src={logoSearch}
+                        alt="Submit"
+                        onClick={sendSearch}> 
+                        {/* {t('header.search')} */}
+                    </Search>
+                </Bar>)}
+            </Searchbar>
+        {isHome && (
+          <Filter>
+            <Slct onChange={genreChange}>
+              <Opt value="">{t('genre')}</Opt>
+              <Opt value="action">{t('action')}</Opt>
+              <Opt value="adventure">{t('adventure')}</Opt>
+              <Opt value="animation">{t('animation')}</Opt>
+              <Opt value="comedy">{t('comedy')}</Opt>
+              <Opt value="crime">{t('crime')}</Opt>
+              <Opt value="documentary">{t('documentary')}</Opt>
+              <Opt value="drama">{t('drama')}</Opt>
+              <Opt value="fantasy">{t('fantasy')}</Opt>
+              <Opt value="history">{t('history')}</Opt>
+              <Opt value="horror">{t('horror')}</Opt>
+              <Opt value="sci-fi">{t('sci-fi')}</Opt>
+              <Opt value="thriller">{t('thriller')}</Opt>
+              <Opt value="war">{t('war')}</Opt>
+              <Opt value="western">{t('western')}</Opt>
+            </Slct>
+            <Slct onChange={sortChange}>
+              <Opt value="rating">{t('rating')}</Opt>
+              <Opt value="year">{t('year')}</Opt>
+              <Opt value="title">{t('title')}</Opt>
+              <Opt value="peers">{t('peers')}</Opt>
+            </Slct>
+            <Check onChange={reverseChange} type ="checkbox" name="reverse"/>
+            <Label htmlFor="reverse">{t('reverse')}</Label>
+          </Filter>
+        )}
       </Nav>
     );
   }
@@ -75,6 +124,10 @@ const Nav = styled.nav`
 
 const Menubar = styled.div`
 `
+
+const Searchbar = styled.div`
+  justify-content: center;
+`;
 
 const StyledLink = styled.a`
     /* color: #fff; */
@@ -113,10 +166,6 @@ const Pict = styled.img`
     }
 `;
 
-const Searchbar = styled.div`
-  justify-content: center;
-`;
-
 const Bar = styled.div`
     display: flex;
     align-items: center;
@@ -132,7 +181,7 @@ const Input = styled.input`
   height: 50px;
   background: ${props => props.theme.colors.barras};
   border: none;
-  font-size: 10pt;
+  font-size: 1rem;
   color: white;
   outline: 0;
   padding-left: 40px;
@@ -156,4 +205,17 @@ const Search = styled.input`
     }
 `;
 
-export default MenuBar;
+const Filter = styled.div``;
+
+const Slct = styled.select`
+
+`
+const Opt = styled.option`
+
+`
+
+const Check = styled.input`
+
+`
+
+const Label = styled.label``

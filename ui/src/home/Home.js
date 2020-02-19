@@ -14,6 +14,9 @@ function Home () {
     const { loading } = true;
     const [searchText, setSearchText] = useState("");
     const [list, setList] = useState([]);
+    const [genre, setGenre] = useState("");
+    const [sort, setSort] = useState("rating");
+    const [reverse, setReverse] = useState("desc");
 
     const handleOnDocumentBottom = () => 
     {
@@ -25,8 +28,8 @@ function Home () {
     useBottomScrollListener(handleOnDocumentBottom);
 
     const FETCH_MOVIES = gql`
-        query($search: String!, $page: Int!){
-        getMovies(search: $search, page: $page){
+        query($search: String!, $page: Int!, $genre: String!, $sort: String!, $reverse: String!){
+        getMovies(search: $search, page: $page, genre: $genre, sort: $sort, reverse: $reverse){
             page_number
             movies {
                 id
@@ -42,7 +45,7 @@ function Home () {
         }
     }`;
 
-    const res = useQuery(FETCH_MOVIES, { variables: { search: searchText, page: page } });
+    const res = useQuery(FETCH_MOVIES, { variables: { search: searchText, page: page, genre: genre, sort: sort, reverse: reverse } });
     const movies = list.concat(_.get(res.data.getMovies, 'movies'));
    
     // console.log('movies ' + _.get(movies[0], 'id'))
@@ -60,7 +63,7 @@ function Home () {
     }
     return (
         <Homeindex>
-            <MenuBar fetchMovies={setSearchText} pageReset={setPage} listReset={setList} />
+            <MenuBar fetchMovies={setSearchText} pageReset={setPage} listReset={setList} genreAdd={setGenre} sortAdd={setSort} reverseAdd={setReverse}/>
             <List>
                 {movies.map((movie, i) => <Film key={i} {...movie} />)}
             </List>
@@ -85,13 +88,6 @@ const List = styled.div`
     flex-wrap: wrap;
     flex: 1;
 `
-const Page = styled.div`
-    margin: 20px auto;
-    width: 30vw;
-    display: flex;
-    justify-content: space-between;
-    text-align: center;
-`;
 
 const Override = styled.div`
   display: flex;
@@ -101,19 +97,5 @@ const Override = styled.div`
   height: 100vh;
 `;
 
-const Button = styled.button`
-margin: 0 10vmin;
-border-color: #DB202C;
-background-color: #DB202C;
-color: white;
-border-radius: 5px;
-padding: 10px 15px;
-transition-duration: 0.3s;
-
-&:hover {
-  
-  color: black;
-}
-`;
 
 export default Home;
