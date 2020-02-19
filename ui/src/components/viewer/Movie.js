@@ -8,8 +8,8 @@ import gql from "graphql-tag";
 import noImage from "../../assets/images/noImage.png";
 import { useQuery } from "@apollo/react-hooks";
 import { FadeLoader } from "react-spinners";
+import axios from 'axios';
 var _ = require('lodash');
-// var torrentStream = require('torrent-stream');
 
 export default function Movie() {
 
@@ -38,37 +38,40 @@ export default function Movie() {
     const movieID = useParams().id;
     const { loading } = true;
 
+    const startPlaying = async () => {
+        console.log(movieID + "    " + torrentHash)
+        await axios.get(`http://localhost:5000/downloadMovie/${movieID}/${torrentHash}`).then(data => {
+            // console.log("data =>" + JSON.stringify(data.data.status));
+            if (data.data.status === "OK") {
+                setmovieLink(`http://localhost:5000/playMovie/${movieID}`)
+            }
+            else
+                console.log("error to get download")
+        });
+    }
+    const [movieLink, setmovieLink] = useState("");
+    const movieID = useParams().id;
+    console.log("Movie link " + movieLink)
     const res = useQuery(FETCH_ONE_MOVIE, { variables: { id: movieID } })
-    // const Torrent = useQuery(FETCH_TORRENT_LINK, { variables: { id: movieID } })
-    // const TorrentHash = _.get(Torrent, 'data.getTorrentInfos.data.movie.torrents[0].hash')
-    // console.log("Hash " + TorrentHash)
-    // if (TorrentHash) {
-    //     var engine = torrentStream(`magnet:?xt=urn:btih:${TorrentHash}`);
-
-    //     engine.on('ready', function () {
-    //         engine.files.forEach(function (file) {
-    //             console.log('filename:', file.name);
-    //             var stream = file.createReadStream();
-    //             // stream is readable stream to containing the file content
-    //         });
-    //     });
-    // }
     let movie = res.data.getOneMovie;
     movie = Object.assign({}, _.get(movie, 'data.movie'))
-    console.log(JSON.stringify(movie))
-   
+    const torrentHash = _.get(movie, 'torrents[0].hash')
+    if (torrentHash)
+        console.log("Hash is here => " + torrentHash)
+    // console.log(JSON.stringify(movie))
+
     if (!movie) {
         return (
             <Override className="sweet-loading">
                 <FadeLoader
-                size={20}
-                color={"#fff"}
-                loading={loading}
+                    size={20}
+                    color={"#fff"}
+                    loading={loading}
                 />
             </Override>
         );
     }
-    
+
     var image;
     if (!movie.large_cover_image)
         image = noImage
@@ -82,14 +85,13 @@ export default function Movie() {
                 <HR />
                 <Split>
                     <Left>
-                        { movie.yt_trailer_code && <Iframe src={"https://www.youtube.com/embed/" + movie.yt_trailer_code} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></Iframe>}
-                        <Video controls>
-
+                        {movie.yt_trailer_code && <Iframe src={"https://www.youtube.com/embed/" + movie.yt_trailer_code} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></Iframe>}
+                        <Video controls autoPlay src={movieLink}>
                         </Video>
                         <Text>Torrents: </Text>
-                        <span>Link for Torrent</span>
+                        {torrentHash && <span><Link onClick={startPlaying}>YTS Torrent</Link></span>}
                         <Text>Comments: </Text>
-                        <Com movie={movieID}/>
+                        <Com movie={movieID} />
                     </Left>
                     <Right>
                         <Text>Grade: {movie.rating}</Text>
@@ -103,6 +105,20 @@ export default function Movie() {
         </MoviePage >
     );
 }
+
+const Link = styled.button`
+  border-color: blue;
+  background-color: blue;
+  color: white;
+  border-radius: 5px;
+  padding: 10px 15px;
+  transition-duration: 0.3s;
+  &:hover {
+    color: black;
+    background-color: white;
+    border-color: white
+  }
+`;
 
 const MoviePage = styled.div`
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
