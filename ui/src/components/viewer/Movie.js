@@ -14,7 +14,9 @@ import {
     useQuery
 } from "@apollo/react-hooks";
 import axios from 'axios';
+import Countdown from 'react-countdown-now';
 var _ = require('lodash');
+
 export default function Movie() {
     const FETCH_ONE_MOVIE = gql`
         query($id: ID!){
@@ -37,9 +39,10 @@ export default function Movie() {
             }
         }
     }`;
-    const [movieLink, setmovieLink] = useState("");
+    const movieLink = useState("");
+    const [Show, setShow] = useState(false);
+    const [Go, setGo] = useState(false);
     const movieID = useParams().id;
-    console.log("Movie link " + movieLink)
     const res = useQuery(FETCH_ONE_MOVIE, {
         variables: {
             id: movieID
@@ -53,43 +56,47 @@ export default function Movie() {
     if (!movie) {
         return <h3> Loading... </h3>;
     }
-
-    const { loading } = true;
+    const renderer = ({ seconds, completed }) => {
+        if (completed) {
+            // Render a completed state
+            return <Completionist />;
+        } else {
+            // Render a countdown
+            return <span>{seconds}</span>;
+        }
+    };
+    const Completionist = () => <span>Let's START</span>;
+    // const { loading } = true;
     const startDownloading = async () => {
-        await axios.get(`http://localhost:5000/downloadMovie/${movieID}/${torrentHash}`)
+        setGo(true);
+        await axios.get(`http://localhost:5000/downloadMovie/${movieID}/${torrentHash}`);
     }
-    const startPlaying = async () => {
-        // await axios.get(`http://localhost:5000/downloadMovie/${movieID}/${torrentHash}`)
-        setmovieLink(`http://localhost:5000/playMovie/${movieID}`);
-    }
+
     var image;
     if (!movie.large_cover_image)
         image = noImage
     else
         image = `${movie.large_cover_image}`
+
     return (<MoviePage >
         <Header />
-        <Content > {
-            /* <Video controls autoPlay src={`./Downloads/${movieID}.mp4`} type="video/mp4" type="video/webm"></Video> */} {
-                /* <Text>Torrents: </Text>
-                                    {torrentHash && <span><Link onClick={startPlaying}>YTS Torrent</Link></span>}
-                                <Title>{movie.title}</Title>
-                                <HR /> */
-            } <Split >
-                <Left > {
-                    movie.yt_trailer_code && < Iframe src={
-                        "https://www.youtube.com/embed/" + movie.yt_trailer_code
-                    }
-                        frameborder="0"
-                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen > </Iframe>} <Video controls autoPlay loop="" >
-                        <source src={
-                            movieLink
-                        }
-                            type="video/mp4" />
-                    </Video> <Text > Torrents: </Text>
-                    {torrentHash && < span > < Link onClick={startDownloading} > YTS Torrent </Link></span >}
-                    {movieLink && <span > <Link onClick={startPlaying} > Play Movie </Link></span >}
+        <Content >
+            <Split >
+                <Left > {movie.yt_trailer_code && < Iframe src={"https://www.youtube.com/embed/" + movie.yt_trailer_code}
+                    frameborder="0"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen > </Iframe>}
+                    {!Show && <Video controls autoPlay loop="" >
+                        <source src={movieLink} type="video/mp4" />
+                    </Video>}
+                    {Show && <Video controls autoPlay loop="" >
+                        <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/mp4" />
+                        {/* <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/webm" /> */}
+                    </Video>}
+                    <Text > Torrents: </Text>
+                    {!Go && torrentHash && <span> <Link1 onClick={startDownloading}> YTS TORRENT </Link1></span>}
+                    {Go && <span> <Link2 onClick={() => setShow(true)}><Countdown date={Date.now() + 10000} renderer={renderer} /></Link2></span>}
+
                     <Text > Comments: </Text> <
                         Com movie={
                             movieID
@@ -114,8 +121,20 @@ export default function Movie() {
     </MoviePage >
     );
 }
-
-const Link = styled.button`
+const Link2 = styled.button`
+  border-color: red;
+  background-color: red;
+  color: black;
+  border-radius: 5px;
+  padding: 10px 15px;
+  transition-duration: 0.3s;
+  &:hover {
+    color: black;
+    background-color: white;
+    border-color: white
+  }
+`;
+const Link1 = styled.button`
   border-color: blue;
   background-color: blue;
   color: white;
@@ -145,9 +164,9 @@ const Iframe = styled.iframe`
     width: 60vmin;
     height: 30vmin;
 `;
-const HR = styled.hr`
-    border: 1px solid white;
-`
+// const HR = styled.hr`
+//     border: 1px solid white;
+// `
 const Content = styled.div`
     display: flex;
     flex-direction: column;
@@ -173,9 +192,9 @@ const Right = styled.div`
     flex-direction: column;
     width: 20vmin;
 `
-const Title = styled.h1`
-font-size: 5vmin;
-`;
+// const Title = styled.h1`
+// font-size: 5vmin;
+// `;
 const Picture = styled.img`
 width: 25vmin;
 height: 25min;
