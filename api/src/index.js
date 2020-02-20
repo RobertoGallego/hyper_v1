@@ -215,7 +215,9 @@ app.get('/downloadMovie/:movieID/:torrentHash', function (req, res) {
             //sendHeaders(req, res, file.length, (ext !== '.webm' && ext !== '.mp4') ? 'webm' : ext.substr(1))
             // CONVERT
             let needConvert = (ext !== '.webm' && ext !== '.mp4')
-            let videoStream = needConvert ? convert(file) : file.createReadStream()
+            let videoStream = needConvert ? convert(file) : file.createReadStream({
+                start: 0,
+            })
             ext = needConvert ? '.webm' : ext
             // MULTIPLE STREAMS
             let filePath = path.join(__dirname, '/../../ui/public/Downloads/' + filename + ext)
@@ -270,39 +272,39 @@ app.get('/downloadMovie/:movieID/:torrentHash', function (req, res) {
     streaming(movieID, magnetLink);
 
 });
-app.get('/playMovie/:movieID', function (req, res) {
-    const movieID = req.params.movieID;
-    const path = __dirname + `/../../ui/public/Downloads/${movieID}.mp4`
-    console.log(path)
-    const stat = fs.statSync(path)
-    const fileSize = stat.size
-    const range = req.headers.range
-    console.log("test + JSON.stringify(range)")
-    if (range) {
-        const parts = range.replace(/bytes=/, "").split("-")
-        const start = parseInt(parts[0], 10)
-        const end = parts[1]
-            ? parseInt(parts[1], 10)
-            : fileSize - 1
-        const chunksize = (end - start) + 1
-        const file = fs.createReadStream(path, { start, end })
-        const head = {
-            'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-            'Accept-Ranges': 'bytes',
-            'Content-Length': chunksize,
-            'Content-Type': 'video/mp4',
-        }
-        res.writeHead(206, head);
-        file.pipe(res);
-    } else {
-        const head = {
-            'Content-Length': fileSize,
-            'Content-Type': 'video/mp4',
-        }
-        res.writeHead(200, head)
-        fs.createReadStream(path).pipe(res)
-    }
-});
+// app.get('/playMovie/:movieID', function (req, res) {
+//     const movieID = req.params.movieID;
+//     const path = __dirname + `/../../ui/public/Downloads/${movieID}.mp4`
+//     console.log(path)
+//     const stat = fs.statSync(path)
+//     const fileSize = stat.size
+//     const range = req.headers.range
+//     console.log("test + JSON.stringify(range)")
+//     if (range) {
+//         const parts = range.replace(/bytes=/, "").split("-")
+//         const start = parseInt(parts[0], 10)
+//         const end = parts[1]
+//             ? parseInt(parts[1], 10)
+//             : fileSize - 1
+//         const chunksize = (end - start) + 1
+//         const file = fs.createReadStream(path, { start, end })
+//         const head = {
+//             'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+//             'Accept-Ranges': 'bytes',
+//             'Content-Length': chunksize,
+//             'Content-Type': 'video/mp4',
+//         }
+//         res.writeHead(206, head);
+//         file.pipe(res);
+//     } else {
+//         const head = {
+//             'Content-Length': fileSize,
+//             'Content-Type': 'video/mp4',
+//         }
+//         res.writeHead(200, head)
+//         fs.createReadStream(path).pipe(res)
+//     }
+// });
 //*******STREAM ROUTE********//
 
 

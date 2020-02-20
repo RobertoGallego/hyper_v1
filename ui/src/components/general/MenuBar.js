@@ -182,7 +182,7 @@ const Input = styled.input`
   background: ${props => props.theme.colors.barras};
   border: none;
   font-size: 1rem;
-  color: white;
+  color: ${props => props.theme.colors.textColor};
   outline: 0;
   padding-left: 40px;
   -webkit-border-radius: 5px;
