@@ -4,10 +4,11 @@ module.exports = {
     Query: {
         async getMovies(_, { search, genre, sort, page, reverse}) {
             let res
+            console.log(`sort:${sort} reverse:${reverse} search:${search} genre:${genre} page:${page}`);
             if (search)
                 res = await axios.get(`https://api.themoviedb.org/3/search/movie?sort_by=${sort}.${reverse}&api_key=3cbc26720809cfa6649145e5d10a0b7c&language=en-US&query=${search}&page=${page}`);
             else if (genre) 
-                res = await axios.get(`https://api.themoviedb.org/3/discover/movie?sort_by=${sort}.${reverse}&api_key=3cbc26720809cfa6649145e5d10a0b7c&with_genres=28&page=${page}`);
+                res = await axios.get(`https://api.themoviedb.org/3/discover/movie?sort_by=${sort}.${reverse}&api_key=3cbc26720809cfa6649145e5d10a0b7c&with_genres=${genre}&page=${page}`);
             else
                 res = await axios.get(`https://api.themoviedb.org/3/movie/top_rated?sort_by=${sort}.${reverse}&api_key=3cbc26720809cfa6649145e5d10a0b7c&language=en-US&page=${page}`);
             if (res)

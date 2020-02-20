@@ -7,7 +7,6 @@ import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import { FadeLoader } from "react-spinners";
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
-var _ = require('lodash');
 
 function Home () {
     const [page, setPage] = useState(1);
@@ -20,7 +19,9 @@ function Home () {
 
     const handleOnDocumentBottom = () => 
     {
-        setList(list.concat(_.get(res.data.getMovies, 'movies')));
+        setList(list.concat(res.data.getMovies));
+        console.log(list);
+        
         const np = page + 1;
         setPage(np);
     }
@@ -41,7 +42,8 @@ function Home () {
     }`;
 
     const res = useQuery(FETCH_MOVIES, { variables: { search: searchText, page: page, genre: genre, sort: sort, reverse: reverse } });
-    const movies = res.data.getMovies;
+    
+    const movies = list.concat(res.data.getMovies);
 
     if (!movies) {
         return (
