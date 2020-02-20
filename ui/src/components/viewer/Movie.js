@@ -60,7 +60,7 @@ export default function Movie() {
     }
     const startPlaying = async () => {
         // await axios.get(`http://localhost:5000/downloadMovie/${movieID}/${torrentHash}`)
-        setmovieLink(`http://localhost:5000/downloadMovie/${movieID}/${torrentHash}`);
+        setmovieLink(`http://localhost:5000/playMovie/${movieID}`);
     }
     var image;
     if (!movie.large_cover_image)
@@ -87,15 +87,10 @@ export default function Movie() {
                             movieLink
                         }
                             type="video/mp4" />
-                    </Video> <Text > Torrents: </Text> {
-                        torrentHash && < span > < Link onClick={
-                            startDownloading
-                        } > YTS Torrent </Link></span >
-                    } {
-                        torrentHash && <span > <Link onClick={
-                            startPlaying
-                        } > YTS Torrent </Link></span >
-                    } <Text > Comments: </Text> <
+                    </Video> <Text > Torrents: </Text>
+                    {torrentHash && < span > < Link onClick={startDownloading} > YTS Torrent </Link></span >}
+                    {movieLink && <span > <Link onClick={startPlaying} > Play Movie </Link></span >}
+                    <Text > Comments: </Text> <
                         Com movie={
                             movieID
                         }
