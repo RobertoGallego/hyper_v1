@@ -171,6 +171,7 @@ app.get('/downloadMovie/:movieID/:torrentHash', function (req, res) {
     const magnetLink = `magnet:?xt=urn:btih:${torrentHash}`;
 
     const convert = function (file, thread) {
+        console.log("convert");
         if (!thread)
             thread = 8
         console.log('Start converting file...')
@@ -198,8 +199,10 @@ app.get('/downloadMovie/:movieID/:torrentHash', function (req, res) {
         //   let range = req.headers.range
         //   if (!range)
         //     return res.sendStatus(416)
+
         console.log('File doesn\'t exist ! Start downloading...')
         // INIT DOWNLOAD
+        
         let engine = torrentStream(magnetLink)
         engine.on('ready', function () {
             console.log('Download ended!')

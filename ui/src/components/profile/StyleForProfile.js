@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 
 const Container = styled.div`
+    background: ${props => props.theme.colors.cardBackground};
     display: grid;
     height: 90.5vh;
     grid-template-columns: repeat(12, 1fr);
     grid-template-rows: auto 80px;
+    color: ${props => props.theme.colors.textColor};
 `;
 
 const Content = styled.div`
@@ -52,7 +54,7 @@ const Infos = styled.div`
     flex-flow: row wrap;
     justify-content: space-around;
     width: 75%;
-
+    color: ${props => props.theme.colors.textColor};
     & > div {
         margin: 1vh;
         display: flex;

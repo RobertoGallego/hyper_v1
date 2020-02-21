@@ -83,11 +83,15 @@ export default function Movie() {
                     <Left>
                         {movie.yt_trailer_code && <Iframe src={"https://www.youtube.com/embed/" + movie.yt_trailer_code} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></Iframe>}
                         <Video controls autoPlay loop="">
-                            <source autoPlay src={`/Downloads/${movieID}.mp4`} type="video/mp4" />
-                            {/* <source src={`/Downloads/${movieID}.webm`} type="video/webm" /> */}
+                            {/* <source autoPlay src={`/Downloads/${movieID}.mp4`} type="video/mp4" /> */}
+                            <source src={`/Downloads/${movieID}.webm`} type="video/webm" />
                         </Video>
                         <Text>Torrents: </Text>
-                        {torrentHash && <span><Link onClick={startPlaying}>YTS Torrent</Link></span>}
+                        
+                        {torrentHash && <span>
+                                <a href={`http://localhost:5000/downloadMovie/${movieID}/${torrentHash}`}>asdasddasadsdas</a>
+                                <Link onClick={startPlaying}>YTS Torrent</Link>
+                            </span>}
                         <Text>Comments: </Text>
                         <Com movie={movieID} />
                     </Left>
