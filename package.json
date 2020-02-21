@@ -13,7 +13,7 @@
     "author": "team dame",
     "license": "ISC",
     "devDependencies": {
-        "concurrently": "^5.0.2"
+        "concurrently": "^5.1.0"
     },
     "dependencies": {
         "peerflix": "^0.39.0",
