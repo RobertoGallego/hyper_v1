@@ -42,6 +42,10 @@ export default function Movie() {
     const movieLink = useState("");
     const [Show, setShow] = useState(false);
     const [Go, setGo] = useState(false);
+    const Finisheds = () => {
+        console.log("Waiting ...");
+    }
+    const [Finished, setFinished] = useState(Finisheds);
     const movieID = useParams().id;
     const res = useQuery(FETCH_ONE_MOVIE, {
         variables: {
@@ -59,19 +63,34 @@ export default function Movie() {
     const renderer = ({ seconds, completed }) => {
         if (completed) {
             // Render a completed state
+            setFinished(Finish())
             return <Completionist />;
         } else {
             // Render a countdown
-            return <span>{seconds}</span>;
+            return <span>Wait ... {seconds}</span>;
         }
     };
     const Completionist = () => <span>Let's START</span>;
-    // const { loading } = true;
-    const startDownloading = async () => {
+    let Texton = <Countdown date={Date.now() + 60000} renderer={renderer} />
+    function startDownloading() {
         setGo(true);
-        await axios.get(`http://localhost:5000/downloadMovie/${movieID}/${torrentHash}`);
+        axios.get(`http://localhost:5000/downloadMovie/${movieID}/${torrentHash}`)
+            .then(data => {
+                console.log("\n\n DATA : " + JSON.stringify(data))
+                if (data.data.status === "Downloading") {
+                    console.log(data.data.message + " " + data.data.percentage + " %");
+                }
+                else
+                    console.log("Erro Downloading ??")
+            })
+            .catch(error => {
+                console.log(error)
+            });
     }
-
+    const Finish = () => {
+        setShow(true);
+        setGo(false)
+    }
     var image;
     if (!movie.large_cover_image)
         image = noImage
@@ -91,11 +110,11 @@ export default function Movie() {
                     </Video>}
                     {Show && <Video controls autoPlay loop="" >
                         <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/mp4" />
-                        {/* <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/webm" /> */}
+                        <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/webm" />
                     </Video>}
                     <Text > Torrents: </Text>
                     {!Go && torrentHash && <span> <Link1 onClick={startDownloading}> YTS TORRENT </Link1></span>}
-                    {Go && <span> <Link2 onClick={() => setShow(true)}><Countdown date={Date.now() + 10000} renderer={renderer} /></Link2></span>}
+                    {Go && <span> <Link2 onClick={Finished}>{Texton}</Link2></span>}
 
                     <Text > Comments: </Text> <
                         Com movie={

@@ -29,7 +29,7 @@ require('dotenv').config()
 const torrentStream = require('torrent-stream');
 const path = require('path');
 const fs = require('fs');
-var cors = require('cors')
+var cors = require('cors');
 import getTorrent from './Torrent';
 
 const facebookOptions = {
@@ -40,11 +40,11 @@ const facebookOptions = {
 };
 
 passport.use(new GoogleStrategy({
-        clientID: process.env.GOOGLE_ID,
-        clientSecret: process.env.GOOGLE_KEY,
-        callbackURL: 'http://localhost:5000/auth/google/callback',
-        profileFields: ['id', 'email', 'first_name', 'last_name']
-    },
+    clientID: process.env.GOOGLE_ID,
+    clientSecret: process.env.GOOGLE_KEY,
+    callbackURL: 'http://localhost:5000/auth/google/callback',
+    profileFields: ['id', 'email', 'first_name', 'last_name']
+},
     function (accessToken, refreshToken, profile, done) {
         User.findOne({
             googleId: profile.id
@@ -54,17 +54,17 @@ passport.use(new GoogleStrategy({
                 done(null, currentUser);
             } else {
                 var newUser = new User({
-                        id: uuid(),
-                        googleId: profile.id,
-                        fortytwoId: "",
-                        facebookId: "",
-                        username: profile.displayName,
-                        prenom: profile.name.givenName,
-                        nom: profile.name.familyName,
-                        email: 'not specified',
-                        createdAt: new Date().toISOString(),
-                        image: "/static/media/profilePic1.62db51f5.png"
-                    })
+                    id: uuid(),
+                    googleId: profile.id,
+                    fortytwoId: "",
+                    facebookId: "",
+                    username: profile.displayName,
+                    prenom: profile.name.givenName,
+                    nom: profile.name.familyName,
+                    email: 'not specified',
+                    createdAt: new Date().toISOString(),
+                    image: "/static/media/profilePic1.62db51f5.png"
+                })
                     .save()
                     .then(newUser => {
                         done(null, newUser);
@@ -75,10 +75,10 @@ passport.use(new GoogleStrategy({
 ));
 
 passport.use(new FortyTwoStrategy({
-        clientID: process.env.FORTYTWO_ID,
-        clientSecret: process.env.FORTYTWO_KEY,
-        callbackURL: 'http://localhost:5000/auth/42/callback'
-    },
+    clientID: process.env.FORTYTWO_ID,
+    clientSecret: process.env.FORTYTWO_KEY,
+    callbackURL: 'http://localhost:5000/auth/42/callback'
+},
     function (accessToken, refreshToken, profile, done) {
         User.findOne({
             fortytwoId: profile.id
@@ -87,19 +87,19 @@ passport.use(new FortyTwoStrategy({
                 done(null, currentUser);
             } else {
                 var newUser = new User({
-                        id: uuid(),
-                        fortytwoId: profile.id,
-                        googleId: "",
-                        facebookId: "",
-                        username: profile.username,
-                        prenom: profile.name.givenName,
-                        nom: profile.name.familyName,
-                        createdAt: new Date().toISOString(),
-                        image: "/static/media/profilePic1.62db51f5.png",
-                        email: profile.emails &&
-                            profile.emails[0] &&
-                            profile.emails[0].value
-                    })
+                    id: uuid(),
+                    fortytwoId: profile.id,
+                    googleId: "",
+                    facebookId: "",
+                    username: profile.username,
+                    prenom: profile.name.givenName,
+                    nom: profile.name.familyName,
+                    createdAt: new Date().toISOString(),
+                    image: "/static/media/profilePic1.62db51f5.png",
+                    email: profile.emails &&
+                        profile.emails[0] &&
+                        profile.emails[0].value
+                })
                     .save()
                     .then(newUser => {
                         done(null, newUser);
@@ -124,20 +124,20 @@ const facebookCallback = (accessToken, refreshToken, profile, done) => {
         } else {
             // console.log('new user');
             var newUser = new User({
-                    id: uuid(),
-                    facebookId: profile.id,
-                    fortytwoId: "",
-                    googleId: "",
-                    email: profile.emails &&
-                        profile.emails[0] &&
-                        profile.emails[0].value,
-                    username: profile.name.givenName,
-                    prenom: profile.name.givenName,
-                    nom: profile.name.familyName,
-                    password: "null",
-                    createdAt: new Date().toISOString(),
-                    image: "/static/media/profilePic1.62db51f5.png"
-                })
+                id: uuid(),
+                facebookId: profile.id,
+                fortytwoId: "",
+                googleId: "",
+                email: profile.emails &&
+                    profile.emails[0] &&
+                    profile.emails[0].value,
+                username: profile.name.givenName,
+                prenom: profile.name.givenName,
+                nom: profile.name.familyName,
+                password: "null",
+                createdAt: new Date().toISOString(),
+                image: "/static/media/profilePic1.62db51f5.png"
+            })
                 .save()
                 .then(newUser => {
                     done(null, newUser);
@@ -182,26 +182,24 @@ app.get('/downloadMovie/:movieID/:torrentHash', function (req, res) {
             message: "movieID or Hash doesn't exist..."
         })
     const magnetLink = `magnet:?xt=urn:btih:${torrentHash}`;
-    getTorrent(movieID, magnetLink);
+    getTorrent(movieID, magnetLink, req, res);
 });
 
 
 
 app.get('/playMovie/:movieID', function (req, res) {
     const movieID = req.params.movieID;
-    const path = __dirname + `/../../ui/public/Downloads/${movieID}.mp4`
-    console.log(path)
+    const path = __dirname + `/../Downloads/${movieID}.mp4`
     const stat = fs.statSync(path)
     const fileSize = stat.size
     const range = req.headers.range
-    console.log("test + JSON.stringify(range)")
     if (range) {
         const parts = range.replace(/bytes=/, "").split("-")
         const start = parseInt(parts[0], 10)
         const end = parts[1] ?
             parseInt(parts[1], 10) :
             fileSize - 1
-        const chunksize = (end - start) + 1
+        const chunksize = (end - start) + 1;
         const file = fs.createReadStream(path, {
             start,
             end
@@ -245,13 +243,13 @@ app.get('/auth/42/callback',
     // Successful authentication, redirect home.
     function (req, res) {
         var token = jwt.sign({
-                id: req.user.id,
-                email: req.user.email,
-                username: req.user.username
-            },
+            id: req.user.id,
+            email: req.user.email,
+            username: req.user.username
+        },
             SECRET_KEY, {
-                expiresIn: '3h'
-            }
+            expiresIn: '3h'
+        }
         );
         try {
             res.cookie('auth', token);
@@ -274,13 +272,13 @@ app.get(
     }),
     function (req, res) {
         var token = jwt.sign({
-                id: req.user.id,
-                email: req.user.email,
-                username: req.user.username
-            },
+            id: req.user.id,
+            email: req.user.email,
+            username: req.user.username
+        },
             SECRET_KEY, {
-                expiresIn: '3h'
-            }
+            expiresIn: '3h'
+        }
         );
         try {
             // var decoded = jwt.verify(token, SECRET_KEY);
@@ -308,13 +306,13 @@ app.get('/auth/google/callback',
     }),
     function (req, res) {
         var token = jwt.sign({
-                id: req.user.id,
-                email: '',
-                username: req.user.username
-            },
+            id: req.user.id,
+            email: '',
+            username: req.user.username
+        },
             SECRET_KEY, {
-                expiresIn: '3h'
-            }
+            expiresIn: '3h'
+        }
         );
         try {
             res.cookie('auth', token);

@@ -4,9 +4,8 @@ const fs = require('fs');
 const pump = require('pump');
 const ffmpeg = require('fluent-ffmpeg');
 
-export default function getTorrent(filename, magnetLink) {
+export default function getTorrent(filename, magnetLink, req, res) {
 
-    console.log("\n\nFunction getTorrent ON!! ")
     let downloadingStreams = {}
     if (!filename || !magnetLink)
         return (false)
@@ -30,40 +29,48 @@ export default function getTorrent(filename, magnetLink) {
             .on('end', function () {
                 console.log('File is now webm !')
             })
-            .on('error', function (err) {})
+            .on('error', function (err) { })
     }
-
-    //DOWNLOADING
-
-    console.log('Start downloading...')
     // INIT DOWNLOAD
     let engine = torrentStream(magnetLink)
     engine.on('ready', function () {
-        console.log('Download ended!')
-        // GET THE FILE
+        console.log('Start Engine !')
+        // // GET THE FILE
         engine.files = engine.files.sort(function (a, b) {
             return b.length - a.length
         }).slice(0, 1)
         let file = engine.files[0]
         let ext = path.extname(file.name)
         console.log('File found! (' + file.name + ')')
-        downloadingStreams[filename] = file
+        // downloadingStreams[filename] = file
         // CONVERT
         let needConvert = (ext !== '.webm' && ext !== '.mp4')
         let videoStream = needConvert ? convert(file) : file.createReadStream();
-        console.log("\n\nInside Torrents js => " + ext)
+        console.log("Extension => " + ext)
 
         // MULTIPLE STREAMS
-        let filePath = path.join(__dirname, '/../../ui/public/Downloads/' + filename + ext)
-        let fileStream = fs.createWriteStream(filePath)
+        let filePath = path.join(__dirname, '/../Downloads/' + filename + ext)
+        const fileStream = fs.createWriteStream(filePath)
+        engine.on('download', function () {
+            console.log(file.name + " " + engine.swarm.downloaded / file.length * 100 + "% Downloaded");
+            // if (engine.swarm.downloaded / file.length * 100 > 0.5)
+            //     console.log("\n\n\n\n\n\n OK \n\n\n\n")
+            // res.send({ status: "OK" })
+        });
+        res.on('close', function cb() {
+            console.log("Connexion closed")
+            engine.destroy(function cb() {
+                console.log("Downloading Stopped")
+            });
+        });
         videoStream.on('end', () => {
             console.log('Video stream has reached is end')
         })
         if (needConvert) {
-            console.log('Pumping to res and file...')
+            console.log('Pumping to file...')
             pump(videoStream, fileStream)
         } else {
-            console.log('Piping to res and file...')
+            console.log('Piping to file...')
             videoStream.pipe(fileStream)
         }
     })

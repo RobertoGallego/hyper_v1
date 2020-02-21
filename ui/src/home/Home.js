@@ -9,7 +9,7 @@ import { FadeLoader } from "react-spinners";
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 var _ = require('lodash');
 
-function Home () {
+function Home() {
     const [page, setPage] = useState(1);
     const { loading } = true;
     const [searchText, setSearchText] = useState("");
@@ -18,8 +18,7 @@ function Home () {
     const [sort, setSort] = useState("rating");
     const [reverse, setReverse] = useState("desc");
 
-    const handleOnDocumentBottom = () => 
-    {
+    const handleOnDocumentBottom = () => {
         setList(list.concat(_.get(res.data.getMovies, 'movies')));
         const np = page + 1;
         setPage(np);
@@ -47,23 +46,23 @@ function Home () {
 
     const res = useQuery(FETCH_MOVIES, { variables: { search: searchText, page: page, genre: genre, sort: sort, reverse: reverse } });
     const movies = list.concat(_.get(res.data.getMovies, 'movies'));
-   
+
     // console.log('movies ' + _.get(movies[0], 'id'))
 
     if (!movies) {
         return (
             <Override className="sweet-loading">
-              <FadeLoader
-                size={20}
-                color={"#fff"}
-                loading={loading}
-              />
+                <FadeLoader
+                    size={20}
+                    color={"#fff"}
+                    loading={loading}
+                />
             </Override>
         );
     }
     return (
         <Homeindex>
-            <MenuBar fetchMovies={setSearchText} pageReset={setPage} listReset={setList} genreAdd={setGenre} sortAdd={setSort} reverseAdd={setReverse}/>
+            <MenuBar fetchMovies={setSearchText} pageReset={setPage} listReset={setList} genreAdd={setGenre} sortAdd={setSort} reverseAdd={setReverse} />
             <List>
                 {movies.map((movie, i) => <Film key={i} {...movie} />)}
             </List>
