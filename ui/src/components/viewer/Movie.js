@@ -71,7 +71,7 @@ export default function Movie() {
         }
     };
     const Completionist = () => <span>Let's START</span>;
-    let Texton = <Countdown date={Date.now() + 60000} renderer={renderer} />
+    let Texton = <Countdown date={Date.now() + 40000} renderer={renderer} />
     function startDownloading() {
         setGo(true);
         axios.get(`http://localhost:5000/downloadMovie/${movieID}/${torrentHash}`)
@@ -144,8 +144,8 @@ const Link2 = styled.button`
   border-color: red;
   background-color: red;
   color: black;
-  border-radius: 5px;
-  padding: 10px 15px;
+  border-radius: 80px;
+  padding: 20px 20px;
   transition-duration: 0.3s;
   &:hover {
     color: black;
@@ -157,8 +157,8 @@ const Link1 = styled.button`
   border-color: blue;
   background-color: blue;
   color: white;
-  border-radius: 5px;
-  padding: 10px 15px;
+  border-radius: 50px;
+  padding: 20px 250px;
   transition-duration: 0.3s;
   &:hover {
     color: black;
