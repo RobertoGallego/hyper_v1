@@ -4,23 +4,20 @@ import styled from 'styled-components';
 import noImage from "../assets/images/noImage.png";
 
 
-export default function FilmCard({id, title, large_cover_image, rating}) {
+export default function FilmCard({id, title, poster_path, vote_average, overview, release_date, runtime}) {
     var image;
-    if (!large_cover_image)
+    if (!poster_path)
         image = noImage
     else
-        image = `${large_cover_image}`;
+        image = `https://image.tmdb.org/t/p/original${poster_path}`;
     if (id) {
         return (
             <Link to={`/movie/${id}`}>
                 <Card>
+                    <Text>
+                        {title}<br></br>{vote_average}<br></br>{release_date}<br></br>{runtime}<br></br>{overview}
+                    </Text>
                     <Picture src={image} alt={`${title}Image`}/>
-                    <Text>
-                        {rating}
-                    </Text>
-                    <Text>
-                        {title}
-                    </Text>
                 </Card>
             </Link>
         );
@@ -29,18 +26,20 @@ export default function FilmCard({id, title, large_cover_image, rating}) {
 }
 
 const Picture = styled.img`
-width: 20vmin;
-height: 25min;
-margin: 0 auto;
+    width: 20vmin;
+    height: 25min;
+    margin: -50vmin auto;
+    opacity: 0.3;
 `;
 
-const Text = styled.span`
-text-align: center;
-margin: -4vmin 0 0 0 ;
-font-size: 1.5vmin;
-opacity: 0;
-transition-duration: .5s;
-background-color: black;
+const Text = styled.div`
+    text-align: center;
+    opacity: 0;
+    height: 50vmin;
+    font-size: 1.2vmin;
+    overflow: auto;
+    transition-duration: .5s;
+    background-color: black;
 `;
 
 const Card = styled.div`
@@ -55,6 +54,9 @@ const Card = styled.div`
     width: 20vmin;
     flex-direction: column;
     color: white;
+    &:hover ${Picture} {
+        opacity: 0;
+    }
     &:hover ${Text} {
         opacity: 1;
     }
