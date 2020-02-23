@@ -36,6 +36,7 @@
         "passport-jwt": "^4.0.0",
         "path": "^0.12.7",
         "pump": "^3.0.0",
+        "thepiratebay": "^1.4.7",
         "torrent-stream": "^1.2.0",
         "uuid": "^3.4.0"
     },

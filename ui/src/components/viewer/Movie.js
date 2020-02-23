@@ -7,7 +7,7 @@ import {
 import styled from 'styled-components';
 import Header from '../general/Header';
 import Footer from '../general/Footer';
-import Com from './Comment';
+// import Com from './Comment';
 import gql from "graphql-tag";
 import noImage from "../../assets/images/noImage.png";
 import {
@@ -18,7 +18,47 @@ import Countdown from 'react-countdown-now';
 var _ = require('lodash');
 
 export default function Movie() {
-    const FETCH_ONE_MOVIE = gql`
+
+    const FETCH_INFO_TMDB = gql`
+    query($id: ID!){
+        getInfoTMDB(id: $id){
+            id
+            title
+            poster_path
+            vote_average
+            overview
+            release_date
+            runtime
+        }
+    }`;
+
+    const FETCH_INFO_YTS = gql`
+    query($name: String!){
+        getInfoYTS(name: $name){
+            page_number
+            movies {
+                id
+                title
+                large_cover_image
+                rating
+                torrents {
+                    url
+                    hash
+                    quality
+                }
+            }
+        }
+    }`;
+
+    const FETCH_INFO_TPB = gql`
+    query($name: String!){
+        getInfoTPB(name: $name){
+            name
+            magnetLink
+        }
+    }`;
+
+    const FETCH_YTS_MOVIE = gql`
         query($id: ID!){
         getOneMovie(id: $id){
             status
@@ -39,6 +79,10 @@ export default function Movie() {
             }
         }
     }`;
+
+    
+
+
     const movieLink = useState("");
     const [Show, setShow] = useState(false);
     const [Go, setGo] = useState(false);
@@ -46,13 +90,42 @@ export default function Movie() {
         console.log("Waiting ...");
     }
     const [Finished, setFinished] = useState(Finisheds);
+    const [nameMovie, setNameMovie] = useState("");
+
     const movieID = useParams().id;
-    const res = useQuery(FETCH_ONE_MOVIE, {
+    const infoTMDB = useQuery(FETCH_INFO_TMDB, {
         variables: {
             id: movieID
         }
-    })
-    let movie = res.data.getOneMovie;
+    });
+    
+    const Tmdb = infoTMDB.data.getInfoTMDB;
+
+    if (Tmdb && nameMovie === ""){
+        setNameMovie(Tmdb.title);
+    }
+    
+    const infoTpb = useQuery(FETCH_INFO_TPB, {
+        variables: {
+            name: nameMovie
+        }
+    });
+    console.log("TPB : ", infoTpb);
+
+    const infoYts = useQuery(FETCH_INFO_YTS, {
+        variables: {
+            name: nameMovie
+        }
+    });
+    console.log("YTS : ",infoYts);
+    // const ytsMovies = _.get(infoYts.data);
+
+ 
+    
+    // const tpbMovies = _.get(infoYts.data.getInfoYTS, 'movies');
+    
+
+    let movie = infoTMDB.data.getOneMovie;
     movie = Object.assign({}, _.get(movie, 'data.movie'))
     const torrentHash = _.get(movie, 'torrents[0].hash')
     if (torrentHash)
@@ -116,11 +189,10 @@ export default function Movie() {
                     {!Go && torrentHash && <span> <Link1 onClick={startDownloading}> YTS TORRENT </Link1></span>}
                     {Go && <span> <Link2 onClick={Finished}>{Texton}</Link2></span>}
 
-                    <Text > Comments: </Text> <
-                        Com movie={
-                            movieID
-                        }
-                    /> </Left> <Right >
+                    <Text > Comments: </Text> 
+                    {/* <Com movie={movieID}/> */}
+                </Left> 
+                <Right >
                     <Text > Grade: {
                         movie.rating
                     } </Text> <

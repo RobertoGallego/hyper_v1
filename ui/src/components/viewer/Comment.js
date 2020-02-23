@@ -46,8 +46,11 @@ export default function Com(movieID) {
         }
     }
 
+    console.log(typeof(movieID.movie));
+    
     const comRes = useQuery(FETCH_COMMENTS, {variables : {movId : movieID.movie}});
-    const comments = comRes.data.getComments;    
+    
+    const comments = comRes.data;    
 
     if(!comments){
         return (
