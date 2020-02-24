@@ -30,20 +30,30 @@ module.exports = {
             
             const res = await axios.get(`https://yts.mx/api/v2/list_movies.json?query_term=${name}&limit=20`);
             if (res) {
-                console.log(res.data);
-                return res.data;
+                console.log("res: " + JSON.stringify(res.data));
+                // console.log(res.data.status);
+                // console.log(res.data.data.movies);
+                return res.data.data;
             } else {
                 throw new Error('No Movie finded ...');
             }
         },
         async getInfoTPB(_, { name }) {
             console.log("TPB NAME :", name);
-            
-            PirateBay.search(name, {
-                category: 'video'
-            })
-              .then(results => console.log(" ~~~~~~ RESSSULLLTTT ~~~~~~~~",results))
-              .catch(err => console.log(" ~~~~~~ ERRRRR ~~~~~~~~",err))
+            const searchResults = await PirateBay.search(`${name}`, {
+                category: 'video' })
+            if (searchResults) {
+                console.log(searchResults);
+                return searchResults;
+            } else {
+                throw new Error('No Movie finded ...');
+            }
+            // console.log(searchResults);
+            // PirateBay.search(`${name}`, {
+            //     category: 'video'
+            // })
+            // //   .then(results => console.log(" ~~~~~~ RESSSULLLTTT ~~~~~~~~",results))
+            //   .catch(err => console.log(" ~~~~~~ ERRRRR ~~~~~~~~",err))
         },
         async getOneMovie(_, { id }) {
             const res = await axios.get(`https://yts.mx/api/v2/movie_details.json?movie_id=${id}&with_images=true`);
