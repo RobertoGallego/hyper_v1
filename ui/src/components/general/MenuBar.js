@@ -247,30 +247,5 @@ const Slct = styled.select`
 const Opt = styled.option`
 `
 
-const Check = styled.input`
-
-`
-
-const Label = styled.label`
-background: ${props => props.theme.colors.barras};
-    border: none;
-    font-size: 1rem;
-    color: ${props => props.theme.colors.textColor};
-    outline: 0;
-    padding-left: 40px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    /* width: 150px;
-    height: 50px; */
-    margin: 0 1rem;
-    display:block;
-    cursor:pointer;
-
-& :hover {
-    cursor: pointer;
-}
-`
-
 const Menus = styled.div`
 `
