@@ -25,8 +25,9 @@
     "rating": "Rating",
     "year": "Year",
     "title": "Title",
-    "peers": "Peers",
-    "reverse": "Reverse",
+    "sort": "Sort by",
+    "asc": "Asc",
+    "desc": "Desc",
 
     "login.title": "Sign in",
     "username": "Username",

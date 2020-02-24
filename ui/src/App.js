@@ -77,7 +77,7 @@ background: ${props => props.theme.colors.buttonBackground};
 color: ${props => props.theme.colors.buttonColor};
 position: absolute;
 margin: 1rem;
-right: 0;
+left: 0;
 border: none;
 border-color: #db202c;
 outline: 0 !important;

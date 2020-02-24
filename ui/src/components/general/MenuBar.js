@@ -67,30 +67,30 @@ import logoSearch from "../../assets/images/lupsearch.png";
         {isHome && (
           <Filter>
             <Slct onChange={genreChange}>
-              <Opt value="">Gender</Opt>
-              <Opt value="28">Action</Opt>
-              <Opt value="12">Adventure</Opt>
-              <Opt value="16">Animation</Opt>
-              <Opt value="35">Comedy</Opt>
-              <Opt value="80">Crime</Opt>
-              <Opt value="99">Documentary</Opt>
-              <Opt value="18">Drama</Opt>
-              <Opt value="14">Fantasy</Opt>
-              <Opt value="36">History</Opt>
-              <Opt value="27">Horror</Opt>
-              <Opt value="878">Sci-Fi</Opt>
-              <Opt value="53">Thriller</Opt>
-              <Opt value="10752">War</Opt>
-              <Opt value="37">Western</Opt>
+              <Opt value="">{t('genre')}</Opt>
+              <Opt value="28">{t('action')}</Opt>
+              <Opt value="12">{t('adventure')}</Opt>
+              <Opt value="16">{t('animation')}</Opt>
+              <Opt value="35">{t('comedy')}</Opt>
+              <Opt value="80">{t('crime')}</Opt>
+              <Opt value="99">{t('documentary')}</Opt>
+              <Opt value="18">{t('drama')}</Opt>
+              <Opt value="14">{t('fantasy')}</Opt>
+              <Opt value="36">{t('history')}</Opt>
+              <Opt value="27">{t('horror')}</Opt>
+              <Opt value="878">{t('sci-fi')}</Opt>
+              <Opt value="53">{t('thriller')}</Opt>
+              <Opt value="10752">{t('war')}</Opt>
+              <Opt value="37">{t('western')}</Opt>
             </Slct>
             <Slct onChange={sortChange}>
-              <Opt value="vote_average">Rating</Opt>
-              <Opt value="release_date">Year</Opt>
-              <Opt value="original_title">Title</Opt>
+              <Opt value="vote_average">{t('rating')}</Opt>
+              <Opt value="release_date">{t('year')}</Opt>
+              <Opt value="original_title">{t('title')}</Opt>
             </Slct>
             <Slct onChange={reverseChange}>
-                <Opt value="Asc">Sort by: Asc</Opt>
-                <Opt value="Desc">Sort by: Desc</Opt>
+                <Opt value="Asc">{t('sort')}: {t('asc')}</Opt>
+                <Opt value="Desc">{t('sort')}: {t('desc')}</Opt>
             </Slct>
             <Searchbar>
 			{isHome && (
