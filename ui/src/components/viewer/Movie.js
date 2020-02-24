@@ -7,7 +7,7 @@ import {
 import styled from 'styled-components';
 import Header from '../general/Header';
 import Footer from '../general/Footer';
-// import Com from './Comment';
+import Com from './Comment';
 import gql from "graphql-tag";
 import noImage from "../../assets/images/noImage.png";
 import {
@@ -57,32 +57,7 @@ export default function Movie() {
             magnetLink
         }
     }`;
-
-    const FETCH_YTS_MOVIE = gql`
-        query($id: ID!){
-        getOneMovie(id: $id){
-            status
-            data {
-                movie {
-                    id
-                    yt_trailer_code
-                    title
-                    year
-                    rating
-                    runtime
-                    large_cover_image
-                    torrents {
-                        url
-                        hash
-                    }
-                }
-            }
-        }
-    }`;
-
     
-
-
     const movieLink = useState("");
     const [Show, setShow] = useState(false);
     const [Go, setGo] = useState(false);
@@ -100,7 +75,6 @@ export default function Movie() {
     });
     
     const Tmdb = infoTMDB.data.getInfoTMDB;
-
     if (Tmdb && nameMovie === ""){
         setNameMovie(Tmdb.title);
     }
@@ -110,27 +84,37 @@ export default function Movie() {
             name: nameMovie
         }
     });
-    console.log("TPB : ", infoTpb);
-
     const infoYts = useQuery(FETCH_INFO_YTS, {
         variables: {
             name: nameMovie
         }
     });
-    console.log("YTS : ",infoYts);
-    // const ytsMovies = _.get(infoYts.data);
 
- 
+    const ytsMovies = _.get(infoYts.data.getInfoYTS, 'movies');
+    const tpbMovies = infoTpb.data.getInfoTPB;
     
-    // const tpbMovies = _.get(infoYts.data.getInfoYTS, 'movies');
-    
+    let ytsMov
+    let ytsHash
+    if (ytsMovies){
+        ytsMov = ytsMovies.find(e => e.title === nameMovie);
+        if (ytsMov)
+            ytsHash = ytsMov.torrents[0];
+    }
+
+    let tpbMov
+    let tpbHash
+    if (tpbMovies){
+        tpbMov = tpbMovies.find(e => e.name.includes(nameMovie + " ("));
+        if (tpbMov)
+            tpbHash = tpbMov.magnetLink;
+    }
 
     let movie = infoTMDB.data.getOneMovie;
     movie = Object.assign({}, _.get(movie, 'data.movie'))
     const torrentHash = _.get(movie, 'torrents[0].hash')
     if (torrentHash)
         console.log("Hash is here => " + torrentHash)
-    if (!movie) {
+    if (!Tmdb) {
         return <h3> Loading... </h3>;
     }
     const renderer = ({ seconds, completed }) => {
@@ -165,10 +149,10 @@ export default function Movie() {
         setGo(false)
     }
     var image;
-    if (!movie.large_cover_image)
+    if (!Tmdb.poster_path)
         image = noImage
     else
-        image = `${movie.large_cover_image}`
+        image = `https://image.tmdb.org/t/p/original${Tmdb.poster_path}`
 
     return (<MoviePage >
         <Header />
@@ -190,22 +174,22 @@ export default function Movie() {
                     {Go && <span> <Link2 onClick={Finished}>{Texton}</Link2></span>}
 
                     <Text > Comments: </Text> 
-                    {/* <Com movie={movieID}/> */}
+                    <Com movie={movieID}/>
                 </Left> 
                 <Right >
                     <Text > Grade: {
-                        movie.rating
+                        Tmdb.vote_average
                     } </Text> <
                         Picture src={
                             image
                         }
                         alt={
-                            `${movie.title}Image`
+                            `${Tmdb.title}Image`
                         }
                     /> <Text> Release Date: {
-                        movie.year
+                        Tmdb.release_date
                     } </Text> <Text> Duration: {
-                        movie.runtime
+                        Tmdb.runtime
                     }
                         min </Text> </Right> </Split> </Content>
         <Footer />
