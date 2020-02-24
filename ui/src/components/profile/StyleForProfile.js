@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const Container = styled.div`
     background: ${props => props.theme.colors.backgroungGeneral};
     display: grid;
-    height: 90.5vh;
+    min-height: 90.5vh;
     grid-template-columns: repeat(12, 1fr);
     grid-template-rows: auto 80px;
     color: ${props => props.theme.colors.textColor};

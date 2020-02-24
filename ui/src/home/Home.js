@@ -7,6 +7,7 @@ import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import { FadeLoader } from "react-spinners";
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
+import { useTranslation } from "react-i18next";
 
 function Home() {
     const [page, setPage] = useState(1);
@@ -16,6 +17,23 @@ function Home() {
     const [genre, setGenre] = useState("");
     const [sort, setSort] = useState("rating");
     const [reverse, setReverse] = useState("desc");
+    const { i18n } = useTranslation();
+    let language = i18n.language;
+
+    let setLanguage = "";
+    switch (language) {
+        case 'en':
+            setLanguage = 'en-US';
+            break;
+        case 'fr':
+            setLanguage = 'fr-FR';
+            break;
+        case 'es':
+            setLanguage = 'es-ES';
+            break;
+        default:
+            console.log('Error: language not defined');
+    }
 
     const handleOnDocumentBottom = () => 
     {
@@ -27,8 +45,8 @@ function Home() {
     useBottomScrollListener(handleOnDocumentBottom);
 
     const FETCH_MOVIES = gql`
-        query($search: String!, $page: Int!, $genre: String!, $sort: String!, $reverse: String!){
-        getMovies(search: $search, page: $page, genre: $genre, sort: $sort, reverse: $reverse){
+        query($search: String!, $page: Int!, $genre: String!, $sort: String!, $reverse: String!, $language: String!){
+        getMovies(search: $search, page: $page, genre: $genre, sort: $sort, reverse: $reverse, language: $language){
             id
             title
             poster_path
@@ -39,7 +57,7 @@ function Home() {
         }
     }`;
 
-    const res = useQuery(FETCH_MOVIES, { variables: { search: searchText, page: page, genre: genre, sort: sort, reverse: reverse } });
+    const res = useQuery(FETCH_MOVIES, { variables: { search: searchText, page: page, genre: genre, sort: sort, reverse: reverse, language: setLanguage } });
     
     const movies = list.concat(res.data.getMovies);
 

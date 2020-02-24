@@ -80,5 +80,6 @@
     "viewer.time": "Duracion",
     "viewer.addComment": "Agregar comentario",
     "viewer.send": "Enviar",
-    "viewer.noComments": "Sin comentarios"
+    "viewer.noComments": "Sin comentarios",
+    "viewer.overview": "Estudio"
 }

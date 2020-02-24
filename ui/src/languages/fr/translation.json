@@ -80,5 +80,6 @@
     "viewer.time": "Durée",
     "viewer.addComment": "Ajouter un commentaire",
     "viewer.send": "Envoyer",
-    "viewer.noComments": "Pas de commentaires"
+    "viewer.noComments": "Pas de commentaires",
+    "viewer.overview": "Aperçu"
 }

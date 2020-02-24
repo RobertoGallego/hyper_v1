@@ -2,9 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import noImage from "../assets/images/noImage.png";
+import { Hr } from "../components/profile/StyleForProfile";
+import { useTranslation } from "react-i18next";
 
-
-export default function FilmCard({id, title, poster_path, vote_average, overview, release_date, runtime}) {
+export default function FilmCard({id, title, poster_path, vote_average, overview, release_date}) {
+    const { t } = useTranslation();
     var image;
     if (!poster_path)
         image = noImage
@@ -14,10 +16,23 @@ export default function FilmCard({id, title, poster_path, vote_average, overview
         return (
             <Link to={`/movie/${id}`}>
                 <Card>
-                    <Text>
-                        {title}<br></br>{vote_average}<br></br>{release_date}<br></br>{runtime}<br></br>{overview}
-                    </Text>
                     <Picture src={image} alt={`${title}Image`}/>
+                    <Overlay>
+                        <Text>
+                            {/* {title}<br></br>{vote_average}<br></br>{release_date}<br></br>{runtime}<br></br>{overview} */}
+                            <Title>{title}</Title>
+                            <Hr />
+                            <Details>
+                                {t('viewer.date')}: {release_date}
+                                <br />
+                                {t('viewer.grade')}: {vote_average}
+                            </Details>
+                            <Overview>
+                                <br />
+                                {overview}
+                            </Overview>
+                        </Text>
+                    </Overlay>
                 </Card>
             </Link>
         );
@@ -26,39 +41,47 @@ export default function FilmCard({id, title, poster_path, vote_average, overview
 }
 
 const Picture = styled.img`
-    width: 20vmin;
-    height: 25min;
-    margin: -50vmin auto;
-    opacity: 0.3;
+    width: 100%;
+    height: 100%;
 `;
 
-const Text = styled.div`
-    text-align: center;
+const Overlay = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
     opacity: 0;
-    height: 50vmin;
-    font-size: 1.2vmin;
+    transition: .5s ease;
     overflow: auto;
-    transition-duration: .5s;
-    background-color: black;
 `;
 
 const Card = styled.div`
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
-    background-color: #111111;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    display: flex;
-    height: 25vmin;
+    position: relative;
+    margin-bottom: 1vh;
     width: 20vmin;
-    flex-direction: column;
+    height: 30vmin;
+
+    &:hover ${Overlay} {
+        opacity: 0.9;
+        background-color: #000000;
+    }
+`;
+
+const Text = styled.div`
     color: white;
-    &:hover ${Picture} {
-        opacity: 0;
-    }
-    &:hover ${Text} {
-        opacity: 1;
-    }
-    margin: 0 0 8vmin 0;
-`
+    margin: 1vmin;
+`;
+
+const Title = styled.div`
+    text-align: center;
+    font-size: 2vmin;
+`;
+
+const Details = styled.div`
+    font-size: 0.9vmin;
+`;
+
+const Overview = styled.div`
+    font-size: 1.1vmin;
+`;

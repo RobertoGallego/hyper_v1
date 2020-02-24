@@ -97,6 +97,8 @@ export default function Movie() {
     else
         image = `${movie.large_cover_image}`
 
+    console.log(movie.id);
+
     return (<MoviePage >
         <Header />
         <Content >

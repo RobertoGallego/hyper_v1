@@ -110,7 +110,7 @@ module.exports = gql`
         getUsers: [User]
         getUser(userId: ID!): User
         currentUser: User
-        getMovies(search: String!, page: Int!, genre: String!, sort: String!, reverse: String!): [MovieDetails]
+        getMovies(search: String!, page: Int!, genre: String!, sort: String!, reverse: String!, language: String!): [MovieDetails]
         getOneMovie(id: ID!): Torrent
         getComments(movieId: String!): [Comment]
         getTorrentInfos(id: ID!): Torrent
