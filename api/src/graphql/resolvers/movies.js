@@ -1,4 +1,5 @@
 const axios = require('axios');
+const PirateBay = require('thepiratebay');
 
 module.exports = {
     Query: {
@@ -14,6 +15,33 @@ module.exports = {
                 return res.data.results
             else 
                 throw new Error('No Movie finded ...');
+        },
+        async getInfoTMDB(_, { id }) {
+
+            const res = await axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=3cbc26720809cfa6649145e5d10a0b7c&language=en-US`);
+            if (res) {
+                return res.data;
+            } else {
+                throw new Error('No Movie finded ...');
+            }
+        },
+        async getInfoYTS(_, { name }) {
+            
+            const res = await axios.get(`https://yts.mx/api/v2/list_movies.json?query_term=${name}&limit=20`);
+            if (res) {
+                return res.data.data;
+            } else {
+                throw new Error('No Movie finded ...');
+            }
+        },
+        async getInfoTPB(_, { name }) {
+            const searchResults = await PirateBay.search(`${name}`, {
+                category: 'video' })
+            if (searchResults) {
+                return searchResults;
+            } else {
+                throw new Error('No Movie finded ...');
+            }
         },
         async getOneMovie(_, { id }) {
             const res = await axios.get(`https://yts.mx/api/v2/movie_details.json?movie_id=${id}&with_images=true`);

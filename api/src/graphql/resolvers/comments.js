@@ -8,7 +8,8 @@ module.exports = {
         async getComments(_, {movieId}) {
             try {
                 const comments = await Comment.find({movieId}).sort({ createdAt: -1 });
-                return comments;
+                if (comments)
+                     return comments;
             } catch (err) {
                 throw new Error(err);
             }
