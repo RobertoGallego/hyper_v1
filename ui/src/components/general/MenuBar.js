@@ -28,10 +28,17 @@ import logoSearch from "../../assets/images/lupsearch.png";
   };
 
   const reverseChange = e => {
-    if (e.target.checked)
+    console.log("ok");
+
+    console.log(e.target.value);
+    if (e.target.value === "Asc") {
+        console.log("if: " + e.target.value);
       setReverseState("asc");
-    else
-      setReverseState("desc");
+    }
+    else {
+        console.log("else: " + e.target.value);
+        setReverseState("desc");
+    }
   }
 
   const sendSearch = () => {
@@ -49,32 +56,14 @@ import logoSearch from "../../assets/images/lupsearch.png";
   if (user) {
     return (
       <Nav>
-        <Link to="/">
-		<Pict src={logoTop} alt="Hypertube" />
-        </Link>
-        <StyledLinka href="/">{t('header.home')}</StyledLinka>
-        <StyledLink href="/profile">{t('header.profile')}</StyledLink>
-        <StyledLink onClick={logout} href="/login">
-			{t('header.logout')}
-        </StyledLink>
-		<Searchbar>
-			{isHome && (
-			<Bar>
-				<Input
-					onChange={searchChange}
-					value={textState}
-					name="search"
-					placeholder={t('header.search')}
-				/>
-				<Search 
-					type="image"
-					src={logoSearch}
-					alt="Submit"
-					onClick={sendSearch}> 
-					{/* {t('header.search')} */}
-				</Search>
-			</Bar>)}
-		</Searchbar>
+        <Menus>
+            <Link to="/">
+                <Pict src={logoTop} alt="Hypertube" />
+            </Link>
+            <StyledLinka href="/">{t('header.home')}</StyledLinka>
+            <StyledLink href="/profile">{t('header.profile')}</StyledLink>
+            <StyledLink onClick={logout} href="/login">{t('header.logout')}</StyledLink>
+        </Menus>
         {isHome && (
           <Filter>
             <Slct onChange={genreChange}>
@@ -99,9 +88,30 @@ import logoSearch from "../../assets/images/lupsearch.png";
               <Opt value="release_date">Year</Opt>
               <Opt value="original_title">Title</Opt>
             </Slct>
-            <Check onChange={reverseChange} type ="checkbox" name="reverse"/>
-            <Label htmlFor="reverse">{t('reverse')}</Label>
-          </Filter>
+            <Slct onChange={reverseChange}>
+                <Opt value="Asc">Sort by: Asc</Opt>
+                <Opt value="Desc">Sort by: Desc</Opt>
+            </Slct>
+            <Searchbar>
+			{isHome && (
+                <Bar>
+                    <Input
+                        onChange={searchChange}
+                        value={textState}
+                        name="search"
+                        placeholder={t('header.search')}
+                    />
+                    <Search 
+                        type="image"
+                        src={logoSearch}
+                        alt="Submit"
+                        onClick={sendSearch}> 
+                        {/* {t('header.search')} */}
+                    </Search>
+                </Bar>)}
+		    </Searchbar>
+            {/* <Label><Check onChange={reverseChange} type ="checkbox" name="reverse"/>{t('reverse')}</Label> */}
+        </Filter>
         )}
       </Nav>
     );
@@ -121,6 +131,7 @@ const Nav = styled.nav`
 
 const Searchbar = styled.div`
   justify-content: center;
+  margin-left: 1rem;
 `;
 
 const StyledLink = styled.a`
@@ -148,7 +159,7 @@ const StyledLinka = styled.a`
     }
     @media (max-width: 768px) {
       margin: 1rem;
-      margin-left: 1.2rem;
+      margin-left: 2.5rem;
     }
 `;
 
@@ -165,7 +176,7 @@ const Bar = styled.div`
     align-items: center;
     margin-right: 1rem;
     @media (max-width: 768px) {
-        margin-top: 2rem;
+        margin-top: 1rem;
         margin-left: 1rem;
       }
 `;
@@ -199,17 +210,67 @@ const Search = styled.input`
     }
 `;
 
-const Filter = styled.div``;
+const Filter = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @media only screen  
+    and (max-width: 1470px)  {
+        margin-top: 1.5rem;
+    }
+    @media (max-width: 768px) {
+        flex-direction: column;
+        flex-wrap: wrap;
+        margin-left: -1rem;
+    }
+`;
 
 const Slct = styled.select`
-
+    width: 150px;
+    height: 50px;
+    background: ${props => props.theme.colors.barras};
+    border: none;
+    font-size: 1rem;
+    color: ${props => props.theme.colors.textColor};
+    outline: 0;
+    padding-left: 40px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin-left: 1rem;
+    @media (max-width: 768px) {
+        width: 300px;
+        height: 50px;
+        margin: 0.5rem 0rem;
+    }
 `
 const Opt = styled.option`
-
 `
 
 const Check = styled.input`
 
 `
 
-const Label = styled.label``
+const Label = styled.label`
+background: ${props => props.theme.colors.barras};
+    border: none;
+    font-size: 1rem;
+    color: ${props => props.theme.colors.textColor};
+    outline: 0;
+    padding-left: 40px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    /* width: 150px;
+    height: 50px; */
+    margin: 0 1rem;
+    display:block;
+    cursor:pointer;
+
+& :hover {
+    cursor: pointer;
+}
+`
+
+const Menus = styled.div`
+`
