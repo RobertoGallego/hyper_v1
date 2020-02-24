@@ -185,8 +185,6 @@ app.get('/downloadMovie/:movieID/:torrentHash', function (req, res) {
     getTorrent(movieID, magnetLink, req, res);
 });
 
-
-
 app.get('/playMovie/:movieID', function (req, res) {
     const movieID = req.params.movieID;
     const path = __dirname + `/../Downloads/${movieID}.mp4`
