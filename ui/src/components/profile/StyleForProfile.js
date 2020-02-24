@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const Container = styled.div`
-    background: ${props => props.theme.colors.cardBackground};
+    background: ${props => props.theme.colors.backgroungGeneral};
     display: grid;
     height: 90.5vh;
     grid-template-columns: repeat(12, 1fr);
@@ -186,7 +186,7 @@ const Override = styled.div`
 const Footer = styled.div`
     display: flex;
     grid-column: 1 / -1;
-    background-color: #191919;
+    background: ${props => props.theme.colors.cardBackground};
     align-items: center;
     justify-content: center;
 

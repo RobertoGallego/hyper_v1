@@ -5,7 +5,7 @@ import { AuthContext } from "../../context/auth";
 import logoTop from "../../assets/images/hyperlogo.png";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
-// import logoSearch from "../../assets/images/lupsearch.png";
+import logoSearch from "../../assets/images/lupsearch.png";
 
   export default function MenuBar({ fetchMovies, pageReset, listReset, genreAdd, sortAdd, reverseAdd }) {
   const { t } = useTranslation();
@@ -34,7 +34,7 @@ import { useTranslation } from "react-i18next";
       setReverseState("desc");
   }
 
-  const send = () => {
+  const sendSearch = () => {
     fetchMovies(textState);
     pageReset(1);
     listReset([]);
@@ -50,23 +50,31 @@ import { useTranslation } from "react-i18next";
     return (
       <Nav>
         <Link to="/">
-          <Pict src={logoTop} alt="Hypertube" />
+		<Pict src={logoTop} alt="Hypertube" />
         </Link>
-        <StyledLink href="/">{t('header.home')}</StyledLink>
+        <StyledLinka href="/">{t('header.home')}</StyledLinka>
         <StyledLink href="/profile">{t('header.profile')}</StyledLink>
         <StyledLink onClick={logout} href="/login">
-          {t('header.logout')}
+			{t('header.logout')}
         </StyledLink>
-        {isHome && (
-          <Bar>
-            <Input
-              onChange={searchChange}
-              value={textState}
-              name="search"
-              placeholder={t('header.search')}
-            />
-            <Search onClick={send}>{t('header.search')}</Search>
-          </Bar>)}
+		<Searchbar>
+			{isHome && (
+			<Bar>
+				<Input
+					onChange={searchChange}
+					value={textState}
+					name="search"
+					placeholder={t('header.search')}
+				/>
+				<Search 
+					type="image"
+					src={logoSearch}
+					alt="Submit"
+					onClick={sendSearch}> 
+					{/* {t('header.search')} */}
+				</Search>
+			</Bar>)}
+		</Searchbar>
         {isHome && (
           <Filter>
             <Slct onChange={genreChange}>
@@ -111,6 +119,10 @@ const Nav = styled.nav`
   padding: 1rem 3.5rem;
 `;
 
+const Searchbar = styled.div`
+  justify-content: center;
+`;
+
 const StyledLink = styled.a`
     /* color: #fff; */
     color: ${props => props.theme.colors.textColor};
@@ -120,6 +132,23 @@ const StyledLink = styled.a`
     &:hover {
         color: #db202c;
         text-decoration: none;
+    }
+`;
+
+const StyledLinka = styled.a`
+    transition-duration: 0.3s;
+    /* color: #fff; */
+    color: ${props => props.theme.colors.textColor};
+    font-size: 16px;
+    margin-left: 5rem;
+    padding: 0 1rem;
+    &:hover {
+        color: #db202c;
+        text-decoration: none;
+    }
+    @media (max-width: 768px) {
+      margin: 1rem;
+      margin-left: 1.2rem;
     }
 `;
 
@@ -155,7 +184,7 @@ const Input = styled.input`
   border-radius: 5px;
 `;
 
-const Search = styled.div`
+const Search = styled.input`
     width: 3rem;
     border-color: #db202c;
     background-color: #db202c;
