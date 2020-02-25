@@ -44,8 +44,8 @@ function Home() {
     useBottomScrollListener(handleOnDocumentBottom);
 
     const FETCH_MOVIES = gql`
-        query($search: String!, $page: Int!, $genre: String!, $sort: String!, $reverse: String!){
-        getMovies(search: $search, page: $page, genre: $genre, sort: $sort, reverse: $reverse){
+        query($search: String!, $page: Int!, $genre: String!, $sort: String!, $reverse: String!, $language: String!){
+        getMovies(search: $search, page: $page, genre: $genre, sort: $sort, reverse: $reverse, language: $language){
             id
             title
             poster_path

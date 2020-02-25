@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import noImage from "../assets/images/noImage.png";
@@ -6,7 +6,7 @@ import { Hr } from "../components/profile/StyleForProfile";
 import { useTranslation } from "react-i18next";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
-import { AuthContext } from "../context/auth";
+import jwtDecode from 'jwt-decode';
 
 const SEEN_MOVIES_QUERY = gql`
   query($userId: ID!) {
@@ -18,11 +18,10 @@ const SEEN_MOVIES_QUERY = gql`
 
 export default function FilmCard({id, title, poster_path, vote_average, overview, release_date}) {
     const { t } = useTranslation();
-    const user = useContext(AuthContext);
-    const userId = user.user.id;
+    const user = jwtDecode(localStorage.getItem('jwtToken'));
     const { data: { getUser } } = useQuery(SEEN_MOVIES_QUERY, {
         variables: {
-            userId: userId
+            userId: user.id
         }
     });
 
@@ -33,7 +32,7 @@ export default function FilmCard({id, title, poster_path, vote_average, overview
         image = noImage
     else
         image = `https://image.tmdb.org/t/p/original${poster_path}`;
-    if (id && getUser) {
+    if (id && user.id) {
         return (
             <Link to={`/movie/${id}`}>
                 <Card>
