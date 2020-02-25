@@ -41,8 +41,13 @@ export default function FilmCard({id, title, poster_path, vote_average, overview
 }
 
 const Picture = styled.img`
-    width: 100%;
-    height: 100%;
+    width: 200px;
+    height: 300px;
+    @media (max-width: 768px) {
+        width: 250px;
+        height: 350px;
+        padding-bottom: 1rem;
+    }
 `;
 
 const Overlay = styled.div`
@@ -59,8 +64,8 @@ const Overlay = styled.div`
 const Card = styled.div`
     position: relative;
     margin-bottom: 1vh;
-    width: 20vmin;
-    height: 30vmin;
+    /* width: 20vmin;
+    height: 30vmin; */
 
     &:hover ${Overlay} {
         opacity: 0.9;

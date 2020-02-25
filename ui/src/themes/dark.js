@@ -9,5 +9,6 @@ export default {
       barras: "#2b303b",
       text: "white",
       lineal: "linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7))",
+      ButtonT: "#db202c",
     }
   };
