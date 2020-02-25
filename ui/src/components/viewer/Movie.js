@@ -128,7 +128,7 @@ export default function Movie() {
         }
     };
     const Completionist = () => <span>Let's START</span>;
-    let Texton = <Countdown date={Date.now() + 1000} renderer={renderer} />
+    let Texton = <Countdown date={Date.now() + 40000} renderer={renderer} />
     function startDownloadingYTS() {
         setGo(true);
         axios.get(`http://localhost:5000/downloadMovie/${movieID}/${ytsHash}`)

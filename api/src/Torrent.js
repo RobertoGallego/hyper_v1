@@ -16,7 +16,7 @@ export default function getTorrent(filename, magnetLink, req, res) {
         return new ffmpeg(file.createReadStream())
             .videoCodec('libvpx')
             .audioCodec('libvorbis')
-            .format('webm')
+            .format('mp4')
             .audioBitrate(128)
             .videoBitrate(1024)
             .outputOptions([
@@ -46,7 +46,7 @@ export default function getTorrent(filename, magnetLink, req, res) {
         let needConvert = (ext !== '.webm' && ext !== '.mp4')
         console.log("Extension => " + ext)
         let videoStream = needConvert ? convert(file) : file.createReadStream();
-        ext = needConvert ? '.webm' : ext
+        ext = needConvert ? '.mp4' : ext
 
         // MULTIPLE STREAMS
         let filePath = path.join(__dirname, '/../Downloads/' + filename + ext)
