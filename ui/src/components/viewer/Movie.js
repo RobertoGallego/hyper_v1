@@ -18,25 +18,43 @@ import Countdown from 'react-countdown-now';
 var _ = require('lodash');
 
 export default function Movie() {
-    const FETCH_ONE_MOVIE = gql`
-        query($id: ID!){
-        getOneMovie(id: $id){
-            status
-            data {
-                movie {
-                    id
-                    yt_trailer_code
-                    title
-                    year
-                    rating
-                    runtime
-                    large_cover_image
-                    torrents {
-                        url
-                        hash
-                    }
+
+    const FETCH_INFO_TMDB = gql`
+    query($id: ID!){
+        getInfoTMDB(id: $id){
+            id
+            title
+            poster_path
+            vote_average
+            overview
+            release_date
+            runtime
+        }
+    }`;
+
+    const FETCH_INFO_YTS = gql`
+    query($name: String!){
+        getInfoYTS(name: $name){
+            page_number
+            movies {
+                id
+                title
+                large_cover_image
+                rating
+                torrents {
+                    url
+                    hash
+                    quality
                 }
             }
+        }
+    }`;
+
+    const FETCH_INFO_TPB = gql`
+    query($name: String!){
+        getInfoTPB(name: $name){
+            name
+            magnetLink
         }
     }`;
     
@@ -47,18 +65,56 @@ export default function Movie() {
         console.log("Waiting ...");
     }
     const [Finished, setFinished] = useState(Finisheds);
+    const [nameMovie, setNameMovie] = useState("");
+
     const movieID = useParams().id;
-    const res = useQuery(FETCH_ONE_MOVIE, {
+    const infoTMDB = useQuery(FETCH_INFO_TMDB, {
         variables: {
             id: movieID
         }
-    })
-    let movie = res.data.getOneMovie;
+    });
+    
+    const Tmdb = infoTMDB.data.getInfoTMDB;
+    if (Tmdb && nameMovie === ""){
+        setNameMovie(Tmdb.title);
+    }
+    
+    const infoTpb = useQuery(FETCH_INFO_TPB, {
+        variables: {
+            name: nameMovie
+        }
+    });
+    const infoYts = useQuery(FETCH_INFO_YTS, {
+        variables: {
+            name: nameMovie
+        }
+    });
+
+    const ytsMovies = _.get(infoYts.data.getInfoYTS, 'movies');
+    const tpbMovies = infoTpb.data.getInfoTPB;
+    
+    let ytsMov
+    let ytsHash
+    if (ytsMovies){
+        ytsMov = ytsMovies.find(e => e.title === nameMovie);
+        if (ytsMov)
+            ytsHash = ytsMov.torrents[0];
+    }
+
+    let tpbMov
+    let tpbHash
+    if (tpbMovies){
+        tpbMov = tpbMovies.find(e => e.name.includes(nameMovie + " ("));
+        if (tpbMov)
+            tpbHash = tpbMov.magnetLink;
+    }
+
+    let movie = infoTMDB.data.getOneMovie;
     movie = Object.assign({}, _.get(movie, 'data.movie'))
     const torrentHash = _.get(movie, 'torrents[0].hash')
     if (torrentHash)
         console.log("Hash is here => " + torrentHash)
-    if (!movie) {
+    if (!Tmdb) {
         return <h3> Loading... </h3>;
     }
     const renderer = ({ seconds, completed }) => {
@@ -93,12 +149,10 @@ export default function Movie() {
         setGo(false)
     }
     var image;
-    if (!movie.large_cover_image)
+    if (!Tmdb.poster_path)
         image = noImage
     else
-        image = `${movie.large_cover_image}`
-
-    console.log(movie.id);
+        image = `https://image.tmdb.org/t/p/original${Tmdb.poster_path}`
 
     return (<MoviePage >
         <Header />

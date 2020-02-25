@@ -15,11 +15,8 @@ export default function Com(movieID) {
     const FETCH_COMMENTS = gql`
         query getComments($movId: String!){
             getComments(movieId: $movId){
-                id
-                userId
                 username
                 body
-                movieId
                 createdAt
             }
         }
@@ -47,7 +44,8 @@ export default function Com(movieID) {
     }
 
     const comRes = useQuery(FETCH_COMMENTS, {variables : {movId : movieID.movie}});
-    const comments = comRes.data.getComments;    
+    const comments = comRes.data.getComments; 
+    
 
     if(!comments){
         return (

@@ -87,6 +87,10 @@ module.exports = gql`
         url: String!
         hash: String!
     }
+    type TPBData{
+        name: String!
+        magnetLink: String!
+    }
     type MovieTorrent {
         id: ID!
         year: Int
@@ -111,6 +115,9 @@ module.exports = gql`
         getUser(userId: ID!): User
         currentUser: User
         getMovies(search: String!, page: Int!, genre: String!, sort: String!, reverse: String!, language: String!): [MovieDetails]
+        getInfoTMDB(id: ID!): MovieDetails
+        getInfoYTS(name: String!): Result_YTS
+        getInfoTPB(name: String!): [TPBData]
         getOneMovie(id: ID!): Torrent
         getComments(movieId: String!): [Comment]
         getTorrentInfos(id: ID!): Torrent
