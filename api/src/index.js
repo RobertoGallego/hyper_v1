@@ -176,6 +176,8 @@ app.use(cors())
 app.get('/downloadMovie/:movieID/:torrentHash', function (req, res) {
     const movieID = req.params.movieID;
     const torrentHash = req.params.torrentHash;
+    console.log("movie Id " + movieID + " torrent " + torrentHash)
+
     if (!movieID || !torrentHash)
         res.send({
             status: "Error!!",

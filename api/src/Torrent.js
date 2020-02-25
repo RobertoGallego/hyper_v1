@@ -36,6 +36,7 @@ export default function getTorrent(filename, magnetLink, req, res) {
     engine.on('ready', function () {
         console.log('Start Engine !')
         // // GET THE FILE
+        console.log("MagnetLink => " + magnetLink)
         engine.files = engine.files.sort(function (a, b) {
             return b.length - a.length
         }).slice(0, 1)

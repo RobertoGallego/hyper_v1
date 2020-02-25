@@ -57,7 +57,7 @@ export default function Movie() {
             magnetLink
         }
     }`;
-    
+
     const movieLink = useState("");
     const [Show, setShow] = useState(false);
     const [Go, setGo] = useState(false);
@@ -73,12 +73,12 @@ export default function Movie() {
             id: movieID
         }
     });
-    
+
     const Tmdb = infoTMDB.data.getInfoTMDB;
-    if (Tmdb && nameMovie === ""){
+    if (Tmdb && nameMovie === "") {
         setNameMovie(Tmdb.title);
     }
-    
+
     const infoTpb = useQuery(FETCH_INFO_TPB, {
         variables: {
             name: nameMovie
@@ -92,28 +92,26 @@ export default function Movie() {
 
     const ytsMovies = _.get(infoYts.data.getInfoYTS, 'movies');
     const tpbMovies = infoTpb.data.getInfoTPB;
-    
-    let ytsMov
-    let ytsHash
-    if (ytsMovies){
-        ytsMov = ytsMovies.find(e => e.title === nameMovie);
+
+    let ytsHash = "";
+    if (ytsMovies) {
+        let ytsMov = ytsMovies.find(e => e.title === nameMovie);
         if (ytsMov)
-            ytsHash = ytsMov.torrents[0];
+            ytsHash = _.get(ytsMov, 'torrents[0].hash');
     }
 
-    let tpbMov
-    let tpbHash
-    if (tpbMovies){
-        tpbMov = tpbMovies.find(e => e.name.includes(nameMovie + " ("));
-        if (tpbMov)
+    let tpbHash = "";
+    if (tpbMovies) {
+        let tpbMov = tpbMovies.find(e => e.name.includes(nameMovie + " ("));
+        if (tpbMov) {
             tpbHash = tpbMov.magnetLink;
+
+        }
     }
 
     let movie = infoTMDB.data.getOneMovie;
     movie = Object.assign({}, _.get(movie, 'data.movie'))
-    const torrentHash = _.get(movie, 'torrents[0].hash')
-    if (torrentHash)
-        console.log("Hash is here => " + torrentHash)
+    console.log("Hash is here => " + tpbHash + " " + ytsHash)
     if (!Tmdb) {
         return <h3> Loading... </h3>;
     }
@@ -129,9 +127,24 @@ export default function Movie() {
     };
     const Completionist = () => <span>Let's START</span>;
     let Texton = <Countdown date={Date.now() + 40000} renderer={renderer} />
-    function startDownloading() {
+    function startDownloadingYTS() {
         setGo(true);
-        axios.get(`http://localhost:5000/downloadMovie/${movieID}/${torrentHash}`)
+        axios.get(`http://localhost:5000/downloadMovie/${movieID}/${ytsHash}`)
+            .then(data => {
+                console.log("\n\n DATA : " + JSON.stringify(data))
+                if (data.data.status === "Downloading") {
+                    console.log(data.data.message + " " + data.data.percentage + " %");
+                }
+                else
+                    console.log("Erro Downloading ??")
+            })
+            .catch(error => {
+                console.log(error)
+            });
+    }
+    function startDownloadingTPB() {
+        setGo(true);
+        axios.get(`http://localhost:5000/downloadMovie/${movieID}/${tpbHash}`)
             .then(data => {
                 console.log("\n\n DATA : " + JSON.stringify(data))
                 if (data.data.status === "Downloading") {
@@ -170,12 +183,14 @@ export default function Movie() {
                         <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/webm" />
                     </Video>}
                     <Text > Torrents: </Text>
-                    {!Go && torrentHash && <span> <Link1 onClick={startDownloading}> YTS TORRENT </Link1></span>}
+                    {!Go && ytsHash && <span> <Link1 onClick={startDownloadingYTS}> YTS TORRENT </Link1></span>}
+                    {!Go && tpbHash && <span> <Link1 onClick={startDownloadingTPB}> TPB TORRENT </Link1></span>}
+                    {!tpbHash && !ytsHash && <span>Sorry !! No Torrents Founded</span>}
                     {Go && <span> <Link2 onClick={Finished}>{Texton}</Link2></span>}
 
-                    <Text > Comments: </Text> 
-                    <Com movie={movieID}/>
-                </Left> 
+                    <Text > Comments: </Text>
+                    <Com movie={movieID} />
+                </Left>
                 <Right >
                     <Text > Grade: {
                         Tmdb.vote_average
@@ -210,6 +225,7 @@ const Link2 = styled.button`
   }
 `;
 const Link1 = styled.button`
+  margin-bottom: 20px;
   border-color: blue;
   background-color: blue;
   color: white;
