@@ -7,8 +7,6 @@ const ffmpeg = require('fluent-ffmpeg');
 export default function getTorrent(filename, magnetLink, req, res) {
 
     let downloadingStreams = {}
-    if (!filename || !magnetLink)
-        return (false)
 
     // COVERSION
     const convert = function (file, thread) {
@@ -36,6 +34,7 @@ export default function getTorrent(filename, magnetLink, req, res) {
     engine.on('ready', function () {
         console.log('Start Engine !')
         // // GET THE FILE
+        console.log("MagnetLink => " + magnetLink)
         engine.files = engine.files.sort(function (a, b) {
             return b.length - a.length
         }).slice(0, 1)
@@ -45,8 +44,9 @@ export default function getTorrent(filename, magnetLink, req, res) {
         // downloadingStreams[filename] = file
         // CONVERT
         let needConvert = (ext !== '.webm' && ext !== '.mp4')
-        let videoStream = needConvert ? convert(file) : file.createReadStream();
         console.log("Extension => " + ext)
+        let videoStream = needConvert ? convert(file) : file.createReadStream();
+        ext = needConvert ? '.webm' : ext
 
         // MULTIPLE STREAMS
         let filePath = path.join(__dirname, '/../Downloads/' + filename + ext)
