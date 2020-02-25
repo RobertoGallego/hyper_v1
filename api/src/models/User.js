@@ -12,6 +12,7 @@ const userSchema = new Schema({
   createdAt: String,
   image: String,
   isVerified: { type: Boolean, default: false },
+  seenMovies: [String]
 });
 
 module.exports = model('User', userSchema);

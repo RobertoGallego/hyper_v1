@@ -63,7 +63,8 @@ passport.use(new GoogleStrategy({
                     nom: profile.name.familyName,
                     email: 'not specified',
                     createdAt: new Date().toISOString(),
-                    image: "/static/media/profilePic1.62db51f5.png"
+                    image: "/static/media/profilePic1.62db51f5.png",
+                    seenMovies: []
                 })
                     .save()
                     .then(newUser => {
@@ -95,6 +96,7 @@ passport.use(new FortyTwoStrategy({
                     prenom: profile.name.givenName,
                     nom: profile.name.familyName,
                     createdAt: new Date().toISOString(),
+                    seenMovies: [],
                     image: "/static/media/profilePic1.62db51f5.png",
                     email: profile.emails &&
                         profile.emails[0] &&
@@ -136,7 +138,8 @@ const facebookCallback = (accessToken, refreshToken, profile, done) => {
                 nom: profile.name.familyName,
                 password: "null",
                 createdAt: new Date().toISOString(),
-                image: "/static/media/profilePic1.62db51f5.png"
+                image: "/static/media/profilePic1.62db51f5.png",
+                seenMovies: []
             })
                 .save()
                 .then(newUser => {

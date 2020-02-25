@@ -154,6 +154,7 @@ module.exports = {
             const facebookId = "";
             const fortytwoId = "";
             const googleId = "";
+            const seenMovies = [];
 
             const newUser = new User({
                 facebookId,
@@ -166,7 +167,7 @@ module.exports = {
                 password,
                 createdAt: new Date().toISOString(),
                 image,
-                language: "en"
+                seenMovies
             });
 
             const res = await newUser.save();
@@ -287,8 +288,8 @@ module.exports = {
                 token,
             }
         },
-        async setLanguage( _, {userId, language}) {
-            const res = await User.findByIdAndUpdate({ _id: userId }, { language: language}, {new: true})
+        async addSeenMovie( _, {userId, movieId}) {
+            const res = await User.findByIdAndUpdate({ _id: userId }, {$push: {seenMovies: movieId }}, {new: true})
             return {
                 ...res._doc,
                 id: res._id
