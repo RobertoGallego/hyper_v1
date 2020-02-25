@@ -40,11 +40,11 @@ export default function getTorrent(filename, magnetLink, req, res) {
         }).slice(0, 1)
         let file = engine.files[0]
         let ext = path.extname(file.name)
+        console.log("Extension => " + ext)
         console.log('File found! (' + file.name + ')')
         // downloadingStreams[filename] = file
         // CONVERT
         let needConvert = (ext !== '.webm' && ext !== '.mp4')
-        console.log("Extension => " + ext)
         let videoStream = needConvert ? convert(file) : file.createReadStream();
         ext = needConvert ? '.mp4' : ext
 

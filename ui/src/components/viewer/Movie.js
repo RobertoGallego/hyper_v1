@@ -62,6 +62,7 @@ export default function Movie() {
     const movieLink = useState("");
     const [Show, setShow] = useState(false);
     const [Go, setGo] = useState(false);
+    // const [Yts, setYts] = useState(false)
     const Finisheds = () => {
         console.log("Waiting ...");
     }
@@ -109,9 +110,9 @@ export default function Movie() {
         }
     }
 
-    let movie = infoYts.getInfoYTS;
+    // let movie = infoYts.getInfoYTS;
     // console.log("mooovie " + JSON.stringify(movie))
-    movie = Object.assign({}, _.get(movie, 'data.movie'))
+    // movie = Object.assign({}, _.get(movie, 'data.movie'))
     // console.log("mooovie " + JSON.stringify(movie))
     // console.log("Hash is here => " + tpbHash + " " + ytsHash)
     if (!Tmdb) {
@@ -181,9 +182,9 @@ export default function Movie() {
                     {!Show && <Video controls autoPlay loop="" >
                         <source src={movieLink} type="video/mp4" />
                     </Video>}
-                    {Show && <Video controls autoPlay loop="" >
+                    {Show && <Video controls autoPlay reload loop="" >
                         <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/mp4" />
-                        <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/webm" />
+                        {/* <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/webm" /> */}
                     </Video>}
                     <Text>Resume: </Text>
                     <Resumen>{Tmdb.overview}</Resumen>
@@ -196,13 +197,13 @@ export default function Movie() {
                     <Com movie={movieID} />
                 </Left>
                 <Right>
-                    <Picture src={image} alt={`${Tmdb.title}Image`}/>
+                    <Picture src={image} alt={`${Tmdb.title}Image`} />
                     <Text>Release Date: {Tmdb.release_date}</Text>
                     <Text>Grade: {Tmdb.vote_average}</Text>
                     <Text>Duration: {Tmdb.runtime}min</Text>
                 </Right>
-                </Split>
-            </Content>
+            </Split>
+        </Content>
         <Footer />
     </MoviePage >
     );

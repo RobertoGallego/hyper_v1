@@ -188,7 +188,8 @@ app.get('/downloadMovie/:movieID/:torrentHash', function (req, res) {
 
 app.get('/playMovie/:movieID', function (req, res) {
     const movieID = req.params.movieID;
-    fs.access(`/../Downloads/${movieID}.mp4`, (err) => {
+    let pathTest = __dirname + `/../Downloads/${movieID}.mp4`;
+    fs.access(pathTest, (err) => {
         if (!err) {
             const path = __dirname + `/../Downloads/${movieID}.mp4`;
             const stat = fs.statSync(path)
