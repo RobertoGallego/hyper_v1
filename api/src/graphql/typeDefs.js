@@ -58,6 +58,7 @@ module.exports = gql`
         title: String
         rating: Float
         large_cover_image: String
+        yt_trailer_code: String
         torrents: [Torrent_YTS]
     }
     type Movie{
