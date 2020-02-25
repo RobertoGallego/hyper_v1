@@ -29,7 +29,7 @@ import logoSearch from "../../assets/images/lupsearch.png";
 
   const reverseChange = e => {
     console.log("ok");
-
+    // setTextState(e.target.value);
     console.log(e.target.value);
     if (e.target.value === "Asc") {
         console.log("if: " + e.target.value);
@@ -120,18 +120,29 @@ import logoSearch from "../../assets/images/lupsearch.png";
 }
 
 const Nav = styled.nav`
+  /* width: 90%; */
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   /* background-color: #191919; */
   background: ${props => props.theme.colors.cardBackground};
+  @media only screen  
+    and (max-width: 1800px)  {
+      justify-content: center;
+    }
+  @media (max-width: 768px) {
+      justify-content: center;
+    }
   padding: 1rem 3.5rem;
 `;
 
 const Searchbar = styled.div`
   justify-content: center;
   margin-left: 1rem;
+  @media (max-width: 768px) {
+    margin-left: 0rem;
+    }
 `;
 
 const StyledLink = styled.a`
@@ -158,16 +169,17 @@ const StyledLinka = styled.a`
         text-decoration: none;
     }
     @media (max-width: 768px) {
-      margin: 1rem;
-      margin-left: 2.5rem;
+      margin: 0 auto;
     }
 `;
 
 const Pict = styled.img`
-  margin-left: 1rem;
+  margin: 1rem 0 1rem 1rem;
   cursor: pointer;
   @media (max-width: 768px) {
-      margin: 1rem 0 2rem 1.5rem;
+      width: 250px;
+      height: 75px;
+      margin: 1rem auto;
     }
 `;
 
@@ -193,6 +205,9 @@ const Input = styled.input`
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
+  @media (max-width: 768px) {
+      width: 100%;
+    }
 `;
 
 const Search = styled.input`
@@ -216,12 +231,12 @@ const Filter = styled.div`
     justify-content: center;
     @media only screen  
     and (max-width: 1470px)  {
-        margin-top: 1.5rem;
+        /* margin-top: 1.5rem; */
     }
     @media (max-width: 768px) {
+
         flex-direction: column;
         flex-wrap: wrap;
-        margin-left: -1rem;
     }
 `;
 
@@ -239,7 +254,7 @@ const Slct = styled.select`
     border-radius: 5px;
     margin-left: 1rem;
     @media (max-width: 768px) {
-        width: 300px;
+        width: 250px;
         height: 50px;
         margin: 0.5rem 0rem;
     }
@@ -248,4 +263,8 @@ const Opt = styled.option`
 `
 
 const Menus = styled.div`
+@media (max-width: 768px) {
+      text-align: center;
+      justify-content: center;
+    }
 `

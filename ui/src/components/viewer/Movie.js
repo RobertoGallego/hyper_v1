@@ -44,6 +44,7 @@ export default function Movie() {
                 title
                 large_cover_image
                 rating
+                yt_trailer_code
                 torrents {
                     url
                     hash
@@ -82,6 +83,7 @@ export default function Movie() {
     const movieLink = useState("");
     const [Show, setShow] = useState(false);
     const [Go, setGo] = useState(false);
+    // const [Yts, setYts] = useState(false)
     const Finisheds = () => {
         console.log("Waiting ...");
     }
@@ -110,10 +112,9 @@ export default function Movie() {
             name: nameMovie
         }
     });
-
     const ytsMovies = _.get(infoYts.data.getInfoYTS, 'movies');
     const tpbMovies = infoTpb.data.getInfoTPB;
-
+    const yt_trailer_code = _.get(ytsMovies, '[0].yt_trailer_code')
     let ytsHash = "";
     if (ytsMovies) {
         let ytsMov = ytsMovies.find(e => e.title === nameMovie);
@@ -130,8 +131,10 @@ export default function Movie() {
         }
     }
 
-    let movie = infoTMDB.data.getOneMovie;
-    movie = Object.assign({}, _.get(movie, 'data.movie'))
+    // let movie = infoYts.getInfoYTS;
+    // console.log("mooovie " + JSON.stringify(movie))
+    // movie = Object.assign({}, _.get(movie, 'data.movie'))
+    // console.log("mooovie " + JSON.stringify(movie))
     // console.log("Hash is here => " + tpbHash + " " + ytsHash)
     if (!Tmdb) {
         return <h3> Loading... </h3>;
@@ -147,7 +150,7 @@ export default function Movie() {
         }
     };
     const Completionist = () => <span>Let's START</span>;
-    let Texton = <Countdown date={Date.now() + 1000} renderer={renderer} />
+    let Texton = <Countdown date={Date.now() + 40000} renderer={renderer} />
     function startDownloadingYTS() {
         setGo(true);
         addMovie({variables : {userId : userId, movieId: Tmdb.id}});
@@ -193,74 +196,98 @@ export default function Movie() {
     return (<MoviePage >
         <Header />
         <Content >
+            <TextA>{Tmdb.title}</TextA>
             <Split >
-                <Left > {movie.yt_trailer_code && < Iframe src={"https://www.youtube.com/embed/" + movie.yt_trailer_code}
+                <Left> {yt_trailer_code && < Iframe src={"https://www.youtube.com/embed/" + yt_trailer_code}
                     frameborder="0"
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen > </Iframe>}
                     {!Show && <Video controls autoPlay loop="" >
                         <source src={movieLink} type="video/mp4" />
                     </Video>}
-                    {Show && <Video controls autoPlay loop="" >
+                    {Show && <Video controls autoPlay reload loop="" >
                         <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/mp4" />
-                        <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/webm" />
+                        {/* <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/webm" /> */}
                     </Video>}
-                    <Text > Torrents: </Text>
+                    <Text>Resume: </Text>
+                    <Resumen>{Tmdb.overview}</Resumen>
+                    <Text > Torrents:</Text>
                     {!Go && ytsHash && <span> <Link1 onClick={startDownloadingYTS}> YTS TORRENT </Link1></span>}
                     {!Go && tpbHash && <span> <Link1 onClick={startDownloadingTPB}> TPB TORRENT </Link1></span>}
                     {!tpbHash && !ytsHash && <span>Sorry !! No Torrents Founded</span>}
                     {Go && <span> <Link2 onClick={Finished}>{Texton}</Link2></span>}
-
-                    <Text > Comments: </Text>
+                    <Text >Comments: </Text>
                     <Com movie={movieID} />
                 </Left>
-                <Right >
-                    <Text > Grade: {
-                        Tmdb.vote_average
-                    } </Text> <
-                        Picture src={
-                            image
-                        }
-                        alt={
-                            `${Tmdb.title}Image`
-                        }
-                    /> <Text> Release Date: {
-                        Tmdb.release_date
-                    } </Text> <Text> Duration: {
-                        Tmdb.runtime
-                    }
-                        min </Text> </Right> </Split> </Content>
+                <Right>
+                    <Picture src={image} alt={`${Tmdb.title}Image`} />
+                    <Text>Release Date: {Tmdb.release_date}</Text>
+                    <Text>Grade: {Tmdb.vote_average}</Text>
+                    <Text>Duration: {Tmdb.runtime}min</Text>
+                </Right>
+            </Split>
+        </Content>
         <Footer />
     </MoviePage >
     );
 }
+
+const Resumen = styled.p`
+    justify-content: center;
+    text-align: left;
+    font-size: 14px;
+    margin-left: 1rem;
+    padding: 0 2rem;
+    @media (max-width: 768px) {
+      font-size: 12px;
+    }
+`
+
 const Link2 = styled.button`
-  border-color: red;
-  background-color: red;
-  color: black;
-  border-radius: 80px;
-  padding: 20px 20px;
+  width: 300px;
+  height: 50px;
+  background: ${props => props.theme.colors.ButtonT};
+  border: none;
+  font-size: 1rem;
+  color: ${props => props.theme.colors.textColor};
+  outline: 0;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  @media (max-width: 768px) {
+      width: 100%;
+    }
   transition-duration: 0.3s;
   &:hover {
     color: black;
-    background-color: white;
+    background-color: ${props => props.theme.colors.textColor};
     border-color: white
   }
 `;
+
 const Link1 = styled.button`
-  margin-bottom: 20px;
-  border-color: blue;
-  background-color: blue;
-  color: white;
-  border-radius: 50px;
-  padding: 20px 250px;
-  transition-duration: 0.3s;
-  &:hover {
-    color: black;
-    background-color: white;
-    border-color: white
-  }
+    margin-bottom: 1rem;
+    width: 300px;
+    height: 50px;
+    background: ${props => props.theme.colors.ButtonT};
+    border: none;
+    font-size: 1rem;
+    color: ${props => props.theme.colors.textColor};
+    outline: 0;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    @media (max-width: 768px) {
+        width: 100%;
+    }
+    transition-duration: 0.3s;
+    &:hover {
+        color: black;
+        background: ${props => props.theme.colors.textColor};
+        border-color: white
+    }
 `;
+
 const MoviePage = styled.div`
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
     background-color: ${props => props.theme.colors.cardBackground};
@@ -274,7 +301,7 @@ const MoviePage = styled.div`
     color: white;
 `
 const Iframe = styled.iframe`
-    margin: 5vmin; 
+    margin: 0 auto 2rem; 
     width: 60vmin;
     height: 30vmin;
 `;
@@ -289,6 +316,8 @@ const Content = styled.div`
 `
 const Split = styled.div`
     display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
 `
 const Left = styled.div`
     width: 70vmin;
@@ -297,24 +326,36 @@ const Left = styled.div`
     text-align: center;
 `
 const Video = styled.video`
-    margin: 5vmin;
+    margin-top: 0;
+    margin: 0 5vmin 5vmin 5vmin;
     width: 60vmin;
     height: 40vmin;
 `
 const Right = styled.div`
     display: flex;
     flex-direction: column;
-    width: 20vmin;
+    /* width: 30vmin; */
 `
-// const Title = styled.h1`
-// font-size: 5vmin;
-// `;
+
 const Picture = styled.img`
-width: 25vmin;
-height: 25min;
-margin: 0 auto;
+    padding-bottom: 1rem;
+    width: 25vmin;
+    height: 25min;
+    margin: 0 auto;
 `;
+
 const Text = styled.span`
-margin: 30px 0;
-font-size: 1.5em;
+    font-weight: bold;
+    margin: 0.5rem;
+    @media (max-width: 768px) {
+        font-size: 12px;
+    }
+`;
+
+const TextA = styled.span`
+    font-weight: bold;
+    padding: 1rem;
+    text-align: left;
+    font-size: 2em;
+    margin: 0.5rem;
 `;
