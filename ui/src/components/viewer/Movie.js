@@ -207,7 +207,7 @@ export default function Movie() {
                     </Video>}
                     {Show && <Video controls autoPlay reload loop="" >
                         <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/mp4" />
-                        {/* <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/webm" /> */}
+                        <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/webm" />
                     </Video>}
                     <Text>Resume: </Text>
                     <Resumen>{Tmdb.overview}</Resumen>
