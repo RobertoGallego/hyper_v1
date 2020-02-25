@@ -1,5 +1,6 @@
 import React, {
-    useState
+    useState,
+    useContext
 } from 'react';
 import {
     useParams
@@ -11,10 +12,12 @@ import Com from './Comment';
 import gql from "graphql-tag";
 import noImage from "../../assets/images/noImage.png";
 import {
-    useQuery
+    useQuery,
+    useMutation
 } from "@apollo/react-hooks";
 import axios from 'axios';
 import Countdown from 'react-countdown-now';
+import { AuthContext } from "../../context/auth";
 var _ = require('lodash');
 
 export default function Movie() {
@@ -58,6 +61,24 @@ export default function Movie() {
             magnetLink
         }
     }`;
+
+    const ADD_SEEN_MOVIE = gql`
+        mutation addSeenMovie(
+            $userId: ID!
+            $movieId: String!
+        ) {
+            addSeenMovie(
+                userId: $userId
+                movieId: $movieId
+            ) {
+                id
+            }
+        }
+    `;
+
+    const user = useContext(AuthContext);
+    const userId = user.user.id;
+    const [addMovie] = useMutation(ADD_SEEN_MOVIE);
 
     const movieLink = useState("");
     const [Show, setShow] = useState(false);
@@ -132,32 +153,34 @@ export default function Movie() {
     let Texton = <Countdown date={Date.now() + 40000} renderer={renderer} />
     function startDownloadingYTS() {
         setGo(true);
+        addMovie({variables : {userId : userId, movieId: Tmdb.id}});
         axios.get(`http://localhost:5000/downloadMovie/${movieID}/${ytsHash}`)
+        .then(data => {
+            if (data.data.status === "Downloading") {
+                console.log(data.data.message + " " + data.data.percentage + " %");
+            }
+            else
+            console.log("Erro Downloading ??")
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }
+    function startDownloadingTPB() {
+        setGo(true);
+        addMovie({variables : {userId : userId, movieId: Tmdb.id}});
+        if (tpbHash) {
+            axios.get(`http://localhost:5000/downloadMovie/${movieID}/${tpbHash}`)
             .then(data => {
                 if (data.data.status === "Downloading") {
                     console.log(data.data.message + " " + data.data.percentage + " %");
                 }
                 else
-                    console.log("Erro Downloading ??")
+                console.log("Erro Downloading ??")
             })
             .catch(error => {
                 console.log(error)
             });
-    }
-    function startDownloadingTPB() {
-        setGo(true);
-        if (tpbHash) {
-            axios.get(`http://localhost:5000/downloadMovie/${movieID}/${tpbHash}`)
-                .then(data => {
-                    if (data.data.status === "Downloading") {
-                        console.log(data.data.message + " " + data.data.percentage + " %");
-                    }
-                    else
-                        console.log("Erro Downloading ??")
-                })
-                .catch(error => {
-                    console.log(error)
-                });
         }
     }
     const Finish = () => {
@@ -184,7 +207,7 @@ export default function Movie() {
                     </Video>}
                     {Show && <Video controls autoPlay reload loop="" >
                         <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/mp4" />
-                        {/* <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/webm" /> */}
+                        <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/webm" />
                     </Video>}
                     <Text>Resume: </Text>
                     <Resumen>{Tmdb.overview}</Resumen>

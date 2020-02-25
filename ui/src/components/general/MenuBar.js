@@ -57,9 +57,9 @@ import logoSearch from "../../assets/images/lupsearch.png";
     return (
       <Nav>
         <Menus>
-            <Link to="/">
+            <a href="/">
                 <Pict src={logoTop} alt="Hypertube" />
-            </Link>
+            </a>
             <StyledLinka href="/">{t('header.home')}</StyledLinka>
             <StyledLink href="/profile">{t('header.profile')}</StyledLink>
             <StyledLink onClick={logout} href="/login">{t('header.logout')}</StyledLink>

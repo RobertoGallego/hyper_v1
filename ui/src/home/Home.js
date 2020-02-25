@@ -35,9 +35,8 @@ function Home() {
             console.log('Error: language not defined');
     }
 
-    const handleOnDocumentBottom = () => 
-    {
-        setList(list.concat(res.data.getMovies));     
+    const handleOnDocumentBottom = () => {
+        setList(list.concat(res.data.getMovies));
         const np = page + 1;
         setPage(np);
     }
@@ -58,7 +57,7 @@ function Home() {
     }`;
 
     const res = useQuery(FETCH_MOVIES, { variables: { search: searchText, page: page, genre: genre, sort: sort, reverse: reverse, language: setLanguage } });
-    
+
     const movies = list.concat(res.data.getMovies);
 
     if (!movies) {
