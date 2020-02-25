@@ -104,14 +104,14 @@ export default function Movie() {
     if (tpbMovies) {
         let tpbMov = tpbMovies.find(e => e.name.includes(nameMovie + " ("));
         if (tpbMov) {
-            tpbHash = tpbMov.magnetLink;
+            tpbHash = tpbMov.magnetLink.split(":")[3].split("&")[0];
 
         }
     }
 
     let movie = infoTMDB.data.getOneMovie;
     movie = Object.assign({}, _.get(movie, 'data.movie'))
-    console.log("Hash is here => " + tpbHash + " " + ytsHash)
+    // console.log("Hash is here => " + tpbHash + " " + ytsHash)
     if (!Tmdb) {
         return <h3> Loading... </h3>;
     }
@@ -126,12 +126,11 @@ export default function Movie() {
         }
     };
     const Completionist = () => <span>Let's START</span>;
-    let Texton = <Countdown date={Date.now() + 40000} renderer={renderer} />
+    let Texton = <Countdown date={Date.now() + 1000} renderer={renderer} />
     function startDownloadingYTS() {
         setGo(true);
         axios.get(`http://localhost:5000/downloadMovie/${movieID}/${ytsHash}`)
             .then(data => {
-                console.log("\n\n DATA : " + JSON.stringify(data))
                 if (data.data.status === "Downloading") {
                     console.log(data.data.message + " " + data.data.percentage + " %");
                 }
@@ -144,18 +143,19 @@ export default function Movie() {
     }
     function startDownloadingTPB() {
         setGo(true);
-        axios.get(`http://localhost:5000/downloadMovie/${movieID}/${tpbHash}`)
-            .then(data => {
-                console.log("\n\n DATA : " + JSON.stringify(data))
-                if (data.data.status === "Downloading") {
-                    console.log(data.data.message + " " + data.data.percentage + " %");
-                }
-                else
-                    console.log("Erro Downloading ??")
-            })
-            .catch(error => {
-                console.log(error)
-            });
+        if (tpbHash) {
+            axios.get(`http://localhost:5000/downloadMovie/${movieID}/${tpbHash}`)
+                .then(data => {
+                    if (data.data.status === "Downloading") {
+                        console.log(data.data.message + " " + data.data.percentage + " %");
+                    }
+                    else
+                        console.log("Erro Downloading ??")
+                })
+                .catch(error => {
+                    console.log(error)
+                });
+        }
     }
     const Finish = () => {
         setShow(true);

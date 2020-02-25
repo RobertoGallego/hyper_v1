@@ -176,8 +176,7 @@ app.use(cors())
 app.get('/downloadMovie/:movieID/:torrentHash', function (req, res) {
     const movieID = req.params.movieID;
     const torrentHash = req.params.torrentHash;
-    console.log("movie Id " + movieID + " torrent " + torrentHash)
-
+    console.log("movie Id " + movieID + " torrent ici " + torrentHash)
     if (!movieID || !torrentHash)
         res.send({
             status: "Error!!",
@@ -187,41 +186,46 @@ app.get('/downloadMovie/:movieID/:torrentHash', function (req, res) {
     getTorrent(movieID, magnetLink, req, res);
 });
 
-
-
 app.get('/playMovie/:movieID', function (req, res) {
     const movieID = req.params.movieID;
-    const path = __dirname + `/../Downloads/${movieID}.mp4`
-    const stat = fs.statSync(path)
-    const fileSize = stat.size
-    const range = req.headers.range
-    if (range) {
-        const parts = range.replace(/bytes=/, "").split("-")
-        const start = parseInt(parts[0], 10)
-        const end = parts[1] ?
-            parseInt(parts[1], 10) :
-            fileSize - 1
-        const chunksize = (end - start) + 1;
-        const file = fs.createReadStream(path, {
-            start,
-            end
-        })
-        const head = {
-            'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-            'Accept-Ranges': 'bytes',
-            'Content-Length': chunksize,
-            'Content-Type': 'video/mp4',
+    fs.access(`/../Downloads/${movieID}.mp4`, (err) => {
+        if (!err) {
+            const path = __dirname + `/../Downloads/${movieID}.mp4`;
+            const stat = fs.statSync(path)
+            const fileSize = stat.size
+            const range = req.headers.range
+            if (range) {
+                const parts = range.replace(/bytes=/, "").split("-")
+                const start = parseInt(parts[0], 10)
+                const end = parts[1] ?
+                    parseInt(parts[1], 10) :
+                    fileSize - 1
+                const chunksize = (end - start) + 1;
+                const file = fs.createReadStream(path, {
+                    start,
+                    end
+                })
+                const head = {
+                    'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+                    'Accept-Ranges': 'bytes',
+                    'Content-Length': chunksize,
+                    'Content-Type': 'video/mp4',
+                }
+                res.writeHead(206, head);
+                file.pipe(res);
+            } else {
+                const head = {
+                    'Content-Length': fileSize,
+                    'Content-Type': 'video/mp4',
+                }
+                res.writeHead(200, head)
+                fs.createReadStream(path).pipe(res)
+            }
+            return;
         }
-        res.writeHead(206, head);
-        file.pipe(res);
-    } else {
-        const head = {
-            'Content-Length': fileSize,
-            'Content-Type': 'video/mp4',
-        }
-        res.writeHead(200, head)
-        fs.createReadStream(path).pipe(res)
-    }
+        console.log("Path non trouve baby")
+        res.send({ status: "Error", message: "File doesn't exist" })
+    });
 });
 //*******STREAM ROUTE********//
 
