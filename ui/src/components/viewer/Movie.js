@@ -41,6 +41,7 @@ export default function Movie() {
                 title
                 large_cover_image
                 rating
+                yt_trailer_code
                 torrents {
                     url
                     hash
@@ -89,10 +90,9 @@ export default function Movie() {
             name: nameMovie
         }
     });
-
     const ytsMovies = _.get(infoYts.data.getInfoYTS, 'movies');
     const tpbMovies = infoTpb.data.getInfoTPB;
-
+    const yt_trailer_code = _.get(ytsMovies, '[0].yt_trailer_code')
     let ytsHash = "";
     if (ytsMovies) {
         let ytsMov = ytsMovies.find(e => e.title === nameMovie);
@@ -109,8 +109,10 @@ export default function Movie() {
         }
     }
 
-    let movie = infoTMDB.data.getOneMovie;
+    let movie = infoYts.getInfoYTS;
+    // console.log("mooovie " + JSON.stringify(movie))
     movie = Object.assign({}, _.get(movie, 'data.movie'))
+    // console.log("mooovie " + JSON.stringify(movie))
     // console.log("Hash is here => " + tpbHash + " " + ytsHash)
     if (!Tmdb) {
         return <h3> Loading... </h3>;
@@ -172,7 +174,7 @@ export default function Movie() {
         <Content >
             <TextA>{Tmdb.title}</TextA>
             <Split >
-                <Left > {movie.yt_trailer_code && < Iframe src={"https://www.youtube.com/embed/" + movie.yt_trailer_code}
+                <Left > {yt_trailer_code && < Iframe src={"https://www.youtube.com/embed/" + yt_trailer_code}
                     frameborder="0"
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen > </Iframe>}
