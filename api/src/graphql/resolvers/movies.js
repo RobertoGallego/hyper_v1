@@ -18,6 +18,7 @@ module.exports = {
         async getOneMovie(_, { id }) {
             const res = await axios.get(`https://yts.mx/api/v2/movie_details.json?movie_id=${id}&with_images=true`);
             if (res) {
+                console.log(res);
                 return res.data;
             } else {
                 throw new Error('No Movie finded ...');
