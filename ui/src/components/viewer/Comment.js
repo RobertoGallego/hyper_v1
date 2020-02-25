@@ -102,7 +102,7 @@ const Form = styled.div`
 
 const Input = styled.input`
     width: 40vmin;
-    margin: 0.5em;
+    margin: auto;
     background: #666666;
     border: none;
     padding: 1em 3em;
@@ -112,6 +112,9 @@ const Input = styled.input`
     ::-webkit-input-placeholder {
     color: white;
     font-size: 1em;
+    @media (max-width: 768px) {
+        font-size: 12px;
+    }
   }
 `
 
@@ -122,11 +125,11 @@ const Send = styled.input`
     font-weight: bold;
     text-transform: uppercase;
     text-align: center;
-    padding: 1em 3em;
+    padding: 1em 1em;
     letter-spacing: 2px;
     cursor: pointer;
     font-size: .9em;
-    margin-right: 2em;
+    /* margin-right: 2em; */
 `
 const Link = styled.a`
     color: #fff;

@@ -170,6 +170,7 @@ export default function Movie() {
     return (<MoviePage >
         <Header />
         <Content >
+            <TextA>{Tmdb.title}</TextA>
             <Split >
                 <Left > {movie.yt_trailer_code && < Iframe src={"https://www.youtube.com/embed/" + movie.yt_trailer_code}
                     frameborder="0"
@@ -182,39 +183,44 @@ export default function Movie() {
                         <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/mp4" />
                         <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/webm" />
                     </Video>}
-                    <Text > Torrents: </Text>
+                    <Text>Resume: </Text>
+                    <Resumen>{Tmdb.overview}</Resumen>
+                    <Text > Torrents:</Text>
                     {!Go && ytsHash && <span> <Link1 onClick={startDownloadingYTS}> YTS TORRENT </Link1></span>}
                     {!Go && tpbHash && <span> <Link1 onClick={startDownloadingTPB}> TPB TORRENT </Link1></span>}
                     {!tpbHash && !ytsHash && <span>Sorry !! No Torrents Founded</span>}
                     {Go && <span> <Link2 onClick={Finished}>{Texton}</Link2></span>}
-
-                    <Text > Comments: </Text>
+                    <Text >Comments: </Text>
                     <Com movie={movieID} />
                 </Left>
-                <Right >
-                    <Text > Grade: {
-                        Tmdb.vote_average
-                    } </Text> <
-                        Picture src={
-                            image
-                        }
-                        alt={
-                            `${Tmdb.title}Image`
-                        }
-                    /> <Text> Release Date: {
-                        Tmdb.release_date
-                    } </Text> <Text> Duration: {
-                        Tmdb.runtime
-                    }
-                        min </Text> </Right> </Split> </Content>
+                <Right>
+                    <Picture src={image} alt={`${Tmdb.title}Image`}/>
+                    <Text>Release Date: {Tmdb.release_date}</Text>
+                    <Text>Grade: {Tmdb.vote_average}</Text>
+                    <Text>Duration: {Tmdb.runtime}min</Text>
+                </Right>
+                </Split>
+            </Content>
         <Footer />
     </MoviePage >
     );
 }
+
+const Resumen = styled.p`
+    justify-content: center;
+    text-align: left;
+    font-size: 14px;
+    margin-left: 1rem;
+    padding: 0 2rem;
+    @media (max-width: 768px) {
+      font-size: 12px;
+    }
+`
+
 const Link2 = styled.button`
   width: 300px;
   height: 50px;
-  background: ${props => props.theme.colors.barras};
+  background: ${props => props.theme.colors.ButtonT};
   border: none;
   font-size: 1rem;
   color: ${props => props.theme.colors.textColor};
@@ -234,26 +240,28 @@ const Link2 = styled.button`
 `;
 
 const Link1 = styled.button`
-  width: 300px;
-  height: 50px;
-  background: ${props => props.theme.colors.barras};
-  border: none;
-  font-size: 1rem;
-  color: ${props => props.theme.colors.textColor};
-  outline: 0;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  @media (max-width: 768px) {
-      width: 100%;
+    margin-bottom: 1rem;
+    width: 300px;
+    height: 50px;
+    background: ${props => props.theme.colors.ButtonT};
+    border: none;
+    font-size: 1rem;
+    color: ${props => props.theme.colors.textColor};
+    outline: 0;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    @media (max-width: 768px) {
+        width: 100%;
     }
-  transition-duration: 0.3s;
-  &:hover {
-    color: black;
-    background: ${props => props.theme.colors.textColor};
-    border-color: white
-  }
+    transition-duration: 0.3s;
+    &:hover {
+        color: black;
+        background: ${props => props.theme.colors.textColor};
+        border-color: white
+    }
 `;
+
 const MoviePage = styled.div`
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
     background-color: ${props => props.theme.colors.cardBackground};
@@ -283,6 +291,7 @@ const Content = styled.div`
 const Split = styled.div`
     display: flex;
     justify-content: space-evenly;
+    align-items: flex-start;
 `
 const Left = styled.div`
     width: 70vmin;
@@ -291,25 +300,36 @@ const Left = styled.div`
     text-align: center;
 `
 const Video = styled.video`
-    margin: 5vmin;
+    margin-top: 0;
+    margin: 0 5vmin 5vmin 5vmin;
     width: 60vmin;
     height: 40vmin;
 `
 const Right = styled.div`
     display: flex;
-    margin: 2.2rem;
     flex-direction: column;
     /* width: 30vmin; */
 `
 
 const Picture = styled.img`
-    margin: 1rem;
+    padding-bottom: 1rem;
     width: 25vmin;
     height: 25min;
     margin: 0 auto;
 `;
 
 const Text = styled.span`
-    font-size: 1.2em;
+    font-weight: bold;
+    margin: 0.5rem;
+    @media (max-width: 768px) {
+        font-size: 12px;
+    }
+`;
+
+const TextA = styled.span`
+    font-weight: bold;
+    padding: 1rem;
+    text-align: left;
+    font-size: 2em;
     margin: 0.5rem;
 `;
