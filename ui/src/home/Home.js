@@ -85,19 +85,23 @@ function Home() {
 
 const Homeindex = styled.div`
     display: flex;
-    min-height: 100vh;
+    /* min-height: 100vh; */
     flex-direction: column;
     background: ${props => props.theme.colors.backgroungGeneral};
 `
 
 const List = styled.div`
-    margin: 2vmin auto 0 ;
-    width: 80vw;
-    min-height: 80vh;
+    margin: auto;
+    /* width: 80vw; */
+    /* min-height: 80vh; */
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
     flex: 1;
+    padding: 2rem 1.5rem; 
+    @media (max-width: 768px) {
+        flex-direction: column;
+    }
 `
 
 const Override = styled.div`

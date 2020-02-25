@@ -127,6 +127,10 @@ const Nav = styled.nav`
   flex-wrap: wrap;
   /* background-color: #191919; */
   background: ${props => props.theme.colors.cardBackground};
+  @media only screen  
+    and (max-width: 1800px)  {
+      justify-content: center;
+    }
   @media (max-width: 768px) {
       justify-content: center;
     }
@@ -185,7 +189,7 @@ const Bar = styled.div`
     margin-right: 1rem;
     @media (max-width: 768px) {
         margin-top: 1rem;
-        /* margin-left: 1rem; */
+        margin-left: 1rem;
       }
 `;
 
