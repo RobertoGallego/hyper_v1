@@ -66,7 +66,7 @@ function Home() {
             <Override className="sweet-loading">
                 <FadeLoader
                     size={20}
-                    color={"#fff"}
+                    color={"#db202c"}
                     loading={loading}
                 />
             </Override>
@@ -85,14 +85,14 @@ function Home() {
 
 const Homeindex = styled.div`
     display: flex;
-    /* min-height: 100vh; */
+    min-height: 100vh;
     flex-direction: column;
     background: ${props => props.theme.colors.backgroungGeneral};
 `
 
 const List = styled.div`
     margin: auto;
-    /* width: 80vw; */
+    width: 80vw;
     /* min-height: 80vh; */
     display: flex;
     justify-content: space-between;
@@ -100,6 +100,8 @@ const List = styled.div`
     flex: 1;
     padding: 2rem 1.5rem; 
     @media (max-width: 768px) {
+        width: auto;
+        margin: auto;
         flex-direction: column;
     }
 `

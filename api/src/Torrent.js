@@ -16,7 +16,7 @@ export default function getTorrent(filename, magnetLink, req, res) {
         return new ffmpeg(file.createReadStream())
             .videoCodec('libvpx')
             .audioCodec('libvorbis')
-            .format('mp4')
+            .format('webm')
             .audioBitrate(128)
             .videoBitrate(1024)
             .outputOptions([

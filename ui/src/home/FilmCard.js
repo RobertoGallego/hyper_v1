@@ -41,8 +41,8 @@ export default function FilmCard({id, title, poster_path, vote_average, overview
 }
 
 const Picture = styled.img`
-    width: 200px;
-    height: 300px;
+    width: 270px;
+    height: 400px;
     @media (max-width: 768px) {
         width: 250px;
         height: 350px;

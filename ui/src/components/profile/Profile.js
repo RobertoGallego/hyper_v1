@@ -51,7 +51,7 @@ export default function Profile() {
   if (!getUser) {
     return (
       <Override className="sweet-loading">
-        <FadeLoader size={20} color={"#fff"} loading={loading} />
+        <FadeLoader size={20} color={"#db202c"} loading={loading} />
       </Override>
     );
   } else {

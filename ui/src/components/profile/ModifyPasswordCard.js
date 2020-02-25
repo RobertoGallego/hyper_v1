@@ -100,7 +100,7 @@ export default function ModifyPasswordCard() {
     if (loading) {
         return (
             <Override className="sweet-loading">
-                <FadeLoader size={20} color={"#fff"} loading={loading} />
+                <FadeLoader size={20} color={"#db202c"} loading={loading} />
             </Override>
         )
     } else {

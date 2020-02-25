@@ -59,13 +59,30 @@ module.exports = {
             // console.log(password);
 
             const user = await User.findOne({ username });
+            // console.log(user);
+
             if (!user) {
                 errors.username = "Sorry, we can't find an account with this username. Please try again.";
                 throw new UserInputError('User not found', { errors });
             }
+            // console.log(length(user.facebookId));
+            // console.log("1" + user.facebookId.length);
+            // console.log("2" + user.fortytwoId.length);
+            // console.log("3" + user.googleId.length);
+            // console.log("length" + user.facebookId.length);
+            // todo lo contrario
+            if (user.facebookId.length > 0 || user.fortytwoId.length > 0 || user.googleId.length > 0) {
+                console.log("ok");
+                errors.password = 'Wrong password';
+                throw new UserInputError('Wrong crendetials', { errors });
+            }
+            // console.log("trim" + user.facebookId.trim());
+            // console.log("length" + user.facebookId.length);
 
             const match = await bcrypt.compare(password, user.password);
             if (!match) {
+                console.log(password);
+                console.log(user.password);
                 errors.password = 'Wrong password';
                 throw new UserInputError('Wrong crendetials', { errors });
             }
