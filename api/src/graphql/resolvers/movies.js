@@ -3,17 +3,17 @@ const PirateBay = require('thepiratebay');
 
 module.exports = {
     Query: {
-        async getMovies(_, { search, genre, sort, page, reverse, language}) {
+        async getMovies(_, { search, genre, sort, page, reverse }) {
             let res
             if (search)
-                res = await axios.get(`https://api.themoviedb.org/3/search/movie?sort_by=${sort}.${reverse}&api_key=3cbc26720809cfa6649145e5d10a0b7c&language=${language}&query=${search}&page=${page}`);
-            else if (genre) 
-                res = await axios.get(`https://api.themoviedb.org/3/discover/movie?sort_by=${sort}.${reverse}&api_key=3cbc26720809cfa6649145e5d10a0b7c&with_genres=${genre}&language=${language}&page=${page}`);
+                res = await axios.get(`https://api.themoviedb.org/3/search/movie?sort_by=${sort}.${reverse}&api_key=3cbc26720809cfa6649145e5d10a0b7c&query=${search}&page=${page}`);
+            else if (genre)
+                res = await axios.get(`https://api.themoviedb.org/3/discover/movie?sort_by=${sort}.${reverse}&api_key=3cbc26720809cfa6649145e5d10a0b7c&with_genres=${genre}&page=${page}`);
             else
-                res = await axios.get(`https://api.themoviedb.org/3/movie/top_rated?sort_by=${sort}.${reverse}&api_key=3cbc26720809cfa6649145e5d10a0b7c&language=${language}&page=${page}`);
+                res = await axios.get(`https://api.themoviedb.org/3/movie/top_rated?sort_by=${sort}.${reverse}&api_key=3cbc26720809cfa6649145e5d10a0b7c&page=${page}`);
             if (res)
                 return res.data.results
-            else 
+            else
                 throw new Error('No Movie finded ...');
         },
         async getInfoTMDB(_, { id }) {
@@ -26,7 +26,7 @@ module.exports = {
             }
         },
         async getInfoYTS(_, { name }) {
-            
+
             const res = await axios.get(`https://yts.mx/api/v2/list_movies.json?query_term=${name}&limit=20`);
             if (res) {
                 return res.data.data;
@@ -36,7 +36,8 @@ module.exports = {
         },
         async getInfoTPB(_, { name }) {
             const searchResults = await PirateBay.search(`${name}`, {
-                category: 'video' })
+                category: 'video'
+            })
             if (searchResults) {
                 return searchResults;
             } else {

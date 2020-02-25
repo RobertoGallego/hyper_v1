@@ -115,7 +115,7 @@ module.exports = gql`
         getUsers: [User]
         getUser(userId: ID!): User
         currentUser: User
-        getMovies(search: String!, page: Int!, genre: String!, sort: String!, reverse: String!, language: String!): [MovieDetails]
+        getMovies(search: String!, page: Int!, genre: String!, sort: String!, reverse: String!): [MovieDetails]
         getInfoTMDB(id: ID!): MovieDetails
         getInfoYTS(name: String!): Result_YTS
         getInfoTPB(name: String!): [TPBData]
