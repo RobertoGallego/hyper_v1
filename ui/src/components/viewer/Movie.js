@@ -62,7 +62,7 @@ export default function Movie() {
     const movieLink = useState("");
     const [Show, setShow] = useState(false);
     const [Go, setGo] = useState(false);
-    // const [Yts, setYts] = useState(false)
+    const [Yts, setYts] = useState(false)
     const Finisheds = () => {
         console.log("Waiting ...");
     }
@@ -162,7 +162,6 @@ export default function Movie() {
     }
     const Finish = () => {
         setShow(true);
-        setGo(false)
     }
     var image;
     if (!Tmdb.poster_path)
@@ -182,6 +181,7 @@ export default function Movie() {
                     {!Show && <Video controls autoPlay loop="" >
                         <source src={movieLink} type="video/mp4" />
                     </Video>}
+
                     {Show && <Video controls autoPlay reload loop="" >
                         <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/mp4" />
                         <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/webm" />
