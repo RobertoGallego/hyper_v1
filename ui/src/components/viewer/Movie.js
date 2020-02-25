@@ -174,7 +174,7 @@ export default function Movie() {
         <Content >
             <TextA>{Tmdb.title}</TextA>
             <Split >
-                <Left > {yt_trailer_code && < Iframe src={"https://www.youtube.com/embed/" + yt_trailer_code}
+                <Left> {yt_trailer_code && < Iframe src={"https://www.youtube.com/embed/" + yt_trailer_code}
                     frameborder="0"
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen > </Iframe>}
@@ -277,7 +277,7 @@ const MoviePage = styled.div`
     color: white;
 `
 const Iframe = styled.iframe`
-    margin: 5vmin; 
+    margin: 0 auto 2rem; 
     width: 60vmin;
     height: 30vmin;
 `;
