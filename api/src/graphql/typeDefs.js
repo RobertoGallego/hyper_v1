@@ -136,7 +136,7 @@ module.exports = gql`
         editProfile(userId: ID!, username: String!, prenom: String!, nom: String!, email: String!, image: String!): User!
         modifyPassword(userId: ID!, oldPassword: String!, newPassword: String!, confirmPassword: String!): User!
         addComment(movieId: String!, body: String!): Comment!
-        addSeenMovie(userId: ID!, movieID: String!): User!
+        addSeenMovie(userId: ID!, movieId: String!): User!
     }
     type Subscription {
         newPost: Post!

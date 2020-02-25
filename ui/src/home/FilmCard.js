@@ -11,34 +11,33 @@ import { AuthContext } from "../context/auth";
 const SEEN_MOVIES_QUERY = gql`
   query($userId: ID!) {
     getUser(userId: $userId) {
-      seenMovies
+        seenMovies
     }
   }
 `;
 
 export default function FilmCard({id, title, poster_path, vote_average, overview, release_date}) {
     const { t } = useTranslation();
-    // const user = useContext(AuthContext);
-    // const userId = user.user.id;
-    // const { data: { seenMovies } } = useQuery(SEEN_MOVIES_QUERY, {
-    //     variables: {
-    //       userId: userId
-    //     }
-    // });
+    const user = useContext(AuthContext);
+    const userId = user.user.id;
+    const { data: { getUser } } = useQuery(SEEN_MOVIES_QUERY, {
+        variables: {
+          userId: userId
+        }
+    });
 
-    // const seen = seenMovies.includes(id);
+    const seen = (getUser ? getUser.seenMovies.includes(id) : false);
 
     var image;
     if (!poster_path)
         image = noImage
     else
         image = `https://image.tmdb.org/t/p/original${poster_path}`;
-    if (id) {
+    if (id && getUser) {
         return (
             <Link to={`/movie/${id}`}>
                 <Card>
-                    {/* {seen ? <Picture seen src={image} alt={`${title}Image`}/> : <Picture src={image} alt={`${title}Image`}/>} */}
-                    <Picture src={image} alt={`${title}Image`}/>
+                    {seen ? <Picture seen src={image} alt={`${title}Image`}/> : <Picture src={image} alt={`${title}Image`}/>}
                     <Overlay>
                         <Text>
                             <Title>{title}</Title>
@@ -65,7 +64,7 @@ const Picture = styled.img`
     width: 100%;
     height: 100%;
 
-    opacity: ${props => props.seen ? "0.4" : "1"};
+    opacity: ${props => props.seen ? "0.3" : "1"};
 `;
 
 const Overlay = styled.div`

@@ -289,10 +289,20 @@ module.exports = {
             }
         },
         async addSeenMovie( _, {userId, movieId}) {
-            const res = await User.findByIdAndUpdate({ _id: userId }, {$push: {seenMovies: movieId }}, {new: true})
-            return {
-                ...res._doc,
-                id: res._id
+            const connectedUser = await User.findOne({_id: userId });
+            const seen = connectedUser.seenMovies.includes(movieId);
+            if (!seen) {
+                const res = await User.findByIdAndUpdate({ _id: userId }, {$push: {seenMovies: movieId }}, {new: true});
+                return {
+                    ...res._doc,
+                    id: res._id
+                }
+            } else {
+                const res = await User.findOne({_id: userId });
+                return {
+                    ...res._doc,
+                    id: res._id
+                }
             }
         }
     }
