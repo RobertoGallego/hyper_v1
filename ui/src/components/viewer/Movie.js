@@ -197,28 +197,45 @@ export default function Movie() {
     );
 }
 const Link2 = styled.button`
-  border-color: red;
-  background-color: red;
-  color: black;
-  border-radius: 80px;
-  padding: 20px 20px;
+  width: 300px;
+  height: 50px;
+  background: ${props => props.theme.colors.barras};
+  border: none;
+  font-size: 1rem;
+  color: ${props => props.theme.colors.textColor};
+  outline: 0;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  @media (max-width: 768px) {
+      width: 100%;
+    }
   transition-duration: 0.3s;
   &:hover {
     color: black;
-    background-color: white;
+    background-color: ${props => props.theme.colors.textColor};
     border-color: white
   }
 `;
+
 const Link1 = styled.button`
-  border-color: blue;
-  background-color: blue;
-  color: white;
-  border-radius: 50px;
-  padding: 20px 250px;
+  width: 300px;
+  height: 50px;
+  background: ${props => props.theme.colors.barras};
+  border: none;
+  font-size: 1rem;
+  color: ${props => props.theme.colors.textColor};
+  outline: 0;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  @media (max-width: 768px) {
+      width: 100%;
+    }
   transition-duration: 0.3s;
   &:hover {
     color: black;
-    background-color: white;
+    background: ${props => props.theme.colors.textColor};
     border-color: white
   }
 `;
@@ -250,6 +267,7 @@ const Content = styled.div`
 `
 const Split = styled.div`
     display: flex;
+    justify-content: space-evenly;
 `
 const Left = styled.div`
     width: 70vmin;
@@ -264,18 +282,19 @@ const Video = styled.video`
 `
 const Right = styled.div`
     display: flex;
+    margin: 2.2rem;
     flex-direction: column;
-    width: 20vmin;
+    /* width: 30vmin; */
 `
-// const Title = styled.h1`
-// font-size: 5vmin;
-// `;
+
 const Picture = styled.img`
-width: 25vmin;
-height: 25min;
-margin: 0 auto;
+    margin: 1rem;
+    width: 25vmin;
+    height: 25min;
+    margin: 0 auto;
 `;
+
 const Text = styled.span`
-margin: 30px 0;
-font-size: 1.5em;
+    font-size: 1.2em;
+    margin: 0.5rem;
 `;
