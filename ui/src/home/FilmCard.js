@@ -22,7 +22,7 @@ export default function FilmCard({id, title, poster_path, vote_average, overview
     const userId = user.user.id;
     const { data: { getUser } } = useQuery(SEEN_MOVIES_QUERY, {
         variables: {
-          userId: userId
+            userId: userId
         }
     });
 
