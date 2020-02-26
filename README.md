@@ -36,6 +36,13 @@ cd ui
 npm i
 ```
 
+Finally run the project
+
+```
+cd ..
+npm run dev
+```
+
 ## Built With
 
 Front-end:
