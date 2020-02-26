@@ -45,10 +45,10 @@ Front-end:
 
 Back-end:
 * [NodeJS](https://nodejs.org/en/)
-* [GraphQL] (https://graphql.org/)
-* [MongoDB] (https://www.mongodb.com/fr)
-* [mongoose] (https://mongoosejs.com/)
-* [axios] (https://github.com/axios/axios)
+* [GraphQL](https://graphql.org/)
+* [MongoDB](https://www.mongodb.com/fr)
+* [mongoose](https://mongoosejs.com/)
+* [axios](https://github.com/axios/axios)
 
 ## Authors
 
