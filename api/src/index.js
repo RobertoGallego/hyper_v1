@@ -148,15 +148,18 @@ const facebookCallback = (accessToken, refreshToken, profile, done) => {
         }
     });
 };
+
 passport.use(new FacebookStrategy(facebookOptions, facebookCallback));
 passport.serializeUser((user, done) => {
     done(null, user.id);
 });
+
 passport.deserializeUser((id, done) => {
     User.findById(id).then(user => {
         done(null, user);
     });
 });
+
 const server = new ApolloServer({
     typeDefs,
     resolvers,
