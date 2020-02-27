@@ -111,6 +111,9 @@ export default function Movie() {
                     {Show && <Video controls autoPlay loop="" >
                         <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/mp4" />
                         <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/webm" />
+                        <track label="English" kind="subtitles" srcLang="en" src="captions/vtt/sintel-en.vtt" default />
+                        <track label="Deutsch" kind="subtitles" srcLang="de" src="captions/vtt/sintel-de.vtt" />
+                        <track label="Español" kind="subtitles" srcLang="es" src="captions/vtt/sintel-es.vtt" />
                     </Video>}
                     <Text > Torrents: </Text>
                     {!Go && torrentHash && <span> <Link1 onClick={startDownloading}> YTS TORRENT </Link1></span>}
@@ -141,85 +144,85 @@ export default function Movie() {
     );
 }
 const Link2 = styled.button`
-  border-color: red;
-  background-color: red;
-  color: black;
-  border-radius: 80px;
-  padding: 20px 20px;
-  transition-duration: 0.3s;
+          border-color: red;
+          background-color: red;
+          color: black;
+          border-radius: 80px;
+          padding: 20px 20px;
+          transition-duration: 0.3s;
   &:hover {
-    color: black;
-    background-color: white;
-    border-color: white
-  }
-`;
+                color: black;
+            background-color: white;
+            border-color: white
+          }
+        `;
 const Link1 = styled.button`
-  border-color: blue;
-  background-color: blue;
-  color: white;
-  border-radius: 50px;
-  padding: 20px 250px;
-  transition-duration: 0.3s;
+          border-color: blue;
+          background-color: blue;
+          color: white;
+          border-radius: 50px;
+          padding: 20px 250px;
+          transition-duration: 0.3s;
   &:hover {
-    color: black;
-    background-color: white;
-    border-color: white
-  }
-`;
+                color: black;
+            background-color: white;
+            border-color: white
+          }
+        `;
 const MoviePage = styled.div`
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
-    background-color: #111111;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
-    color: white;
-`
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+            background-color: #111111;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+            color: white;
+        `
 const Iframe = styled.iframe`
-    margin: 5vmin; 
-    width: 60vmin;
-    height: 30vmin;
-`;
+            margin: 5vmin; 
+            width: 60vmin;
+            height: 30vmin;
+        `;
 // const HR = styled.hr`
 //     border: 1px solid white;
 // `
 const Content = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 90vmin;
-    margin: 0 auto;
-`
+            display: flex;
+            flex-direction: column;
+            width: 90vmin;
+            margin: 0 auto;
+        `
 const Split = styled.div`
-    display: flex;
-`
+            display: flex;
+        `
 const Left = styled.div`
-    width: 70vmin;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-`
+            width: 70vmin;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        `
 const Video = styled.video`
-    margin: 5vmin;
-    width: 60vmin;
-    height: 40vmin;
-`
+            margin: 5vmin;
+            width: 60vmin;
+            height: 40vmin;
+        `
 const Right = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 20vmin;
-`
+            display: flex;
+            flex-direction: column;
+            width: 20vmin;
+        `
 // const Title = styled.h1`
 // font-size: 5vmin;
 // `;
 const Picture = styled.img`
-width: 25vmin;
-height: 25min;
-margin: 0 auto;
-`;
+        width: 25vmin;
+        height: 25min;
+        margin: 0 auto;
+        `;
 const Text = styled.span`
-margin: 30px 0;
-font-size: 1.5em;
+        margin: 30px 0;
+        font-size: 1.5em;
 `;
