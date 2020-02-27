@@ -33,10 +33,11 @@ var cors = require('cors');
 import getTorrent from './Torrent';
 import Filetimer from './filetime'
 var schedule = require('node-schedule');
+const OS = require("opensubtitles-api");
 
 // every 5 second test
 // schedule.scheduleJob('*/5 * * * * *', function(){
-schedule.scheduleJob('0 0 1 * *', function(){
+schedule.scheduleJob('0 0 1 * *', function () {
     // “At 00:00 on day-of-month 1.”
     // console.log("5 second");
     Filetimer();
@@ -73,22 +74,19 @@ schedule.scheduleJob('0 0 1 * *', function(){
 
 // const OS = require('opensubtitles-api');
 
-// // SUBTITLES //
-// const OpenSubtitles = new OS({
-//     useragent:'TemporaryUserAgent',
-//     // username: 'Username',
-//     // password: 'Password',
-//     ssl: true
-// });
+// SUBTITLES //
+const OpenSubtitles = new OS({
+    useragent: 'TemporaryUserAgent',
+});
 
-// OpenSubtitles.login()
-//     .then(res => {
-//         console.log(res.token);
-//         // console.log(res.userinfo);
-//     })
-//     .catch(err => {
-//         console.log(err);
-// });
+OpenSubtitles.login()
+    .then(res => {
+        console.log(res.token);
+        // console.log(res.userinfo);
+    })
+    .catch(err => {
+        console.log(err);
+    });
 
 // OpenSubtitles.search({
 //     sublanguageid: 'fre',       // Can be an array.join, 'all', or be omitted.

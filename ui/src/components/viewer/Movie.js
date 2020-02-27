@@ -153,34 +153,34 @@ export default function Movie() {
     let Texton = <Countdown date={Date.now() + 40000} renderer={renderer} />
     function startDownloadingYTS() {
         setGo(true);
-        addMovie({variables : {userId : userId, movieId: Tmdb.id}});
+        addMovie({ variables: { userId: userId, movieId: Tmdb.id } });
         axios.get(`http://localhost:5000/downloadMovie/${movieID}/${ytsHash}`)
-        .then(data => {
-            if (data.data.status === "Downloading") {
-                console.log(data.data.message + " " + data.data.percentage + " %");
-            }
-            else
-            console.log("Erro Downloading ??")
-        })
-        .catch(error => {
-            console.log(error)
-        });
-    }
-    function startDownloadingTPB() {
-        setGo(true);
-        addMovie({variables : {userId : userId, movieId: Tmdb.id}});
-        if (tpbHash) {
-            axios.get(`http://localhost:5000/downloadMovie/${movieID}/${tpbHash}`)
             .then(data => {
                 if (data.data.status === "Downloading") {
                     console.log(data.data.message + " " + data.data.percentage + " %");
                 }
                 else
-                console.log("Erro Downloading ??")
+                    console.log("Erro Downloading ??")
             })
             .catch(error => {
                 console.log(error)
             });
+    }
+    function startDownloadingTPB() {
+        setGo(true);
+        addMovie({ variables: { userId: userId, movieId: Tmdb.id } });
+        if (tpbHash) {
+            axios.get(`http://localhost:5000/downloadMovie/${movieID}/${tpbHash}`)
+                .then(data => {
+                    if (data.data.status === "Downloading") {
+                        console.log(data.data.message + " " + data.data.percentage + " %");
+                    }
+                    else
+                        console.log("Erro Downloading ??")
+                })
+                .catch(error => {
+                    console.log(error)
+                });
         }
     }
     const Finish = () => {
@@ -247,50 +247,6 @@ const Resumen = styled.p`
 `
 
 const Link2 = styled.button`
-<<<<<<< HEAD
-          border-color: red;
-          background-color: red;
-          color: black;
-          border-radius: 80px;
-          padding: 20px 20px;
-          transition-duration: 0.3s;
-  &:hover {
-                color: black;
-            background-color: white;
-            border-color: white
-          }
-        `;
-const Link1 = styled.button`
-          border-color: blue;
-          background-color: blue;
-          color: white;
-          border-radius: 50px;
-          padding: 20px 250px;
-          transition-duration: 0.3s;
-  &:hover {
-                color: black;
-            background-color: white;
-            border-color: white
-          }
-        `;
-const MoviePage = styled.div`
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
-            background-color: #111111;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-            display: flex;
-            min-height: 100vh;
-            flex-direction: column;
-            color: white;
-        `
-const Iframe = styled.iframe`
-            margin: 5vmin; 
-            width: 60vmin;
-            height: 30vmin;
-        `;
-=======
   width: 300px;
   height: 50px;
   background: ${props => props.theme.colors.ButtonT};
@@ -352,7 +308,6 @@ const Iframe = styled.iframe`
     width: 60vmin;
     height: 30vmin;
 `;
->>>>>>> e283ee743b4b11870c1b630caebab9d166bbb70d
 // const HR = styled.hr`
 //     border: 1px solid white;
 // `
@@ -363,15 +318,10 @@ const Content = styled.div`
             margin: 0 auto;
         `
 const Split = styled.div`
-<<<<<<< HEAD
-            display: flex;
-        `
-=======
     display: flex;
     justify-content: space-evenly;
     align-items: flex-start;
 `
->>>>>>> e283ee743b4b11870c1b630caebab9d166bbb70d
 const Left = styled.div`
             width: 70vmin;
             display: flex;
@@ -379,28 +329,6 @@ const Left = styled.div`
             text-align: center;
         `
 const Video = styled.video`
-<<<<<<< HEAD
-            margin: 5vmin;
-            width: 60vmin;
-            height: 40vmin;
-        `
-const Right = styled.div`
-            display: flex;
-            flex-direction: column;
-            width: 20vmin;
-        `
-// const Title = styled.h1`
-// font-size: 5vmin;
-// `;
-const Picture = styled.img`
-        width: 25vmin;
-        height: 25min;
-        margin: 0 auto;
-        `;
-const Text = styled.span`
-        margin: 30px 0;
-        font-size: 1.5em;
-=======
     margin-top: 0;
     margin: 0 5vmin 5vmin 5vmin;
     width: 60vmin;
@@ -433,5 +361,4 @@ const TextA = styled.span`
     text-align: left;
     font-size: 2em;
     margin: 0.5rem;
->>>>>>> e283ee743b4b11870c1b630caebab9d166bbb70d
 `;
