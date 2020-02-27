@@ -54,7 +54,7 @@ export default function ModifyPasswordCard() {
                 <Hr />
                 <MainForm onSubmit={onSubmit}>
                     <SubForm>
-                        <label for="oldPassword">{t('oldPassword')}</label>
+                        <label htmlFor="oldPassword">{t('oldPassword')}</label>
                         <Input
                             name="oldPassword"
                             required="required"
@@ -65,7 +65,7 @@ export default function ModifyPasswordCard() {
                             onChange={onChange}
                         />
                         {Object.keys(errors).length > 0 && (<Alert>{errors.oldPassword}</Alert>)}
-                        <label for="newPassword">{t('newPassword')}</label>
+                        <label htmlFor="newPassword">{t('newPassword')}</label>
                         <Input
                             name="newPassword"
                             required="required"
@@ -76,7 +76,7 @@ export default function ModifyPasswordCard() {
                             onChange={onChange}
                         />
                         {Object.keys(errors).length > 0 && (<Alert>{errors.newPassword}</Alert>)}
-                        <label for="confirmPassword">{t('confirmPassword')}</label>
+                        <label htmlFor="confirmPassword">{t('confirmPassword')}</label>
                         <Input
                             name="confirmPassword"
                             required="required"
@@ -100,7 +100,7 @@ export default function ModifyPasswordCard() {
     if (loading) {
         return (
             <Override className="sweet-loading">
-                <FadeLoader size={20} color={"#fff"} loading={loading} />
+                <FadeLoader size={20} color={"#db202c"} loading={loading} />
             </Override>
         )
     } else {

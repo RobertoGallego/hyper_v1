@@ -7,7 +7,7 @@ import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import { FadeLoader } from "react-spinners";
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
-var _ = require('lodash');
+import { useTranslation } from "react-i18next";
 
 function Home() {
     const [page, setPage] = useState(1);
@@ -17,9 +17,26 @@ function Home() {
     const [genre, setGenre] = useState("");
     const [sort, setSort] = useState("rating");
     const [reverse, setReverse] = useState("desc");
+    const { i18n } = useTranslation();
+    let language = i18n.language;
+
+    let setLanguage = "";
+    switch (language) {
+        case 'en':
+            setLanguage = 'en-US';
+            break;
+        case 'fr':
+            setLanguage = 'fr-FR';
+            break;
+        case 'es':
+            setLanguage = 'es-ES';
+            break;
+        default:
+            console.log('Error: language not defined');
+    }
 
     const handleOnDocumentBottom = () => {
-        setList(list.concat(_.get(res.data.getMovies, 'movies')));
+        setList(list.concat(res.data.getMovies));
         const np = page + 1;
         setPage(np);
     }
@@ -27,34 +44,28 @@ function Home() {
     useBottomScrollListener(handleOnDocumentBottom);
 
     const FETCH_MOVIES = gql`
-        query($search: String!, $page: Int!, $genre: String!, $sort: String!, $reverse: String!){
-        getMovies(search: $search, page: $page, genre: $genre, sort: $sort, reverse: $reverse){
-            page_number
-            movies {
-                id
-                title
-                large_cover_image
-                rating
-                torrents {
-                    url
-                    hash
-                    quality
-                }
-            }
+        query($search: String!, $page: Int!, $genre: String!, $sort: String!, $reverse: String!, $language: String!){
+        getMovies(search: $search, page: $page, genre: $genre, sort: $sort, reverse: $reverse, language: $language){
+            id
+            title
+            poster_path
+            vote_average
+            overview
+            release_date
+            runtime
         }
     }`;
 
-    const res = useQuery(FETCH_MOVIES, { variables: { search: searchText, page: page, genre: genre, sort: sort, reverse: reverse } });
-    const movies = list.concat(_.get(res.data.getMovies, 'movies'));
+    const res = useQuery(FETCH_MOVIES, { variables: { search: searchText, page: page, genre: genre, sort: sort, reverse: reverse, language: setLanguage } });
 
-    // console.log('movies ' + _.get(movies[0], 'id'))
+    const movies = list.concat(res.data.getMovies);
 
     if (!movies) {
         return (
             <Override className="sweet-loading">
                 <FadeLoader
                     size={20}
-                    color={"#fff"}
+                    color={"#db202c"}
                     loading={loading}
                 />
             </Override>
@@ -79,13 +90,19 @@ const Homeindex = styled.div`
 `
 
 const List = styled.div`
-    margin: 2vmin auto 0 ;
+    margin: auto;
     width: 80vw;
-    min-height: 80vh;
+    /* min-height: 80vh; */
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
     flex: 1;
+    padding: 2rem 1.5rem; 
+    @media (max-width: 768px) {
+        width: auto;
+        margin: auto;
+        flex-direction: column;
+    }
 `
 
 const Override = styled.div`

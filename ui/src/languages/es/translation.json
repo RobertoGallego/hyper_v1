@@ -25,8 +25,9 @@
     "rating": "Clasificación",
     "year": "Año",
     "title": "Título",
-    "peers": "Peers",
-    "reverse": "Inverso",
+    "sort": "Ordenar por",
+    "asc": "Asc",
+    "desc": "Desc",
 
     "login.title": "Conectar",
     "username": "Nombre de usuario",
@@ -80,5 +81,6 @@
     "viewer.time": "Duracion",
     "viewer.addComment": "Agregar comentario",
     "viewer.send": "Enviar",
-    "viewer.noComments": "Sin comentarios"
+    "viewer.noComments": "Sin comentarios",
+    "viewer.overview": "Estudio"
 }

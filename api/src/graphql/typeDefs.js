@@ -38,6 +38,7 @@ module.exports = gql`
         createdAt: String!
         language: String!
         tokenMail: String!
+        seenMovies: [String!]
     }
     type Result_YTS{
         movie_count: Int
@@ -58,6 +59,7 @@ module.exports = gql`
         title: String
         rating: Float
         large_cover_image: String
+        yt_trailer_code: String
         torrents: [Torrent_YTS]
     }
     type Movie{
@@ -87,6 +89,10 @@ module.exports = gql`
         url: String!
         hash: String!
     }
+    type TPBData{
+        name: String!
+        magnetLink: String!
+    }
     type MovieTorrent {
         id: ID!
         year: Int
@@ -110,7 +116,10 @@ module.exports = gql`
         getUsers: [User]
         getUser(userId: ID!): User
         currentUser: User
-        getMovies(search: String!, page: Int!, genre: String!, sort: String!, reverse: String!): Result_YTS
+        getMovies(search: String!, page: Int!, genre: String!, sort: String!, reverse: String!, language: String!): [MovieDetails]
+        getInfoTMDB(id: ID!): MovieDetails
+        getInfoYTS(name: String!): Result_YTS
+        getInfoTPB(name: String!): [TPBData]
         getOneMovie(id: ID!): Torrent
         getComments(movieId: String!): [Comment]
         getTorrentInfos(id: ID!): Torrent
@@ -128,7 +137,7 @@ module.exports = gql`
         editProfile(userId: ID!, username: String!, prenom: String!, nom: String!, email: String!, image: String!): User!
         modifyPassword(userId: ID!, oldPassword: String!, newPassword: String!, confirmPassword: String!): User!
         addComment(movieId: String!, body: String!): Comment!
-        setLanguage(userId: ID!, language: String!): User!
+        addSeenMovie(userId: ID!, movieId: String!): User!
     }
     type Subscription {
         newPost: Post!

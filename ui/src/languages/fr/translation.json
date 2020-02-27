@@ -25,8 +25,9 @@
     "rating": "Note",
     "year": "Année",
     "title": "Titre",
-    "peers": "Peers",
-    "reverse": "Inverse",
+    "sort": "Trier par",
+    "asc": "Asc",
+    "desc": "Desc",
 
     "login.title": "Connexion",
     "username": "Nom d'utilisateur",
@@ -80,5 +81,6 @@
     "viewer.time": "Durée",
     "viewer.addComment": "Ajouter un commentaire",
     "viewer.send": "Envoyer",
-    "viewer.noComments": "Pas de commentaires"
+    "viewer.noComments": "Pas de commentaires",
+    "viewer.overview": "Aperçu"
 }

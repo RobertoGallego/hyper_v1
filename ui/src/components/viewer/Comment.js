@@ -15,11 +15,8 @@ export default function Com(movieID) {
     const FETCH_COMMENTS = gql`
         query getComments($movId: String!){
             getComments(movieId: $movId){
-                id
-                userId
                 username
                 body
-                movieId
                 createdAt
             }
         }
@@ -47,7 +44,8 @@ export default function Com(movieID) {
     }
 
     const comRes = useQuery(FETCH_COMMENTS, {variables : {movId : movieID.movie}});
-    const comments = comRes.data.getComments;    
+    const comments = comRes.data.getComments; 
+    
 
     if(!comments){
         return (
@@ -104,16 +102,19 @@ const Form = styled.div`
 
 const Input = styled.input`
     width: 40vmin;
-    margin:0.5em 3em;
+    margin: auto;
     background: #666666;
     border: none;
-    padding: 1em;
+    padding: 1em 3em;
     color: white;
     font-size: 1em;
     ::placeholder,
     ::-webkit-input-placeholder {
     color: white;
     font-size: 1em;
+    @media (max-width: 768px) {
+        font-size: 12px;
+    }
   }
 `
 
@@ -124,11 +125,11 @@ const Send = styled.input`
     font-weight: bold;
     text-transform: uppercase;
     text-align: center;
-    padding: 1em 1.5em;
+    padding: 1em 1em;
     letter-spacing: 2px;
     cursor: pointer;
     font-size: .9em;
-    margin-right: 2em;
+    /* margin-right: 2em; */
 `
 const Link = styled.a`
     color: #fff;

@@ -59,13 +59,30 @@ module.exports = {
             // console.log(password);
 
             const user = await User.findOne({ username });
+            // console.log(user);
+
             if (!user) {
                 errors.username = "Sorry, we can't find an account with this username. Please try again.";
                 throw new UserInputError('User not found', { errors });
             }
+            // console.log(length(user.facebookId));
+            // console.log("1" + user.facebookId.length);
+            // console.log("2" + user.fortytwoId.length);
+            // console.log("3" + user.googleId.length);
+            // console.log("length" + user.facebookId.length);
+            // todo lo contrario
+            if (user.facebookId.length > 0 || user.fortytwoId.length > 0 || user.googleId.length > 0) {
+                console.log("ok");
+                errors.password = 'Wrong password';
+                throw new UserInputError('Wrong crendetials', { errors });
+            }
+            // console.log("trim" + user.facebookId.trim());
+            // console.log("length" + user.facebookId.length);
 
             const match = await bcrypt.compare(password, user.password);
             if (!match) {
+                console.log(password);
+                console.log(user.password);
                 errors.password = 'Wrong password';
                 throw new UserInputError('Wrong crendetials', { errors });
             }
@@ -154,6 +171,7 @@ module.exports = {
             const facebookId = "";
             const fortytwoId = "";
             const googleId = "";
+            const seenMovies = [];
 
             const newUser = new User({
                 facebookId,
@@ -166,7 +184,7 @@ module.exports = {
                 password,
                 createdAt: new Date().toISOString(),
                 image,
-                language: "en"
+                seenMovies
             });
 
             const res = await newUser.save();
@@ -287,11 +305,21 @@ module.exports = {
                 token,
             }
         },
-        async setLanguage( _, {userId, language}) {
-            const res = await User.findByIdAndUpdate({ _id: userId }, { language: language}, {new: true})
-            return {
-                ...res._doc,
-                id: res._id
+        async addSeenMovie( _, {userId, movieId}) {
+            const connectedUser = await User.findOne({_id: userId });
+            const seen = connectedUser.seenMovies.includes(movieId);
+            if (!seen) {
+                const res = await User.findByIdAndUpdate({ _id: userId }, {$push: {seenMovies: movieId }}, {new: true});
+                return {
+                    ...res._doc,
+                    id: res._id
+                }
+            } else {
+                const res = await User.findOne({_id: userId });
+                return {
+                    ...res._doc,
+                    id: res._id
+                }
             }
         }
     }

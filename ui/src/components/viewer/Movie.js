@@ -1,5 +1,6 @@
 import React, {
-    useState
+    useState,
+    useContext
 } from 'react';
 import {
     useParams
@@ -11,53 +12,131 @@ import Com from './Comment';
 import gql from "graphql-tag";
 import noImage from "../../assets/images/noImage.png";
 import {
-    useQuery
+    useQuery,
+    useMutation
 } from "@apollo/react-hooks";
 import axios from 'axios';
 import Countdown from 'react-countdown-now';
+import { AuthContext } from "../../context/auth";
 var _ = require('lodash');
 
 export default function Movie() {
-    const FETCH_ONE_MOVIE = gql`
-        query($id: ID!){
-        getOneMovie(id: $id){
-            status
-            data {
-                movie {
-                    id
-                    yt_trailer_code
-                    title
-                    year
-                    rating
-                    runtime
-                    large_cover_image
-                    torrents {
-                        url
-                        hash
-                    }
+
+    const FETCH_INFO_TMDB = gql`
+    query($id: ID!){
+        getInfoTMDB(id: $id){
+            id
+            title
+            poster_path
+            vote_average
+            overview
+            release_date
+            runtime
+        }
+    }`;
+
+    const FETCH_INFO_YTS = gql`
+    query($name: String!){
+        getInfoYTS(name: $name){
+            page_number
+            movies {
+                id
+                title
+                large_cover_image
+                rating
+                yt_trailer_code
+                torrents {
+                    url
+                    hash
+                    quality
                 }
             }
         }
     }`;
+
+    const FETCH_INFO_TPB = gql`
+    query($name: String!){
+        getInfoTPB(name: $name){
+            name
+            magnetLink
+        }
+    }`;
+
+    const ADD_SEEN_MOVIE = gql`
+        mutation addSeenMovie(
+            $userId: ID!
+            $movieId: String!
+        ) {
+            addSeenMovie(
+                userId: $userId
+                movieId: $movieId
+            ) {
+                id
+            }
+        }
+    `;
+
+    const user = useContext(AuthContext);
+    const userId = user.user.id;
+    const [addMovie] = useMutation(ADD_SEEN_MOVIE);
+
     const movieLink = useState("");
     const [Show, setShow] = useState(false);
     const [Go, setGo] = useState(false);
+    const [Yts, setYts] = useState(false)
     const Finisheds = () => {
         console.log("Waiting ...");
     }
     const [Finished, setFinished] = useState(Finisheds);
+    const [nameMovie, setNameMovie] = useState("");
+
     const movieID = useParams().id;
-    const res = useQuery(FETCH_ONE_MOVIE, {
+    const infoTMDB = useQuery(FETCH_INFO_TMDB, {
         variables: {
             id: movieID
         }
-    })
-    let movie = res.data.getOneMovie;
-    movie = Object.assign({}, _.get(movie, 'data.movie'))
-    const torrentHash = _.get(movie, 'torrents[0].hash')
-    if (torrentHash)
-        console.log("Hash is here => " + torrentHash)
-    if (!movie) {
+    });
+
+    const Tmdb = infoTMDB.data.getInfoTMDB;
+    if (Tmdb && nameMovie === "") {
+        setNameMovie(Tmdb.title);
+    }
+
+    const infoTpb = useQuery(FETCH_INFO_TPB, {
+        variables: {
+            name: nameMovie
+        }
+    });
+    const infoYts = useQuery(FETCH_INFO_YTS, {
+        variables: {
+            name: nameMovie
+        }
+    });
+    const ytsMovies = _.get(infoYts.data.getInfoYTS, 'movies');
+    const tpbMovies = infoTpb.data.getInfoTPB;
+    const yt_trailer_code = _.get(ytsMovies, '[0].yt_trailer_code')
+    let ytsHash = "";
+    if (ytsMovies) {
+        let ytsMov = ytsMovies.find(e => e.title === nameMovie);
+        if (ytsMov)
+            ytsHash = _.get(ytsMov, 'torrents[0].hash');
+    }
+
+    let tpbHash = "";
+    if (tpbMovies) {
+        let tpbMov = tpbMovies.find(e => e.name.includes(nameMovie + " ("));
+        if (tpbMov) {
+            tpbHash = tpbMov.magnetLink.split(":")[3].split("&")[0];
+
+        }
+    }
+
+    // let movie = infoYts.getInfoYTS;
+    // console.log("mooovie " + JSON.stringify(movie))
+    // movie = Object.assign({}, _.get(movie, 'data.movie'))
+    // console.log("mooovie " + JSON.stringify(movie))
+    // console.log("Hash is here => " + tpbHash + " " + ytsHash)
+    if (!Tmdb) {
         return <h3> Loading... </h3>;
     }
     const renderer = ({ seconds, completed }) => {
@@ -72,78 +151,103 @@ export default function Movie() {
     };
     const Completionist = () => <span>Let's START</span>;
     let Texton = <Countdown date={Date.now() + 40000} renderer={renderer} />
-    function startDownloading() {
+    function startDownloadingYTS() {
         setGo(true);
-        axios.get(`http://localhost:5000/downloadMovie/${movieID}/${torrentHash}`)
+        addMovie({variables : {userId : userId, movieId: Tmdb.id}});
+        axios.get(`http://localhost:5000/downloadMovie/${movieID}/${ytsHash}`)
+        .then(data => {
+            if (data.data.status === "Downloading") {
+                console.log(data.data.message + " " + data.data.percentage + " %");
+            }
+            else
+            console.log("Erro Downloading ??")
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }
+    function startDownloadingTPB() {
+        setGo(true);
+        addMovie({variables : {userId : userId, movieId: Tmdb.id}});
+        if (tpbHash) {
+            axios.get(`http://localhost:5000/downloadMovie/${movieID}/${tpbHash}`)
             .then(data => {
-                console.log("\n\n DATA : " + JSON.stringify(data))
                 if (data.data.status === "Downloading") {
                     console.log(data.data.message + " " + data.data.percentage + " %");
                 }
                 else
-                    console.log("Erro Downloading ??")
+                console.log("Erro Downloading ??")
             })
             .catch(error => {
                 console.log(error)
             });
+        }
     }
     const Finish = () => {
         setShow(true);
-        setGo(false)
     }
     var image;
-    if (!movie.large_cover_image)
+    if (!Tmdb.poster_path)
         image = noImage
     else
-        image = `${movie.large_cover_image}`
+        image = `https://image.tmdb.org/t/p/original${Tmdb.poster_path}`
 
     return (<MoviePage >
         <Header />
         <Content >
+            <TextA>{Tmdb.title}</TextA>
             <Split >
-                <Left > {movie.yt_trailer_code && < Iframe src={"https://www.youtube.com/embed/" + movie.yt_trailer_code}
+                <Left> {yt_trailer_code && < Iframe src={"https://www.youtube.com/embed/" + yt_trailer_code}
                     frameborder="0"
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen > </Iframe>}
                     {!Show && <Video controls autoPlay loop="" >
                         <source src={movieLink} type="video/mp4" />
                     </Video>}
-                    {Show && <Video controls autoPlay loop="" >
+
+                    {Show && <Video controls autoPlay reload loop="" >
                         <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/mp4" />
                         <source src={`http://localhost:5000/playMovie/${movieID}`} type="video/webm" />
                         <track label="English" kind="subtitles" srcLang="en" src="captions/vtt/sintel-en.vtt" default />
                         <track label="Deutsch" kind="subtitles" srcLang="de" src="captions/vtt/sintel-de.vtt" />
                         <track label="Español" kind="subtitles" srcLang="es" src="captions/vtt/sintel-es.vtt" />
                     </Video>}
-                    <Text > Torrents: </Text>
-                    {!Go && torrentHash && <span> <Link1 onClick={startDownloading}> YTS TORRENT </Link1></span>}
+                    <Text>Resume: </Text>
+                    <Resumen>{Tmdb.overview}</Resumen>
+                    <Text > Torrents:</Text>
+                    {!Go && ytsHash && <span> <Link1 onClick={startDownloadingYTS}> YTS TORRENT </Link1></span>}
+                    {!Go && tpbHash && <span> <Link1 onClick={startDownloadingTPB}> TPB TORRENT </Link1></span>}
+                    {!tpbHash && !ytsHash && <span>Sorry !! No Torrents Founded</span>}
                     {Go && <span> <Link2 onClick={Finished}>{Texton}</Link2></span>}
-
-                    <Text > Comments: </Text> <
-                        Com movie={
-                            movieID
-                        }
-                    /> </Left> <Right >
-                    <Text > Grade: {
-                        movie.rating
-                    } </Text> <
-                        Picture src={
-                            image
-                        }
-                        alt={
-                            `${movie.title}Image`
-                        }
-                    /> <Text> Release Date: {
-                        movie.year
-                    } </Text> <Text> Duration: {
-                        movie.runtime
-                    }
-                        min </Text> </Right> </Split> </Content>
+                    <Text >Comments: </Text>
+                    <Com movie={movieID} />
+                </Left>
+                <Right>
+                    <Picture src={image} alt={`${Tmdb.title}Image`} />
+                    <Text>Release Date: {Tmdb.release_date}</Text>
+                    <Text>Grade: {Tmdb.vote_average}</Text>
+                    <Text>Duration: {Tmdb.runtime}min</Text>
+                </Right>
+            </Split>
+        </Content>
         <Footer />
     </MoviePage >
     );
 }
+
+const Resumen = styled.p`
+    justify-content: center;
+    text-align: left;
+    font-size: 14px;
+    margin-left: 1rem;
+    padding: 0 2rem;
+    @media (max-width: 768px) {
+      font-size: 12px;
+    }
+`
+
 const Link2 = styled.button`
+<<<<<<< HEAD
           border-color: red;
           background-color: red;
           color: black;
@@ -186,6 +290,69 @@ const Iframe = styled.iframe`
             width: 60vmin;
             height: 30vmin;
         `;
+=======
+  width: 300px;
+  height: 50px;
+  background: ${props => props.theme.colors.ButtonT};
+  border: none;
+  font-size: 1rem;
+  color: ${props => props.theme.colors.textColor};
+  outline: 0;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  @media (max-width: 768px) {
+      width: 100%;
+    }
+  transition-duration: 0.3s;
+  &:hover {
+    color: black;
+    background-color: ${props => props.theme.colors.textColor};
+    border-color: white
+  }
+`;
+
+const Link1 = styled.button`
+    margin-bottom: 1rem;
+    width: 300px;
+    height: 50px;
+    background: ${props => props.theme.colors.ButtonT};
+    border: none;
+    font-size: 1rem;
+    color: ${props => props.theme.colors.textColor};
+    outline: 0;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    @media (max-width: 768px) {
+        width: 100%;
+    }
+    transition-duration: 0.3s;
+    &:hover {
+        color: black;
+        background: ${props => props.theme.colors.textColor};
+        border-color: white
+    }
+`;
+
+const MoviePage = styled.div`
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+    background-color: ${props => props.theme.colors.cardBackground};
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    color: white;
+`
+const Iframe = styled.iframe`
+    margin: 0 auto 2rem; 
+    width: 60vmin;
+    height: 30vmin;
+`;
+>>>>>>> e283ee743b4b11870c1b630caebab9d166bbb70d
 // const HR = styled.hr`
 //     border: 1px solid white;
 // `
@@ -196,8 +363,15 @@ const Content = styled.div`
             margin: 0 auto;
         `
 const Split = styled.div`
+<<<<<<< HEAD
             display: flex;
         `
+=======
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+`
+>>>>>>> e283ee743b4b11870c1b630caebab9d166bbb70d
 const Left = styled.div`
             width: 70vmin;
             display: flex;
@@ -205,6 +379,7 @@ const Left = styled.div`
             text-align: center;
         `
 const Video = styled.video`
+<<<<<<< HEAD
             margin: 5vmin;
             width: 60vmin;
             height: 40vmin;
@@ -225,4 +400,38 @@ const Picture = styled.img`
 const Text = styled.span`
         margin: 30px 0;
         font-size: 1.5em;
+=======
+    margin-top: 0;
+    margin: 0 5vmin 5vmin 5vmin;
+    width: 60vmin;
+    height: 40vmin;
+`
+const Right = styled.div`
+    display: flex;
+    flex-direction: column;
+    /* width: 30vmin; */
+`
+
+const Picture = styled.img`
+    padding-bottom: 1rem;
+    width: 25vmin;
+    height: 25min;
+    margin: 0 auto;
+`;
+
+const Text = styled.span`
+    font-weight: bold;
+    margin: 0.5rem;
+    @media (max-width: 768px) {
+        font-size: 12px;
+    }
+`;
+
+const TextA = styled.span`
+    font-weight: bold;
+    padding: 1rem;
+    text-align: left;
+    font-size: 2em;
+    margin: 0.5rem;
+>>>>>>> e283ee743b4b11870c1b630caebab9d166bbb70d
 `;

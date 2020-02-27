@@ -3,19 +3,20 @@ const path = require('path');
 const fs = require('fs');
 const pump = require('pump');
 const ffmpeg = require('fluent-ffmpeg');
+const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 
 export default function getTorrent(filename, magnetLink, req, res) {
 
     let downloadingStreams = {}
-    if (!filename || !magnetLink)
-        return (false)
+    ffmpeg.setFfmpegPath(ffmpegPath);
 
     // COVERSION
     const convert = function (file, thread) {
         if (!thread)
             thread = 8
         console.log('Start converting file...')
-        return new ffmpeg(file.createReadStream())
+        let stream = file.createReadStream();
+        return ffmpeg(stream)
             .videoCodec('libvpx')
             .audioCodec('libvorbis')
             .format('webm')
@@ -31,22 +32,25 @@ export default function getTorrent(filename, magnetLink, req, res) {
             })
             .on('error', function (err) { })
     }
+
     // INIT DOWNLOAD
     let engine = torrentStream(magnetLink)
     engine.on('ready', function () {
         console.log('Start Engine !')
         // // GET THE FILE
+        console.log("MagnetLink => " + magnetLink)
         engine.files = engine.files.sort(function (a, b) {
             return b.length - a.length
         }).slice(0, 1)
         let file = engine.files[0]
         let ext = path.extname(file.name)
+        console.log("Extension => " + ext)
         console.log('File found! (' + file.name + ')')
         // downloadingStreams[filename] = file
         // CONVERT
         let needConvert = (ext !== '.webm' && ext !== '.mp4')
         let videoStream = needConvert ? convert(file) : file.createReadStream();
-        console.log("Extension => " + ext)
+        ext = needConvert ? '.webm' : ext
 
         // MULTIPLE STREAMS
         let filePath = path.join(__dirname, '/../Downloads/' + filename + ext)

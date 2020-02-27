@@ -31,6 +31,85 @@ const path = require('path');
 const fs = require('fs');
 var cors = require('cors');
 import getTorrent from './Torrent';
+import Filetimer from './filetime'
+var schedule = require('node-schedule');
+
+// every 5 second test
+// schedule.scheduleJob('*/5 * * * * *', function(){
+schedule.scheduleJob('0 0 1 * *', function(){
+    // “At 00:00 on day-of-month 1.”
+    // console.log("5 second");
+    Filetimer();
+});
+
+// fs.readdir(__dirname + `/../Downloads`, (err, files) => {
+//     files.forEach(file => {
+//     //   console.log(file);
+//         fs.stat(__dirname + `/../Downloads/${file}`, function (err, stats) {
+//             // console.log(stats.atime);
+//             let timerFile = stats.atime;
+//             let fileH = timerFile.getHours();
+//             let fileM = timerFile.getMinutes();
+//             let fileMonth = timerFile.getMonth();
+//             let d = new Date();
+//             let m = d.getMinutes();
+//             let h = d.getHours();
+//             let monthNow = d.getMonth();
+//             console.log("ficheros:   " + fileH + ":" + fileM);
+//             console.log ("fecha now:  " + h + ":" + m);
+//             // if (h > fileH && m >= fileM) {
+//             if (monthNow > fileMonth) {
+//                 fs.unlink(__dirname + `/../Downloads/${file}`,function(err){
+//                     if(err) return console.log(err);
+//                     console.log('file deleted successfully');
+//                 });
+//             }
+//             if (err) {
+//                 return console.error(err);
+//             }
+//         });
+//     });
+// });
+
+// const OS = require('opensubtitles-api');
+
+// // SUBTITLES //
+// const OpenSubtitles = new OS({
+//     useragent:'TemporaryUserAgent',
+//     // username: 'Username',
+//     // password: 'Password',
+//     ssl: true
+// });
+
+// OpenSubtitles.login()
+//     .then(res => {
+//         console.log(res.token);
+//         // console.log(res.userinfo);
+//     })
+//     .catch(err => {
+//         console.log(err);
+// });
+
+// OpenSubtitles.search({
+//     sublanguageid: 'fre',       // Can be an array.join, 'all', or be omitted.
+//     hash: 'C168B84FC2B8CF062B67E4168E35C98F10BC7C74',   // Size + 64bit checksum of the first and last 64k
+//     filesize: '129994823',      // Total size, in bytes.
+//     path: __dirname + `/../Downloads/238.mp4`,        // Complete path to the video file, it allows
+//                                 //   to automatically calculate 'hash'.
+//     filename: '238.mp4',        // The video file name. Better if extension
+//                                 //   is included.
+//     season: '2',
+//     episode: '3',
+//     extensions: ['srt', 'vtt'], // Accepted extensions, defaults to 'srt'.
+//     limit: '3',                 // Can be 'best', 'all' or an
+//                                 // arbitrary nb. Defaults to 'best'
+//     imdbid: '238',           // 'tt528809' is fine too.
+//     fps: '23.96',               // Number of frames per sec in the video.
+//     query: 'The Godfather',   // Text-based query, this is not recommended.
+//     gzip: true                  // returns url to gzipped subtitles, defaults to false
+// });
+
+// // 
 
 const facebookOptions = {
     clientID: process.env.FACEBOOK_ID,
@@ -63,7 +142,8 @@ passport.use(new GoogleStrategy({
                     nom: profile.name.familyName,
                     email: 'not specified',
                     createdAt: new Date().toISOString(),
-                    image: "/static/media/profilePic1.62db51f5.png"
+                    image: "/static/media/profilePic1.62db51f5.png",
+                    seenMovies: []
                 })
                     .save()
                     .then(newUser => {
@@ -95,6 +175,7 @@ passport.use(new FortyTwoStrategy({
                     prenom: profile.name.givenName,
                     nom: profile.name.familyName,
                     createdAt: new Date().toISOString(),
+                    seenMovies: [],
                     image: "/static/media/profilePic1.62db51f5.png",
                     email: profile.emails &&
                         profile.emails[0] &&
@@ -136,7 +217,8 @@ const facebookCallback = (accessToken, refreshToken, profile, done) => {
                 nom: profile.name.familyName,
                 password: "null",
                 createdAt: new Date().toISOString(),
-                image: "/static/media/profilePic1.62db51f5.png"
+                image: "/static/media/profilePic1.62db51f5.png",
+                seenMovies: []
             })
                 .save()
                 .then(newUser => {
@@ -145,15 +227,18 @@ const facebookCallback = (accessToken, refreshToken, profile, done) => {
         }
     });
 };
+
 passport.use(new FacebookStrategy(facebookOptions, facebookCallback));
 passport.serializeUser((user, done) => {
     done(null, user.id);
 });
+
 passport.deserializeUser((id, done) => {
     User.findById(id).then(user => {
         done(null, user);
     });
 });
+
 const server = new ApolloServer({
     typeDefs,
     resolvers,
@@ -176,6 +261,7 @@ app.use(cors())
 app.get('/downloadMovie/:movieID/:torrentHash', function (req, res) {
     const movieID = req.params.movieID;
     const torrentHash = req.params.torrentHash;
+    console.log("movie Id " + movieID + " torrent ici " + torrentHash)
     if (!movieID || !torrentHash)
         res.send({
             status: "Error!!",
@@ -185,41 +271,84 @@ app.get('/downloadMovie/:movieID/:torrentHash', function (req, res) {
     getTorrent(movieID, magnetLink, req, res);
 });
 
-
-
 app.get('/playMovie/:movieID', function (req, res) {
     const movieID = req.params.movieID;
-    const path = __dirname + `/../Downloads/${movieID}.mp4`
-    const stat = fs.statSync(path)
-    const fileSize = stat.size
-    const range = req.headers.range
-    if (range) {
-        const parts = range.replace(/bytes=/, "").split("-")
-        const start = parseInt(parts[0], 10)
-        const end = parts[1] ?
-            parseInt(parts[1], 10) :
-            fileSize - 1
-        const chunksize = (end - start) + 1;
-        const file = fs.createReadStream(path, {
-            start,
-            end
-        })
-        const head = {
-            'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-            'Accept-Ranges': 'bytes',
-            'Content-Length': chunksize,
-            'Content-Type': 'video/mp4',
+    let pathTest1 = __dirname + `/../Downloads/${movieID}.mp4`;
+    let pathTest2 = __dirname + `/../Downloads/${movieID}.webm`;
+    fs.access(pathTest1, (err) => {
+        if (!err) {
+            const path = __dirname + `/../Downloads/${movieID}.mp4`;
+            const stat = fs.statSync(path)
+            const fileSize = stat.size
+            const range = req.headers.range
+            if (range) {
+                const parts = range.replace(/bytes=/, "").split("-")
+                const start = parseInt(parts[0], 10)
+                const end = parts[1] ?
+                    parseInt(parts[1], 10) :
+                    fileSize - 1
+                const chunksize = (end - start) + 1;
+                const file = fs.createReadStream(path, {
+                    start,
+                    end
+                })
+                const head = {
+                    'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+                    'Accept-Ranges': 'bytes',
+                    'Content-Length': chunksize,
+                    'Content-Type': 'video/mp4',
+                }
+                res.writeHead(206, head);
+                file.pipe(res);
+            } else {
+                const head = {
+                    'Content-Length': fileSize,
+                    'Content-Type': 'video/mp4',
+                }
+                res.writeHead(200, head)
+                fs.createReadStream(path).pipe(res)
+            }
+            return;
         }
-        res.writeHead(206, head);
-        file.pipe(res);
-    } else {
-        const head = {
-            'Content-Length': fileSize,
-            'Content-Type': 'video/mp4',
-        }
-        res.writeHead(200, head)
-        fs.createReadStream(path).pipe(res)
-    }
+        fs.access(pathTest2, (err) => {
+            if (!err) {
+                const path = __dirname + `/../Downloads/${movieID}.webm`;
+                const stat = fs.statSync(path)
+                const fileSize = stat.size
+                const range = req.headers.range
+                if (range) {
+                    const parts = range.replace(/bytes=/, "").split("-")
+                    const start = parseInt(parts[0], 10)
+                    const end = parts[1] ?
+                        parseInt(parts[1], 10) :
+                        fileSize - 1
+                    const chunksize = (end - start) + 1;
+                    const file = fs.createReadStream(path, {
+                        start,
+                        end
+                    })
+                    const head = {
+                        'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+                        'Accept-Ranges': 'bytes',
+                        'Content-Length': chunksize,
+                        'Content-Type': 'video/webm',
+                    }
+                    res.writeHead(206, head);
+                    file.pipe(res);
+                } else {
+                    const head = {
+                        'Content-Length': fileSize,
+                        'Content-Type': 'video/webm',
+                    }
+                    res.writeHead(200, head)
+                    fs.createReadStream(path).pipe(res)
+                }
+                return;
+            }
+            console.log("Path non trouve baby")
+            res.send({ status: "Error", message: "File doesn't exist" })
+        });
+    });
 });
 //*******STREAM ROUTE********//
 
