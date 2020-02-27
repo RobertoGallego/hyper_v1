@@ -81,7 +81,7 @@ const OpenSubtitles = new OS({
 
 OpenSubtitles.login()
     .then(res => {
-        console.log(res.token);
+        console.log("Subtitles " + res.token);
         // console.log(res.userinfo);
     })
     .catch(err => {
